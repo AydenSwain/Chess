@@ -67,12 +67,42 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        if (pieceType == ChessPiece.PieceType.BISHOP) {
-            BishopMovesCalculator bishopMovesCalculator = new BishopMovesCalculator(board, myPosition, teamColor, pieceType);
-//            return bishopMovesCalculator.getMoves();
-            ArrayList<ChessMove> moves = bishopMovesCalculator.calculateMoves();
-            return moves;
+        // If the piece is a bishop
+        if (pieceType == PieceType.BISHOP) {
+            BishopMovesCalculator movesCalculator = new BishopMovesCalculator(board, myPosition, teamColor, pieceType);
+            return movesCalculator.calculateMoves();
         }
+
+        // If the piece is a queen
+        if (pieceType == PieceType.QUEEN) {
+            QueenMovesCalculator movesCalculator = new QueenMovesCalculator(board, myPosition, teamColor, pieceType);
+            return movesCalculator.calculateMoves();
+        }
+
+        // If the piece is a king
+        if (pieceType == PieceType.KING) {
+            KingMovesCalculator movesCalculator = new KingMovesCalculator(board, myPosition, teamColor, pieceType);
+            return movesCalculator.calculateMoves();
+        }
+
+//        // If the piece is a knight
+//        if (pieceType == PieceType.KNIGHT) {
+//            KnightMovesCalculator movesCalculator = new KnightMovesCalculator(board, myPosition, teamColor, pieceType);
+//            return movesCalculator.calculateMoves();
+//        }
+
+        // If the piece is a rook
+        if (pieceType == PieceType.ROOK) {
+            RookMovesCalculator movesCalculator = new RookMovesCalculator(board, myPosition, teamColor, pieceType);
+            return movesCalculator.calculateMoves();
+        }
+
+//        // If the piece is a pawn
+//        if (pieceType == PieceType.PAWN) {
+//            PawnMovesCalculator movesCalculator = new PawnMovesCalculator(board, myPosition, teamColor, pieceType);
+//            return movesCalculator.calculateMoves();
+//        }
+
         return null;
     }
 }
