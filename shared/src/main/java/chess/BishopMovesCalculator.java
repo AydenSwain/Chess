@@ -11,18 +11,27 @@ public class BishopMovesCalculator extends PieceMovesCalculator {
 
     public ArrayList<ChessMove> getMoves() {
         this.moves = new ArrayList<ChessMove>();
-        topLeftSearch();
+        // Search top left
+        searchDirection(1, -1);
+
+        // Search top right
+        searchDirection(1, 1);
+
+        // Search bottom left
+        searchDirection(-1, -1);
+
+        // Search bottom right
+        searchDirection(-1, -1);
 
         return this.moves;
     }
 
-    private void topLeftSearch() {
+    private void searchDirection(int rowChange, int columnChange) {
         ChessPosition startPosition = myPosition;
         ChessPosition searchPosition = myPosition;
         while (true) {
-            searchPosition = new ChessPosition(searchPosition.getRow() + 1, searchPosition.getColumn() - 1);
-//            searchPosition.setRow(startPosition.getRow() + 1);
-//            searchPosition.setColumn(startPosition.getColumn() - 1);
+            searchPosition = new ChessPosition(searchPosition.getRow() + rowChange, searchPosition.getColumn() + columnChange);
+
             if (searchPosition.isOutOfBounds()) {
                 break;
             }
