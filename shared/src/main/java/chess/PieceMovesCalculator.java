@@ -20,16 +20,51 @@ public class PieceMovesCalculator {
     public void searchDirection(int rowChange, int columnChange) {
         ChessPosition searchPosition = myPosition;
         while (true) {
+            // Move the search position
             searchPosition = new ChessPosition(searchPosition.getRow() + rowChange, searchPosition.getColumn() + columnChange);
+
+            // If the space is out of bounds
             if (searchPosition.isOutOfBounds()) {
                 break;
             }
-            if (board.getPiece(searchPosition) != null &&
-                    board.getPiece(searchPosition).getTeamColor() == teamColor) {
+
+            // If there is a piece in the space
+            if (board.getPiece(searchPosition) != null) {
+                // If that piece is on the same team
+                if(board.getPiece(searchPosition).getTeamColor() == teamColor) {
+                    break;
+                }
+                // If that piece is on the opposing team
+                moves.add(new ChessMove(myPosition, searchPosition, null));
                 break;
             }
+
             moves.add(new ChessMove(myPosition, searchPosition, null));
         }
+    }
+
+    // Searches a space specified by the change in row and column parameters
+    public void searchSpace(int rowChange, int columnChange) {
+        // Move the search position
+        ChessPosition searchPosition = new ChessPosition(myPosition.getRow() + rowChange, myPosition.getColumn() + columnChange);
+
+        // If the space is out of bounds
+        if (searchPosition.isOutOfBounds()) {
+            return;
+        }
+
+        // If there is a piece in the space
+        if (board.getPiece(searchPosition) != null) {
+            // If that piece is on the same team
+            if(board.getPiece(searchPosition).getTeamColor() == teamColor) {
+                return;
+            }
+            // If that piece is on the opposing team
+            moves.add(new ChessMove(myPosition, searchPosition, null));
+            return;
+        }
+
+        moves.add(new ChessMove(myPosition, searchPosition, null));
     }
 
     public ArrayList<ChessMove> getMoves() {

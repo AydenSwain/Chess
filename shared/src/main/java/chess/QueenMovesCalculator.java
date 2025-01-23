@@ -2,7 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 
-public class QueenMovesCalculator {
+public class QueenMovesCalculator extends PieceMovesCalculator {
     public QueenMovesCalculator(ChessBoard board, ChessPosition myPosition, ChessGame.TeamColor teamColor, ChessPiece.PieceType pieceType) {
         super(board, myPosition, teamColor, pieceType);
     }
