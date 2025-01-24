@@ -10,10 +10,10 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessBoard {
-    private ChessPiece[][] squares = new ChessPiece[8][8];
+    private ChessPiece[][] squares;
 
     public ChessBoard() {
-        // ------------------ Start game positions here
+        resetBoard();
     }
 
     /**
@@ -56,7 +56,16 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
-        squares = new ChessPiece[8][8];
+        squares = new ChessPiece[][]{
+                {new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK),      new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KNIGHT),     new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP),     new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.QUEEN),      new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KING),       new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.BISHOP),     new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.KNIGHT),     new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.ROOK)},
+                {new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN),      new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.WHITE, ChessPiece.PieceType.PAWN)},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN),      new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN),       new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.PAWN)},
+                {new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK),      new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KNIGHT),     new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP),     new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.QUEEN),      new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KING),       new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.BISHOP),     new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.KNIGHT),     new ChessPiece(ChessGame.TeamColor.BLACK, ChessPiece.PieceType.ROOK)}
+        };
     }
 
     @Override
@@ -65,7 +74,7 @@ public class ChessBoard {
         boardString += Arrays.deepToString(squares);
         boardString = boardString.replace("], [", "],\n[");
         boardString = boardString.replace("null", "--");
-        boardString = boardString.substring(1, boardString.length() - 1);
+        boardString = "\n" + boardString.substring(1, boardString.length() - 1);
         return boardString;
     }
 }
