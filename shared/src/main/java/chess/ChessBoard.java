@@ -13,7 +13,7 @@ public class ChessBoard {
     private ChessPiece[][] squares;
 
     public ChessBoard() {
-        resetBoard();
+        squares = new ChessPiece[8][8];
     }
 
     /**
