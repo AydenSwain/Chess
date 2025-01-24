@@ -58,4 +58,14 @@ public class ChessBoard {
     public void resetBoard() {
         squares = new ChessPiece[8][8];
     }
+
+    @Override
+    public String toString() {
+        String boardString = "";
+        boardString += Arrays.deepToString(squares);
+        boardString = boardString.replace("], [", "],\n[");
+        boardString = boardString.replace("null", "--");
+        boardString = boardString.substring(1, boardString.length() - 1);
+        return boardString;
+    }
 }

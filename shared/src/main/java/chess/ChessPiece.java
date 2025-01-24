@@ -97,11 +97,76 @@ public class ChessPiece {
             return movesCalculator.calculateMoves();
         }
 
-//        // If the piece is a pawn
-//        if (pieceType == PieceType.PAWN) {
-//            PawnMovesCalculator movesCalculator = new PawnMovesCalculator(board, myPosition, teamColor, pieceType);
-//            return movesCalculator.calculateMoves();
-//        }
+        // If the piece is a pawn
+        if (pieceType == PieceType.PAWN) {
+            PawnMovesCalculator movesCalculator = new PawnMovesCalculator(board, myPosition, teamColor, pieceType);
+            return movesCalculator.calculateMoves();
+        }
+
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        // If the piece is a bishop
+        if (pieceType == PieceType.BISHOP) {
+            // If color is white
+            if (teamColor == ChessGame.TeamColor.WHITE) {
+                return "bB";
+            }
+            // If color is black
+            return "wB";
+        }
+
+        // If the piece is a queen
+        if (pieceType == PieceType.QUEEN) {
+            // If color is white
+            if (teamColor == ChessGame.TeamColor.WHITE) {
+                return "bQ";
+            }
+            // If color is black
+            return "wQ";
+        }
+
+        // If the piece is a king
+        if (pieceType == PieceType.KING) {
+            // If color is white
+            if (teamColor == ChessGame.TeamColor.WHITE) {
+                return "bK";
+            }
+            // If color is black
+            return "wK";
+        }
+
+        // If the piece is a knight
+        if (pieceType == PieceType.KNIGHT) {
+            // If color is white
+            if (teamColor == ChessGame.TeamColor.WHITE) {
+                return "bN";
+            }
+            // If color is black
+            return "wN";
+        }
+
+        // If the piece is a rook
+        if (pieceType == PieceType.ROOK) {
+            // If color is white
+            if (teamColor == ChessGame.TeamColor.WHITE) {
+                return "bR";
+            }
+            // If color is black
+            return "wR";
+        }
+
+        // If the piece is a pawn
+        if (pieceType == PieceType.PAWN) {
+            // If color is white
+            if (teamColor == ChessGame.TeamColor.WHITE) {
+                return "bB";
+            }
+            // If color is black
+            return "wB";
+        }
 
         return null;
     }

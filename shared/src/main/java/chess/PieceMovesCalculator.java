@@ -3,11 +3,11 @@ package chess;
 import java.util.ArrayList;
 
 public class PieceMovesCalculator {
-    private final ChessBoard board;
-    private final  ChessPosition myPosition;
-    private final ChessGame.TeamColor teamColor;
-    private final ChessPiece.PieceType pieceType;
-    private ArrayList<ChessMove> moves;
+    protected final ChessBoard board;
+    protected final  ChessPosition myPosition;
+    protected final ChessGame.TeamColor teamColor;
+    protected final ChessPiece.PieceType pieceType;
+    protected ArrayList<ChessMove> moves;
 
     public PieceMovesCalculator(ChessBoard board, ChessPosition myPosition, ChessGame.TeamColor teamColor, ChessPiece.PieceType pieceType) {
         this.board = board;
@@ -35,11 +35,11 @@ public class PieceMovesCalculator {
                     break;
                 }
                 // If that piece is on the opposing team
-                moves.add(new ChessMove(myPosition, searchPosition, null));
+                moves.add(new ChessMove(myPosition, searchPosition));
                 break;
             }
 
-            moves.add(new ChessMove(myPosition, searchPosition, null));
+            moves.add(new ChessMove(myPosition, searchPosition));
         }
     }
 
@@ -60,11 +60,11 @@ public class PieceMovesCalculator {
                 return;
             }
             // If that piece is on the opposing team
-            moves.add(new ChessMove(myPosition, searchPosition, null));
+            moves.add(new ChessMove(myPosition, searchPosition));
             return;
         }
 
-        moves.add(new ChessMove(myPosition, searchPosition, null));
+        moves.add(new ChessMove(myPosition, searchPosition));
     }
 
     public ArrayList<ChessMove> getMoves() {
