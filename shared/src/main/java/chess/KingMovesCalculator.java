@@ -10,6 +10,18 @@ public class KingMovesCalculator extends PieceMovesCalculator {
     public ArrayList<ChessMove> calculateMoves() {
         clearMoves();
 
+        // Search top left
+        searchSpace(1, -1);
+
+        // Search top right
+        searchSpace(1, 1);
+
+        // Search bottom left
+        searchSpace(-1, -1);
+
+        // Search bottom right
+        searchSpace(-1, 1);
+
         // Search up
         searchSpace(1, 0);
 

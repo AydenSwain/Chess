@@ -85,11 +85,11 @@ public class ChessPiece {
             return movesCalculator.calculateMoves();
         }
 
-//        // If the piece is a knight
-//        if (pieceType == PieceType.KNIGHT) {
-//            KnightMovesCalculator movesCalculator = new KnightMovesCalculator(board, myPosition, teamColor, pieceType);
-//            return movesCalculator.calculateMoves();
-//        }
+        // If the piece is a knight
+        if (pieceType == PieceType.KNIGHT) {
+            KnightMovesCalculator movesCalculator = new KnightMovesCalculator(board, myPosition, teamColor, pieceType);
+            return movesCalculator.calculateMoves();
+        }
 
         // If the piece is a rook
         if (pieceType == PieceType.ROOK) {
