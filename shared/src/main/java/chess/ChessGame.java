@@ -55,7 +55,53 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        // Get information from the position that is passed in
+        ChessPiece currentPiece = board.getPiece(startPosition);
+        Collection<ChessMove> collection = currentPiece.pieceMoves(board, startPosition);
+        ArrayList<ChessMove> currentPieceMoves = new ArrayList<>(collection);
+        TeamColor currentColor = currentPiece.getTeamColor();
+
+        ArrayList<ChessMove> validPieceMoves = new ArrayList<>();
+
+        // If white
+        if (currentColor == TeamColor.WHITE) {
+            // Loop through the moves of the current piece
+            for (ChessMove move : currentPieceMoves) {
+                // Save a copy of the board
+                ChessBoard boardCopy = new ChessBoard(board);
+
+                // Make the move
+                basicMove(move);
+
+                // If move doesn't put their own king in check
+                if (!isInCheck(TeamColor.WHITE)) {
+                    validPieceMoves.add(move);
+                }
+
+                // Revert move
+                setBoard(boardCopy);
+            }
+        }
+
+        // If black
+        // Loop through the moves of the current piece
+        for (ChessMove move : currentPieceMoves) {
+            // Save a copy of the board
+            ChessBoard boardCopy = new ChessBoard(board);
+
+            // Make the move
+            basicMove(move);
+
+            // If move doesn't put their own king in check
+            if (!isInCheck(TeamColor.BLACK)) {
+                validPieceMoves.add(move);
+            }
+
+            // Revert move
+            setBoard(boardCopy);
+        }
+
+        return validPieceMoves;
     }
 
     /**
@@ -66,6 +112,17 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
         throw new RuntimeException("Not implemented");
+    }
+
+    private void basicMove(ChessMove move) {
+        ChessPosition startPosition = move.getStartPosition();
+        ChessPosition endPosition = move.getEndPosition();
+        ChessPiece currentPiece = board.getPiece(startPosition);
+
+        // Reassign the new location
+        board.addPiece(endPosition, currentPiece);
+        // Reassign the old location
+        board.addPiece(startPosition, null);
     }
 
     /**
