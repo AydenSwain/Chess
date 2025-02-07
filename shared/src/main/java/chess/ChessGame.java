@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class ChessGame {
     private TeamColor teamTurn;
     private ChessBoard board;
-    private ArrayList<ChessPosition> whitePiecePositions;
+    private ArrayList<ChessPosition> whitePiecePositions = new ArrayList<>();
     private ChessPosition whiteKingPosition;
-    private ArrayList<ChessPosition> blackPiecePositions;
+    private ArrayList<ChessPosition> blackPiecePositions = new ArrayList<>();
     private ChessPosition blackKingPosition;
 
     public ChessGame() {
