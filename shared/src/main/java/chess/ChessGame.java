@@ -148,7 +148,7 @@ public class ChessGame {
                 currentPieceMoves = new ArrayList<>(collection);
                 // Loop through the moves of the current piece
                 for (ChessMove move : currentPieceMoves) {
-                    if (move.getEndPosition() == whiteKingPosition) {
+                    if (move.getEndPosition().equals(whiteKingPosition)) {
                         return true;
                     }
                 }
@@ -170,7 +170,7 @@ public class ChessGame {
             currentPieceMoves = new ArrayList<>(collection);
             // Loop through the moves of the current piece
             for (ChessMove move : currentPieceMoves) {
-                if (move.getEndPosition() == blackKingPosition) {
+                if (move.getEndPosition().equals(blackKingPosition)) {
                     return true;
                 }
             }
@@ -222,11 +222,14 @@ public class ChessGame {
                             whiteKingPosition = currentPosition;
                         }
                     }
+
                     // If piece is black
-                    blackPiecePositions.add(currentPosition);
-                    // If piece is also a king
-                    if (currentPiece.getPieceType() == ChessPiece.PieceType.KING) {
-                        blackKingPosition = currentPosition;
+                    else {
+                        blackPiecePositions.add(currentPosition);
+                        // If piece is also a king
+                        if (currentPiece.getPieceType() == ChessPiece.PieceType.KING) {
+                            blackKingPosition = currentPosition;
+                        }
                     }
                 }
                 // If not a piece continue
