@@ -151,6 +151,7 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        System.out.println(board + "\nMove is being made: " + move + "\n");
         ChessPosition oldPosition = move.getStartPosition();
         ChessPiece movingPiece = board.getPiece(oldPosition);
 
@@ -175,10 +176,54 @@ public class ChessGame {
             }
 
             ChessPosition newPosition = move.getEndPosition();
+            // If there is a piece in the new location
+            ChessPiece takenPiece = board.getPiece(newPosition);
+            if (takenPiece != null) {
+                // Remove this piece from it's respective list
+                // If my color is white
+                if (myColor == TeamColor.WHITE) {
+                    blackPiecePositions.remove(newPosition);
+                }
+                else {
+                    whitePiecePositions.remove(newPosition);
+                }
+            }
+
             // Reassign the old location
             board.addPiece(oldPosition, null);
             // Reassign the new location
             board.addPiece(newPosition, movingPiece);
+
+            // Update my piece's list
+            // If my color is white
+            if (myColor == TeamColor.WHITE) {
+                // Remove old position
+                whitePiecePositions.remove(oldPosition);
+
+                // Add new position
+                whitePiecePositions.add(newPosition);
+
+                // If is a king, update king location
+                boolean isKing = movingPiece.getPieceType() == ChessPiece.PieceType.KING;
+                if (isKing) {
+                    whiteKingPosition = newPosition;
+                }
+            }
+
+            // If my color is black
+            else {
+                // Remove old position
+                blackPiecePositions.remove(oldPosition);
+
+                // Add new position
+                blackPiecePositions.add(newPosition);
+
+                // If is a king, update king location
+                boolean isKing = movingPiece.getPieceType() == ChessPiece.PieceType.KING;
+                if (isKing) {
+                    blackKingPosition = newPosition;
+                }
+            }
 
             // Prepare to change turn
             TeamColor otherColor;
@@ -208,7 +253,6 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        System.out.println(board);
         ArrayList<ChessMove> currentPieceMoves;
         // If white
         if (teamColor == TeamColor.WHITE) {
