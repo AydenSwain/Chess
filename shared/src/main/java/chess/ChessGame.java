@@ -85,7 +85,6 @@ public class ChessGame {
                 }
 
                 // If move doesn't put their own king in check
-//                System.out.println(board);
                 if (!isInCheck(TeamColor.WHITE)) {
                     validPieceMoves.add(move);
                 }
@@ -226,7 +225,24 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        // Assign myTeamsPositions list
+        ArrayList<ChessPosition> myTeamsPositions;
+        if (teamColor == TeamColor.WHITE) {
+            myTeamsPositions = whitePiecePositions;
+        }
+        else {
+            myTeamsPositions = blackPiecePositions;
+        }
+
+        // For each of my team's positions
+        for (ChessPosition position : myTeamsPositions) {
+            // Are there any valid moves, if so not in checkmate
+            if (!validMoves(position).isEmpty()) {
+                return false;
+            }
+        }
+        // Else, are in checkmate
+        return true;
     }
 
     /**
