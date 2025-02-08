@@ -67,11 +67,16 @@ public class ChessGame {
         if (currentColor == TeamColor.WHITE) {
             // Loop through the moves of the current piece
             for (ChessMove move : currentPieceMoves) {
-                // Save a copy of the board
-                ChessBoard boardCopy = new ChessBoard(board);
+                // Prepare to make the move
+                ChessPosition oldPosition = move.getStartPosition();
+                ChessPosition newPosition = move.getEndPosition();
+                ChessPiece movingPiece = board.getPiece(oldPosition);
+                ChessPiece takenPiece = board.getPiece(newPosition);
 
-                // Make the move
-                basicMove(move);
+                // Reassign the old location
+                board.addPiece(oldPosition, null);
+                // Reassign the new location
+                board.addPiece(newPosition, currentPiece);
 
                 // If move doesn't put their own king in check
                 if (!isInCheck(TeamColor.WHITE)) {
@@ -79,26 +84,36 @@ public class ChessGame {
                 }
 
                 // Revert move
-                setBoard(boardCopy);
+                // Reassign the old location
+                board.addPiece(oldPosition, movingPiece);
+                // Reassign the new location
+                board.addPiece(newPosition, takenPiece);
             }
         }
 
         // If black
         // Loop through the moves of the current piece
         for (ChessMove move : currentPieceMoves) {
-            // Save a copy of the board
-            ChessBoard boardCopy = new ChessBoard(board);
+            // Prepare to make the move
+            ChessPosition oldPosition = move.getStartPosition();
+            ChessPosition newPosition = move.getEndPosition();
+            ChessPiece movingPiece = board.getPiece(oldPosition);
+            ChessPiece takenPiece = board.getPiece(newPosition);
 
-            // Make the move
-            basicMove(move);
-
+            // Reassign the old location
+            board.addPiece(oldPosition, null);
+            // Reassign the new location
+            board.addPiece(newPosition, currentPiece);
             // If move doesn't put their own king in check
             if (!isInCheck(TeamColor.BLACK)) {
                 validPieceMoves.add(move);
             }
 
             // Revert move
-            setBoard(boardCopy);
+            // Reassign the old location
+            board.addPiece(oldPosition, movingPiece);
+            // Reassign the new location
+            board.addPiece(newPosition, takenPiece);
         }
 
         return validPieceMoves;
