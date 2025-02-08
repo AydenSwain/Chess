@@ -19,8 +19,9 @@ public class ChessGame {
 
     public ChessGame() {
         this.teamTurn = TeamColor.WHITE;
-        this.board = new ChessBoard();
+        board = new ChessBoard();
         board.resetBoard();
+        setBoard(board);
     }
 
     /**
@@ -57,6 +58,12 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         // Get information from the position that is passed in
         ChessPiece currentPiece = board.getPiece(startPosition);
+
+        // If piece is null
+        if (currentPiece == null) {
+            return null;
+        }
+
         Collection<ChessMove> collection = currentPiece.pieceMoves(board, startPosition);
         ArrayList<ChessMove> currentPieceMoves = new ArrayList<>(collection);
         TeamColor currentColor = currentPiece.getTeamColor();
@@ -151,7 +158,7 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        System.out.println(board + "\nMove is being made: " + move + "\n");
+//        System.out.println(board + "\nMove is being made: " + move + "\n");
         ChessPosition oldPosition = move.getStartPosition();
         ChessPiece movingPiece = board.getPiece(oldPosition);
 
@@ -254,6 +261,7 @@ public class ChessGame {
      */
     public boolean isInCheck(TeamColor teamColor) {
         ArrayList<ChessMove> currentPieceMoves;
+        boolean isInCheck = false;
         // If white
         if (teamColor == TeamColor.WHITE) {
             // Loop through all black pieces
@@ -292,11 +300,12 @@ public class ChessGame {
             // Loop through the moves of the current piece
             for (ChessMove move : currentPieceMoves) {
                 if (move.getEndPosition().equals(blackKingPosition)) {
-                    return true;
+                    isInCheck =  true;
                 }
             }
         }
-        return false;
+
+        return isInCheck;
     }
 
     /**
@@ -359,7 +368,9 @@ public class ChessGame {
         for (ChessPosition position : myTeamsPositions) {
             // Append valid moves to the list
             Collection<ChessMove> theseValidMoves = validMoves(position);
-            allValidMoves.addAll(theseValidMoves);
+            if (theseValidMoves != null) {
+                allValidMoves.addAll(theseValidMoves);
+            }
         }
 
         // If valid moves is empty
