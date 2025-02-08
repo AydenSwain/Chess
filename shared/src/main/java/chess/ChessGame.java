@@ -201,17 +201,6 @@ public class ChessGame {
         }
     }
 
-    private void basicMove(ChessMove move) {
-        ChessPosition startPosition = move.getStartPosition();
-        ChessPosition endPosition = move.getEndPosition();
-        ChessPiece currentPiece = board.getPiece(startPosition);
-
-        // Reassign the new location
-        board.addPiece(endPosition, currentPiece);
-        // Reassign the old location
-        board.addPiece(startPosition, null);
-    }
-
     /**
      * Determines if the given team is in check
      *
@@ -219,6 +208,7 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+        System.out.println(board);
         ArrayList<ChessMove> currentPieceMoves;
         // If white
         if (teamColor == TeamColor.WHITE) {

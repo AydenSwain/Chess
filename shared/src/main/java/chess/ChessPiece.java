@@ -166,10 +166,10 @@ public class ChessPiece {
         if (pieceType == PieceType.PAWN) {
             // If color is white
             if (teamColor == ChessGame.TeamColor.WHITE) {
-                return "wB";
+                return "wP";
             }
             // If color is black
-            return "bB";
+            return "bP";
         }
 
         return null;
