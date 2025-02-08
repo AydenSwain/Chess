@@ -138,6 +138,12 @@ public class ChessGame {
             // Loop through all black pieces
             for (ChessPosition currentPosition : blackPiecePositions) {
                 ChessPiece currentPiece = board.getPiece(currentPosition);
+
+                // If the current piece has been taken in the validMoves() method
+                if (currentPiece == null) {
+                    continue;
+                }
+
                 Collection<ChessMove> collection = currentPiece.pieceMoves(board, currentPosition);
                 currentPieceMoves = new ArrayList<>(collection);
                 // Loop through the moves of the current piece
@@ -154,6 +160,12 @@ public class ChessGame {
         // Loop through all white pieces
         for (ChessPosition currentPosition : whitePiecePositions) {
             ChessPiece currentPiece = board.getPiece(currentPosition);
+
+            // If the current piece has been taken in the validMoves() method
+            if (currentPiece == null) {
+                continue;
+            }
+
             Collection<ChessMove> collection = currentPiece.pieceMoves(board, currentPosition);
             currentPieceMoves = new ArrayList<>(collection);
             // Loop through the moves of the current piece
