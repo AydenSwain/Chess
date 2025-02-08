@@ -225,23 +225,18 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        // Assign myTeamsPositions list
-        ArrayList<ChessPosition> myTeamsPositions;
-        if (teamColor == TeamColor.WHITE) {
-            myTeamsPositions = whitePiecePositions;
-        }
-        else {
-            myTeamsPositions = blackPiecePositions;
+        // If my king isn't in check
+        if (!isInCheck(teamColor)) {
+            return false;
         }
 
-        // For each of my team's positions
-        for (ChessPosition position : myTeamsPositions) {
-            // Are there any valid moves, if so not in checkmate
-            if (!validMoves(position).isEmpty()) {
-                return false;
-            }
+        // Find if there are any valid moves
+        boolean hasValidMoves = hasValidMoves(teamColor);
+        if (hasValidMoves) {
+            return false;
         }
-        // Else, are in checkmate
+
+        // If king is in check and there are no valid moves
         return true;
     }
 
@@ -253,7 +248,44 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        // If my king is in check
+        if (isInCheck(teamColor)) {
+            return false;
+        }
+
+        // Find if there are any valid moves
+        boolean hasValidMoves = hasValidMoves(teamColor);
+        if (hasValidMoves) {
+            return false;
+        }
+
+        // If king is in check and there are valid moves
+        return true;
+    }
+
+    private boolean hasValidMoves(TeamColor teamColor) {
+        // Assign myTeamsPositions list
+        ArrayList<ChessPosition> myTeamsPositions;
+        if (teamColor == TeamColor.WHITE) {
+            myTeamsPositions = whitePiecePositions;
+        }
+        else {
+            myTeamsPositions = blackPiecePositions;
+        }
+
+        ArrayList<ChessMove> allValidMoves = new ArrayList<>();
+        // For each of my team's positions
+        for (ChessPosition position : myTeamsPositions) {
+            // Append valid moves to the list
+            Collection<ChessMove> theseValidMoves = validMoves(position);
+            allValidMoves.addAll(theseValidMoves);
+        }
+
+        // If valid moves is empty
+        if (allValidMoves.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     /**

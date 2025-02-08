@@ -42,7 +42,6 @@ public class GameStatusTests {
         Assertions.assertFalse(game.isInStalemate(ChessGame.TeamColor.WHITE), INCORRECT_WHITE_STALEMATE);
     }
 
-
     @Test
     @DisplayName("White in Check")
     public void whiteCheck() {
