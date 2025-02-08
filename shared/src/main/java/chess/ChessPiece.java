@@ -112,60 +112,60 @@ public class ChessPiece {
         if (pieceType == PieceType.BISHOP) {
             // If color is white
             if (teamColor == ChessGame.TeamColor.WHITE) {
-                return "bB";
+                return "wB";
             }
             // If color is black
-            return "wB";
+            return "bB";
         }
 
         // If the piece is a queen
         if (pieceType == PieceType.QUEEN) {
             // If color is white
             if (teamColor == ChessGame.TeamColor.WHITE) {
-                return "bQ";
+                return "wQ";
             }
             // If color is black
-            return "wQ";
+            return "bQ";
         }
 
         // If the piece is a king
         if (pieceType == PieceType.KING) {
             // If color is white
             if (teamColor == ChessGame.TeamColor.WHITE) {
-                return "bK";
+                return "wK";
             }
             // If color is black
-            return "wK";
+            return "bK";
         }
 
         // If the piece is a knight
         if (pieceType == PieceType.KNIGHT) {
             // If color is white
             if (teamColor == ChessGame.TeamColor.WHITE) {
-                return "bN";
+                return "wN";
             }
             // If color is black
-            return "wN";
+            return "bN";
         }
 
         // If the piece is a rook
         if (pieceType == PieceType.ROOK) {
             // If color is white
             if (teamColor == ChessGame.TeamColor.WHITE) {
-                return "bR";
+                return "wR";
             }
             // If color is black
-            return "wR";
+            return "bR";
         }
 
         // If the piece is a pawn
         if (pieceType == PieceType.PAWN) {
             // If color is white
             if (teamColor == ChessGame.TeamColor.WHITE) {
-                return "bB";
+                return "wB";
             }
             // If color is black
-            return "wB";
+            return "bB";
         }
 
         return null;
