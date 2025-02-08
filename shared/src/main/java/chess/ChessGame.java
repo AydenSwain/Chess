@@ -151,18 +151,48 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        // Gather information
         ChessPosition oldPosition = move.getStartPosition();
-        Collection<ChessMove> validMoves = validMoves(oldPosition);
+        ChessPiece movingPiece = board.getPiece(oldPosition);
+
+        // If the old position is null throw exception
+        if (movingPiece == null) {
+            throw new InvalidMoveException("Invalid move: " + move);
+        }
+
+        TeamColor myColor = movingPiece.getTeamColor();
+        // If not your turn
+        if (myColor != teamTurn) {
+            throw new InvalidMoveException("Invalid move: " + move);
+        }
 
         // If move is one of the valid moves is the current move, then make the move
+        Collection<ChessMove> validMoves = validMoves(oldPosition);
         if (validMoves.contains(move)) {
-            ChessPiece movingPiece = board.getPiece(oldPosition);
+            // Check for promotion, if so, then change the piece type
+            ChessPiece.PieceType promotionPiece = move.getPromotionPiece();
+            if (promotionPiece != null) {
+                movingPiece.setPieceType(promotionPiece);
+            }
+
             ChessPosition newPosition = move.getEndPosition();
             // Reassign the old location
             board.addPiece(oldPosition, null);
             // Reassign the new location
             board.addPiece(newPosition, movingPiece);
+
+            // Prepare to change turn
+            TeamColor otherColor;
+
+            // If color is white
+            if (myColor == TeamColor.WHITE) {
+                otherColor = TeamColor.BLACK;
+            }
+            else {
+                otherColor = TeamColor.WHITE;
+            }
+
+            // Change team turn
+            setTeamTurn(otherColor);
         }
 
         // If the move is invalid

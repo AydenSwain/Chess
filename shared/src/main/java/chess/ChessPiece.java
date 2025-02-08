@@ -45,6 +45,10 @@ public class ChessPiece {
         return pieceType;
     }
 
+    public void setPieceType(PieceType pieceType) {
+        this.pieceType = pieceType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) {
