@@ -72,13 +72,20 @@ public class ChessGame {
                 ChessPosition newPosition = move.getEndPosition();
                 ChessPiece movingPiece = board.getPiece(oldPosition);
                 ChessPiece takenPiece = board.getPiece(newPosition);
+                boolean isKing = movingPiece.getPieceType() == ChessPiece.PieceType.KING;
 
                 // Reassign the old location
                 board.addPiece(oldPosition, null);
                 // Reassign the new location
                 board.addPiece(newPosition, currentPiece);
 
+                // If moving piece is a king update position
+                if (isKing) {
+                    whiteKingPosition = newPosition;
+                }
+
                 // If move doesn't put their own king in check
+//                System.out.println(board);
                 if (!isInCheck(TeamColor.WHITE)) {
                     validPieceMoves.add(move);
                 }
@@ -88,32 +95,51 @@ public class ChessGame {
                 board.addPiece(oldPosition, movingPiece);
                 // Reassign the new location
                 board.addPiece(newPosition, takenPiece);
+
+                // If moving piece is a king, revert position
+                if (isKing) {
+                    whiteKingPosition = oldPosition;
+                }
             }
         }
 
         // If black
-        // Loop through the moves of the current piece
-        for (ChessMove move : currentPieceMoves) {
-            // Prepare to make the move
-            ChessPosition oldPosition = move.getStartPosition();
-            ChessPosition newPosition = move.getEndPosition();
-            ChessPiece movingPiece = board.getPiece(oldPosition);
-            ChessPiece takenPiece = board.getPiece(newPosition);
+        else {
+            // Loop through the moves of the current piece
+            for (ChessMove move : currentPieceMoves) {
+                // Prepare to make the move
+                ChessPosition oldPosition = move.getStartPosition();
+                ChessPosition newPosition = move.getEndPosition();
+                ChessPiece movingPiece = board.getPiece(oldPosition);
+                ChessPiece takenPiece = board.getPiece(newPosition);
+                boolean isKing = movingPiece.getPieceType() == ChessPiece.PieceType.KING;
 
-            // Reassign the old location
-            board.addPiece(oldPosition, null);
-            // Reassign the new location
-            board.addPiece(newPosition, currentPiece);
-            // If move doesn't put their own king in check
-            if (!isInCheck(TeamColor.BLACK)) {
-                validPieceMoves.add(move);
+                // Reassign the old location
+                board.addPiece(oldPosition, null);
+                // Reassign the new location
+                board.addPiece(newPosition, currentPiece);
+
+                // If moving piece is a king update position
+                if (isKing) {
+                    blackKingPosition = newPosition;
+                }
+
+                // If move doesn't put their own king in check
+                if (!isInCheck(TeamColor.BLACK)) {
+                    validPieceMoves.add(move);
+                }
+
+                // Revert move
+                // Reassign the old location
+                board.addPiece(oldPosition, movingPiece);
+                // Reassign the new location
+                board.addPiece(newPosition, takenPiece);
+
+                // If moving piece is a king, revert position
+                if (isKing) {
+                    blackKingPosition = oldPosition;
+                }
             }
-
-            // Revert move
-            // Reassign the old location
-            board.addPiece(oldPosition, movingPiece);
-            // Reassign the new location
-            board.addPiece(newPosition, takenPiece);
         }
 
         return validPieceMoves;
@@ -221,6 +247,10 @@ public class ChessGame {
      */
     public void setBoard(ChessBoard board) {
         this.board = board;
+        whitePiecePositions.clear();
+        blackPiecePositions.clear();
+        whiteKingPosition = null;
+        blackKingPosition = null;
 
         // Iterate through the pieces and add their info to the instance variables
         for (int r = 1; r <= 8; r++) {
