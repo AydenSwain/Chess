@@ -1,4 +1,4 @@
 package dataAccess;
 
-public class UserDataAccess extends DataAccess {
+public class UserDataAccess implements DataAccess {
 }

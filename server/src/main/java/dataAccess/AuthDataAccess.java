@@ -1,4 +1,4 @@
 package dataAccess;
 
-public class AuthDataAccess extends DataAccess {
+public class AuthDataAccess implements DataAccess {
 }
