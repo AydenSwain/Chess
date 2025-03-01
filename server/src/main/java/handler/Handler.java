@@ -10,13 +10,13 @@ public class Handler {
         return gson.toJson(obj);
     }
 
-    protected <T> T fromJson(String json, Class<T> c) throws JsonSyntaxException {
+    protected <T> T fromJson(String json, Class<T> c) throws Exception {
         Gson gson = new Gson();
         return gson.fromJson(json, c);
     }
 
     protected String errorMessage(Response res, int errorCode, String errorMessage) {
-        response.status(errorCode);
+        res.status(errorCode);
         return "{ \"message\": \"Error: " + errorMessage + "\" }";
     }
 }

@@ -14,6 +14,7 @@ public class MemoryUserDAO implements UserDataAccess{
 
     @Override
     public void addUser(UserData user) {
+        System.out.println("-----> User has been created!!!");
         users.put(user.username(), user);
     }
 

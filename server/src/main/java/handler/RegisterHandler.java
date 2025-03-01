@@ -12,7 +12,7 @@ public class RegisterHandler extends Handler implements Route {
         try {
             UserData userData = fromJson(req.body(), UserData.class);
             AuthData authData = new RegisterService().register(userData);
-            return authData.toJson(authData);
+            return toJson(authData);
         } catch (UsernameAlreadyTaken e) {
             return errorMessage(res, 403, "already taken");
         } catch (Exception e) {
