@@ -3,10 +3,10 @@ package dataAccess;
 import model.GameData;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class MemoryGameDAO implements GameDataAccess{
-    private final HashMap<Integer, GameData> games = new HashMap<>();
+    private final LinkedHashMap <Integer, GameData> games = new LinkedHashMap<>();
 
     @Override
     public Collection<GameData> listGames() {
