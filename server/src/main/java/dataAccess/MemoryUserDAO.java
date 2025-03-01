@@ -14,7 +14,7 @@ public class MemoryUserDAO implements UserDataAccess{
 
     @Override
     public void addUser(UserData user) {
-        users.put(user.name(), user);
+        users.put(user.username(), user);
     }
 
     @Override

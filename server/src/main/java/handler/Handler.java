@@ -1,5 +1,6 @@
 package handler;
 
+import spark.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -9,8 +10,13 @@ public class Handler {
         return gson.toJson(obj);
     }
 
-    protected <T> T fromJson(String json, Class<T> c) {
+    protected <T> T fromJson(String json, Class<T> c) throws JsonSyntaxException {
         Gson gson = new Gson();
         return gson.fromJson(json, c);
+    }
+
+    protected String errorMessage(Response res, int errorCode, String errorMessage) {
+        response.status(errorCode);
+        return "{ \"message\": \"Error: " + errorMessage + "\" }";
     }
 }

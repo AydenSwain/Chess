@@ -1,11 +1,10 @@
 package service;
 
+import model.*;
+import handler.UsernameAlreadyTaken;
+
 public class RegisterService extends Service{
-    UserData userData;
-
-    RegisterService(UserData userData){
-        this.userData = userData;
+    public AuthData register(UserData userData) throws UsernameAlreadyTaken {
+        // Do stuff
     }
-
-
 }

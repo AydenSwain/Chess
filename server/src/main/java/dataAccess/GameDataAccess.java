@@ -1,6 +1,7 @@
 package dataAccess;
 
 import model.GameData;
+import java.util.Collection;
 
 public interface GameDataAccess {
     public Collection<GameData> listGames();
