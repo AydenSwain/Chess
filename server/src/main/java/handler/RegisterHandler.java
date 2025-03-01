@@ -1,10 +1,12 @@
 package handler;
 
-import model.*;
-import service.RegisterService;
 import spark.Route;
 import spark.Request;
 import spark.Response;
+
+import model.*;
+
+import service.RegisterService;
 
 public class RegisterHandler extends Handler implements Route {
 

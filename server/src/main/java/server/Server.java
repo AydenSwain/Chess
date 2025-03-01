@@ -25,6 +25,8 @@ public class Server {
      */
     private static void createRoutes() {
         Spark.post("/user", new RegisterHandler());
+
+        Spark.delete("/db", new ClearHandler());
     }
 
     public void stop() {
