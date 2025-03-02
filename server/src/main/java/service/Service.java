@@ -6,6 +6,6 @@ import model.*;
 public class Service {
     protected AuthData generateAuthData(String username) {
          String authToken = UUID.randomUUID().toString();
-         return new AuthData(authToken, username);
+         return new AuthData(username, authToken);
     }
 }
