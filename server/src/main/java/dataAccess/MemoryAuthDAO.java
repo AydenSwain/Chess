@@ -5,7 +5,7 @@ import model.AuthData;
 import java.util.HashSet;
 
 public class MemoryAuthDAO implements AuthDataAccess{
-    private final HashSet<AuthData> auths = new HashSet<>();
+    private static final HashSet<AuthData> auths = new HashSet<>();
 
     @Override
     public boolean containsAuth(AuthData auth) {
