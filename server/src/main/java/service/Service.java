@@ -10,13 +10,13 @@ public class Service {
     }
 
     protected boolean assertValidUserData(UserData userData) {
-        return userData.username() != null && !userData.username().isEmpty()
-                && userData.password() != null && !userData.password().isEmpty()
-                && userData.email() != null && !userData.email().isEmpty();
+        return userData.username() != null && !userData.username().isEmpty() &&
+               userData.password() != null && !userData.password().isEmpty() &&
+               userData.email() != null && !userData.email().isEmpty();
     }
 
     protected boolean assertValidAuthData(AuthData authData) {
-        return authData.username() != null && !authData.username().isEmpty()
-                && authData.authToken() != null && !authData.authToken().isEmpty();
+        return authData.username() != null && !authData.username().isEmpty() &&
+               authData.authToken() != null && !authData.authToken().isEmpty();
     }
 }
