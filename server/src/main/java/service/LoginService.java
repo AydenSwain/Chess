@@ -9,16 +9,11 @@ import java.util.Objects;
 
 public class LoginService extends Service{
     public AuthData login(UserData userData) {
-        if (isUserDataInvalid(userData)) {
-            throw new BadRequest("Invalid user data");
-        }
+        validateUserDataFormat(userData);
 
         verifyUser(userData);
 
-        AuthData authData = generateAuthData(userData.username());
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
-        authDAO.addAuth(authData);
-        return authData;
+        return addNewAuthToDB(userData);
     }
 
     private void verifyUser(UserData userData) {

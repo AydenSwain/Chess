@@ -1,14 +1,9 @@
 package handler;
 
-import com.google.gson.JsonSyntaxException;
 import service.LogoutService;
 import spark.Route;
 import spark.Request;
 import spark.Response;
-
-import model.*;
-
-import service.LoginService;
 
 public class LogoutHandler extends Handler implements Route {
     public Object handle(Request req, Response res) {
