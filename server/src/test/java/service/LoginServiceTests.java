@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class LoginServiceTests {
+public class LoginServiceTests extends ServiceTests {
     @BeforeEach
     public void beforeEach() {
         new ClearService().clearDB();
@@ -15,22 +15,16 @@ public class LoginServiceTests {
 
     @Test
     public void successLogin() {
-        UserData userData = new UserData("username", "password", "email");
-        registerUser(userData);
+        registerValidUser();
 
-        AuthData authData = new LoginService().login(userData);
+        AuthData authData = new LoginService().login(validUserData);
 
         Assertions.assertNotNull(authData);
     }
 
-    private void registerUser(UserData userData) {
-        new RegisterService().register(userData);
-    }
-
     @Test
     void invalidPassword() {
-        UserData userData = new UserData("username", "password", "email");
-        registerUser(userData);
+        registerValidUser();
 
         Assertions.assertThrowsExactly(BadRequest.class, () -> {
             UserData incorrectUserData = new UserData("username", "", "email");

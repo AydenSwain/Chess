@@ -4,12 +4,11 @@ import dataAccess.AuthDataAccess;
 import dataAccess.MemoryAuthDAO;
 import handler.Unauthorized;
 import model.AuthData;
-import model.UserData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class LogoutServiceTests {
+public class LogoutServiceTests extends ServiceTests {
     @BeforeEach
     public void beforeEach() {
         new ClearService().clearDB();
@@ -17,18 +16,13 @@ public class LogoutServiceTests {
 
     @Test
     public void successLogout() {
-        UserData userData = new UserData("username", "password", "email");
-        AuthData authData = registerUser(userData);
+        AuthData authData = registerValidUser();
         String authToken = authData.authToken();
 
         new LogoutService().logout(authToken);
 
         AuthDataAccess authDAO = new MemoryAuthDAO();
         Assertions.assertNull(authDAO.getAuthByToken(authToken));
-    }
-
-    private AuthData registerUser(UserData userData) {
-        return new RegisterService().register(userData);
     }
 
     @Test
