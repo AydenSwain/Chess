@@ -9,14 +9,13 @@ public class Service {
          return new AuthData(username, authToken);
     }
 
-    protected boolean assertValidUserData(UserData userData) {
-        return userData.username() != null && !userData.username().isEmpty() &&
-               userData.password() != null && !userData.password().isEmpty() &&
-               userData.email() != null && !userData.email().isEmpty();
+    protected boolean isUserDataInvalid(UserData userData) {
+        return userData.username() == null || userData.username().isEmpty() ||
+               userData.password() == null || userData.password().isEmpty();
     }
 
-    protected boolean assertValidAuthData(AuthData authData) {
-        return authData.username() != null && !authData.username().isEmpty() &&
-               authData.authToken() != null && !authData.authToken().isEmpty();
+    protected boolean isAuthDataInvalid(AuthData authData) {
+        return authData.username() == null || authData.username().isEmpty() ||
+               authData.authToken() == null || authData.authToken().isEmpty();
     }
 }

@@ -6,16 +6,12 @@ import handler.*;
 public class Server {
 
     public int run(int desiredPort) {
-        // Specify the port
         Spark.port(desiredPort);
 
-        // Specify the static files location
         Spark.staticFiles.location("web");
 
-        // Create the routes
         createRoutes();
 
-        // Await initialization
         Spark.awaitInitialization();
         return Spark.port();
     }
@@ -25,6 +21,8 @@ public class Server {
      */
     private static void createRoutes() {
         Spark.post("/user", new RegisterHandler());
+
+        Spark.post("/session", new LoginHandler());
 
         Spark.delete("/db", new ClearHandler());
     }

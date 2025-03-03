@@ -1,5 +1,6 @@
 package handler;
 
+import com.google.gson.JsonSyntaxException;
 import spark.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,7 +11,7 @@ public class Handler {
         return gson.toJson(obj);
     }
 
-    protected <T> T fromJson(String json, Class<T> c) throws Exception {
+    protected <T> T fromJson(String json, Class<T> c) throws JsonSyntaxException {
         Gson gson = new Gson();
         return gson.fromJson(json, c);
     }

@@ -7,18 +7,16 @@ import spark.Response;
 
 import model.*;
 
-import service.RegisterService;
+import service.LoginService;
 
-public class RegisterHandler extends Handler implements Route {
+public class LoginHandler extends Handler implements Route {
     public Object handle(Request req, Response res) {
         try {
             UserData userData = fromJson(req.body(), UserData.class);
-            AuthData authData = new RegisterService().register(userData);
+            AuthData authData = new LoginService().login(userData);
             return toJson(authData);
-        } catch (UsernameAlreadyTaken e) {
-            return errorMessage(res, 403, "already taken");
-        } catch (BadRequest | JsonSyntaxException e) {
-            return errorMessage(res, 400, "bad request");
+        } catch (Unauthorized e) {
+            return errorMessage(res, 401, "unauthorized");
         } catch (Exception e) {
             return errorMessage(res, 500, e.getMessage());
         }
