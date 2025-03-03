@@ -15,7 +15,7 @@ public class RegisterServiceTests {
 
     @Test
     public void successRegister() {
-        UserData userData = new UserData("GoodUsername", "OkayPassword", "HopefullyValidEmail");
+        UserData userData = new UserData("username", "password", "email");
         AuthData authData = new RegisterService().register(userData);
 
         Assertions.assertNotNull(authData);
