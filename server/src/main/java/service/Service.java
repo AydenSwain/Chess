@@ -10,12 +10,8 @@ public class Service {
     }
 
     protected boolean isUserDataInvalid(UserData userData) {
-        return userData.username() == null || userData.username().isEmpty() ||
+        return userData == null ||
+               userData.username() == null || userData.username().isEmpty() ||
                userData.password() == null || userData.password().isEmpty();
-    }
-
-    protected boolean isAuthDataInvalid(AuthData authData) {
-        return authData.username() == null || authData.username().isEmpty() ||
-               authData.authToken() == null || authData.authToken().isEmpty();
     }
 }

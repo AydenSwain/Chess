@@ -2,19 +2,25 @@ package dataAccess;
 
 import model.AuthData;
 
-import java.util.HashSet;
+import java.util.HashMap;
 
 public class MemoryAuthDAO implements AuthDataAccess{
-    private static final HashSet<AuthData> auths = new HashSet<>();
+    // HashMap of tokens and AuthData
+    private static final HashMap<String, AuthData> auths = new HashMap<>();
 
     @Override
-    public boolean containsAuth(AuthData auth) {
-        return auths.contains(auth);
+    public AuthData getAuthByToken(String authToken) {
+        return auths.get(authToken);
     }
 
     @Override
-    public void addAuth(AuthData auth) {
-        auths.add(auth);
+    public void addAuth(AuthData authData) {
+        auths.put(authData.authToken(), authData);
+    }
+
+    @Override
+    public void removeAuth(String authToken) {
+        auths.remove(authToken);
     }
 
     @Override

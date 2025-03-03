@@ -24,6 +24,8 @@ public class Server {
 
         Spark.post("/session", new LoginHandler());
 
+        Spark.delete("/session", new LogoutHandler());
+
         Spark.delete("/db", new ClearHandler());
     }
 

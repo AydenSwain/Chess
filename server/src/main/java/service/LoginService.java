@@ -21,7 +21,7 @@ public class LoginService extends Service{
         return authData;
     }
 
-    public void verifyUser(UserData userData) {
+    private void verifyUser(UserData userData) {
         MemoryUserDAO userDAO = new MemoryUserDAO();
         UserData dbUserData = userDAO.getUserByName(userData.username());
 

@@ -3,7 +3,8 @@ package dataAccess;
 import model.AuthData;
 
 public interface AuthDataAccess {
-    public boolean containsAuth(AuthData auth);
-    public void addAuth(AuthData auth);
+    public AuthData getAuthByToken(String authToken);
+    public void addAuth(AuthData authData);
+    public void removeAuth(String authToken);
     public void clearAuths();
 }
