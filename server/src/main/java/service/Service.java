@@ -29,13 +29,6 @@ public class Service {
         }
     }
 
-    protected void validateGameDataFormat(GameData gameData) {
-        if (gameData == null ||
-            gameData.gameName() == null || gameData.gameName().isEmpty()) {
-            throw new BadRequest("Invalid game data");
-        }
-    }
-
     protected void verifyAuthTokenInDB(String authToken) {
         AuthDataAccess authDAO = new MemoryAuthDAO();
         if (authDAO.getAuthByToken(authToken) == null) {

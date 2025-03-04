@@ -14,13 +14,13 @@ public class MemoryGameDAO implements GameDataAccess{
     }
 
     @Override
-    public void addGame(GameData game) {
-        games.put(game.gameId(), game);
+    public void putGame(GameData gameData) {
+        games.put(gameData.gameId(), gameData);
     }
 
     @Override
-    public void updateGame(int oldGameId, GameData newGameData) {
-        games.put(oldGameId, newGameData);
+    public GameData getGame(int gameID) {
+        return games.get(gameID);
     }
 
     @Override

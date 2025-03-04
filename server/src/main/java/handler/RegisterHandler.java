@@ -15,7 +15,7 @@ public class RegisterHandler extends Handler implements Route {
             UserData userData = fromJson(req.body(), UserData.class);
             AuthData authData = new RegisterService().register(userData);
             return toJson(authData);
-        } catch (UsernameAlreadyTaken e) {
+        } catch (AlreadyTaken e) {
             return errorMessage(res, 403, "already taken");
         } catch (BadRequest | JsonSyntaxException e) {
             return errorMessage(res, 400, "bad request");

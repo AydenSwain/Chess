@@ -5,7 +5,7 @@ import java.util.Collection;
 
 public interface GameDataAccess {
     public Collection<GameData> listGames();
-    public void addGame(GameData game);
-    public void updateGame(int oldGameId, GameData newGameData);
+    public void putGame(GameData gameData);
+    public GameData getGame(int gameID);
     public void clearGames();
 }

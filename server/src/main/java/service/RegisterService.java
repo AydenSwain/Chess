@@ -1,17 +1,17 @@
 package service;
 
 import model.*;
-import handler.UsernameAlreadyTaken;
+import handler.AlreadyTaken;
 import dataAccess.*;
 
 public class RegisterService extends Service{
     public AuthData register(UserData userData) {
         validateUserDataFormat(userData);
 
-        MemoryUserDAO userDAO = new MemoryUserDAO();
+        UserDataAccess userDAO = new MemoryUserDAO();
 
         if (userDAO.getUserByName(userData.username()) != null) {
-            throw new UsernameAlreadyTaken("Username is already taken");
+            throw new AlreadyTaken("Username is already taken");
         }
 
         userDAO.addUser(userData);
