@@ -9,6 +9,7 @@ import model.*;
 import service.JoinGameService;
 
 public class JoinGameHandler extends Handler implements Route {
+    @Override
     public Object handle(Request req, Response res) {
         try {
             String authToken = req.headers("authorization");

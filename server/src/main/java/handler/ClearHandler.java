@@ -7,6 +7,7 @@ import spark.Route;
 import service.ClearService;
 
 public class ClearHandler extends Handler implements Route {
+    @Override
     public Object handle(Request req, Response res)  {
         try {
             new ClearService().clearDB();

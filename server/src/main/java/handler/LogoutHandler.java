@@ -6,6 +6,7 @@ import spark.Request;
 import spark.Response;
 
 public class LogoutHandler extends Handler implements Route {
+    @Override
     public Object handle(Request req, Response res) {
         try {
             String authToken = req.headers("authorization");

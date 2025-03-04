@@ -20,7 +20,7 @@ public class JoinGameServiceTests extends ServiceTests {
         AuthData authData = registerValidUser();
 
         GameData gameData = addGameToDB(authData);
-        PlayerData playerData = new PlayerData(ChessGame.TeamColor.WHITE, gameData.gameId());
+        PlayerData playerData = new PlayerData(ChessGame.TeamColor.WHITE, gameData.gameID());
 
         Assertions.assertDoesNotThrow(() -> {
             new JoinGameService().joinGame(authData.authToken(), playerData);

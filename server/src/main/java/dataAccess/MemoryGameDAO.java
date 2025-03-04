@@ -20,7 +20,7 @@ public class MemoryGameDAO implements GameDataAccess{
 
     @Override
     public void addGame(GameData gameData) {
-        games.put(gameData.gameId(), gameData);
+        games.put(gameData.gameID(), gameData);
     }
 
     @Override

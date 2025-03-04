@@ -10,6 +10,7 @@ import model.*;
 import service.RegisterService;
 
 public class RegisterHandler extends Handler implements Route {
+    @Override
     public Object handle(Request req, Response res) {
         try {
             UserData userData = fromJson(req.body(), UserData.class);

@@ -334,9 +334,9 @@ public class StandardAPITests {
         assertHttpOk(listResult);
         TestListEntry[] returnedList = listResult.getGames();
         Assertions.assertNotNull(returnedList, "List result did not contain a list of games");
-        Comparator<TestListEntry> gameIdComparator = Comparator.comparingInt(TestListEntry::getGameID);
-        Arrays.sort(expectedList, gameIdComparator);
-        Arrays.sort(returnedList, gameIdComparator);
+        Comparator<TestListEntry> gameIDComparator = Comparator.comparingInt(TestListEntry::getGameID);
+        Arrays.sort(expectedList, gameIDComparator);
+        Arrays.sort(returnedList, gameIDComparator);
 
         //check
         Assertions.assertArrayEquals(expectedList, returnedList, "Returned Games list was incorrect");

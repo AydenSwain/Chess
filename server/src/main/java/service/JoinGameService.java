@@ -61,6 +61,6 @@ public class JoinGameService extends Service {
             blackUsername = username;
         }
 
-        return new GameData(oldGameData.gameId(), whiteUsername, blackUsername, oldGameData.gameName(), oldGameData.game());
+        return new GameData(oldGameData.gameID(), whiteUsername, blackUsername, oldGameData.gameName(), oldGameData.game());
     }
 }

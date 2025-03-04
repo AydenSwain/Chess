@@ -29,6 +29,8 @@ public class Server {
 
         Spark.put("/game", new JoinGameHandler());
 
+        Spark.get("/game", new ListGamesHandler());
+
         Spark.delete("/db", new ClearHandler());
     }
 
