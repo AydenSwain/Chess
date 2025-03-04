@@ -64,6 +64,10 @@ public class ChessGame {
             return null;
         }
 
+        return calculateValidMoves(ChessPosition startPosition, ChessPiece currentPiece);
+    }
+
+    private ArrayList<ChessMove> calculateValidMoves(ChessPosition startPosition, ChessPiece currentPiece) {
         Collection<ChessMove> collection = currentPiece.pieceMoves(board, startPosition);
         ArrayList<ChessMove> currentPieceMoves = new ArrayList<>(collection);
         TeamColor currentColor = currentPiece.getTeamColor();
@@ -147,8 +151,6 @@ public class ChessGame {
                 }
             }
         }
-
-        return validPieceMoves;
     }
 
     /**
