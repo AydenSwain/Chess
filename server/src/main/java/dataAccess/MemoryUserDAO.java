@@ -8,7 +8,7 @@ public class MemoryUserDAO implements UserDataAccess{
     private static final HashMap<String, UserData> users = new HashMap<>();
 
     @Override
-    public UserData getUserByName(String username) {
+    public UserData getUser(String username) {
         return users.get(username);
     }
 

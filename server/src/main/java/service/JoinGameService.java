@@ -28,7 +28,7 @@ public class JoinGameService extends Service {
 
         GameData newGameData = updateGameUsername(username, playerData.playerColor(), gameData);
 
-        gameDAO.putGame(newGameData);
+        gameDAO.addGame(newGameData);
     }
 
     private void validatePlayerDataFormat(PlayerData playerData) {
@@ -46,7 +46,7 @@ public class JoinGameService extends Service {
 
     private String getUsernameByToken(String authToken) {
         AuthDataAccess authDAO = new MemoryAuthDAO();
-        AuthData authData = authDAO.getAuthByToken(authToken);
+        AuthData authData = authDAO.getAuth(authToken);
 
         return authData.username();
     }

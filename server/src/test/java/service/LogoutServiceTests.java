@@ -22,7 +22,7 @@ public class LogoutServiceTests extends ServiceTests {
         new LogoutService().logout(authToken);
 
         AuthDataAccess authDAO = new MemoryAuthDAO();
-        Assertions.assertNull(authDAO.getAuthByToken(authToken));
+        Assertions.assertNull(authDAO.getAuth(authToken));
     }
 
     @Test

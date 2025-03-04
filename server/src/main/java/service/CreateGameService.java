@@ -16,7 +16,7 @@ public class CreateGameService extends Service{
                 new GameData(generateID(), oldGameData.whiteUsername(), oldGameData.blackUsername(), oldGameData.gameName(), new ChessGame());
 
         GameDataAccess gameDAO = new MemoryGameDAO();
-        gameDAO.putGame(newGameData);
+        gameDAO.addGame(newGameData);
 
         return newGameData;
     }

@@ -10,7 +10,7 @@ public class RegisterService extends Service{
 
         UserDataAccess userDAO = new MemoryUserDAO();
 
-        if (userDAO.getUserByName(userData.username()) != null) {
+        if (userDAO.getUser(userData.username()) != null) {
             throw new AlreadyTaken("Username is already taken");
         }
 

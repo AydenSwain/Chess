@@ -31,7 +31,7 @@ public class Service {
 
     protected void verifyAuthTokenInDB(String authToken) {
         AuthDataAccess authDAO = new MemoryAuthDAO();
-        if (authDAO.getAuthByToken(authToken) == null) {
+        if (authDAO.getAuth(authToken) == null) {
             throw new Unauthorized("Invalid auth data");
         }
     }

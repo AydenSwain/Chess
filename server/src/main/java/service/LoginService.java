@@ -2,7 +2,6 @@ package service;
 
 import handler.Unauthorized;
 import model.*;
-import handler.BadRequest;
 import dataAccess.*;
 
 import java.util.Objects;
@@ -18,7 +17,7 @@ public class LoginService extends Service{
 
     private void verifyUser(UserData userData) {
         MemoryUserDAO userDAO = new MemoryUserDAO();
-        UserData dbUserData = userDAO.getUserByName(userData.username());
+        UserData dbUserData = userDAO.getUser(userData.username());
 
         if (dbUserData == null) {
             throw new Unauthorized("User not registered");

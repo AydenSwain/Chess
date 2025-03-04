@@ -9,7 +9,7 @@ public class MemoryAuthDAO implements AuthDataAccess{
     private static final HashMap<String, AuthData> auths = new HashMap<>();
 
     @Override
-    public AuthData getAuthByToken(String authToken) {
+    public AuthData getAuth(String authToken) {
         return auths.get(authToken);
     }
 
