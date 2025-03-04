@@ -1,24 +1,24 @@
-package data_access;
+package data.access;
 
 import model.UserData;
 
 import java.util.HashMap;
 
 public class MemoryUserDAO implements UserDataAccess{
-    private static final HashMap<String, UserData> users = new HashMap<>();
+    private static final HashMap<String, UserData> USERS = new HashMap<>();
 
     @Override
     public UserData getUser(String username) {
-        return users.get(username);
+        return USERS.get(username);
     }
 
     @Override
     public void addUser(UserData user) {
-        users.put(user.username(), user);
+        USERS.put(user.username(), user);
     }
 
     @Override
     public void clearUsers() {
-        users.clear();
+        USERS.clear();
     }
 }

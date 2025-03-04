@@ -1,7 +1,7 @@
 package service;
 
-import data_access.GameDataAccess;
-import data_access.MemoryGameDAO;
+import data.access.GameDataAccess;
+import data.access.MemoryGameDAO;
 import model.GameData;
 
 import java.util.Collection;

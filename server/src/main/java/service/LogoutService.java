@@ -1,6 +1,7 @@
 package service;
 
-import data_access.*;
+import data.access.AuthDataAccess;
+import data.access.MemoryAuthDAO;
 
 public class LogoutService extends Service{
     public void logout(String authToken) {

@@ -1,6 +1,6 @@
 package service;
 
-import data_access.*;
+import data.access.*;
 
 public class ClearService extends Service{
     public void clearDB() {

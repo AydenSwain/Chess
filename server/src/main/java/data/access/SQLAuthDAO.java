@@ -1,4 +1,4 @@
-package data_access;
+package data.access;
 
 //public class SQLAuthDAO implements AuthDataAccess{
 //}

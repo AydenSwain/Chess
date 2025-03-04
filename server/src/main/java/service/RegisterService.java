@@ -1,8 +1,9 @@
 package service;
 
+import data.access.MemoryUserDAO;
+import data.access.UserDataAccess;
 import model.*;
 import handler.AlreadyTaken;
-import data_access.*;
 
 public class RegisterService extends Service{
     public AuthData register(UserData userData) {

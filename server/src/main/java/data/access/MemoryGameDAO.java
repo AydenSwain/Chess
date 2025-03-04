@@ -1,4 +1,4 @@
-package data_access;
+package data.access;
 
 import model.GameData;
 
@@ -6,25 +6,25 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 
 public class MemoryGameDAO implements GameDataAccess{
-    private static final LinkedHashMap <Integer, GameData> games = new LinkedHashMap<>();
+    private static final LinkedHashMap <Integer, GameData> GAMES = new LinkedHashMap<>();
 
     @Override
     public Collection<GameData> listGames() {
-        return games.values();
+        return GAMES.values();
     }
 
     @Override
     public GameData getGame(int gameID) {
-        return games.get(gameID);
+        return GAMES.get(gameID);
     }
 
     @Override
     public void addGame(GameData gameData) {
-        games.put(gameData.gameID(), gameData);
+        GAMES.put(gameData.gameID(), gameData);
     }
 
     @Override
     public void clearGames() {
-        games.clear();
+        GAMES.clear();
     }
 }
