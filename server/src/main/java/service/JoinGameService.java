@@ -33,7 +33,7 @@ public class JoinGameService extends Service {
 
     private void validatePlayerDataFormat(PlayerData playerData) {
         if (playerData == null || playerData.playerColor() == null || playerData.gameID() == 0) {
-            throw new BadRequest("Invalid game data");
+            throw new BadRequest("Invalid player data");
         }
     }
 

@@ -1,14 +1,12 @@
 package service;
 
-import dataAccess.MemoryAuthDAO;
-import dataAccess.MemoryGameDAO;
-import dataAccess.MemoryUserDAO;
+import dataAccess.*;
 
 public class ClearService extends Service{
     public void clearDB() {
-        MemoryUserDAO userDAO = new MemoryUserDAO();
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
-        MemoryGameDAO gameDAO = new MemoryGameDAO();
+        UserDataAccess userDAO = new MemoryUserDAO();
+        AuthDataAccess authDAO = new MemoryAuthDAO();
+        GameDataAccess gameDAO = new MemoryGameDAO();
 
         userDAO.clearUsers();
         authDAO.clearAuths();
