@@ -1,7 +1,7 @@
 package service;
 
-import dataAccess.AuthDataAccess;
-import dataAccess.MemoryAuthDAO;
+import data_access.AuthDataAccess;
+import data_access.MemoryAuthDAO;
 import handler.Unauthorized;
 import model.AuthData;
 import org.junit.jupiter.api.Assertions;

@@ -1,9 +1,9 @@
 package service;
 
-import dataAccess.AuthDataAccess;
-import dataAccess.GameDataAccess;
-import dataAccess.MemoryAuthDAO;
-import dataAccess.MemoryGameDAO;
+import data_access.AuthDataAccess;
+import data_access.GameDataAccess;
+import data_access.MemoryAuthDAO;
+import data_access.MemoryGameDAO;
 import handler.AlreadyTaken;
 import handler.BadRequest;
 import model.AuthData;

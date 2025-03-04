@@ -2,7 +2,7 @@ package service;
 
 import model.*;
 import handler.AlreadyTaken;
-import dataAccess.*;
+import data_access.*;
 
 public class RegisterService extends Service{
     public AuthData register(UserData userData) {

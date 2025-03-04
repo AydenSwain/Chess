@@ -2,8 +2,8 @@ package service;
 
 import java.util.UUID;
 
-import dataAccess.AuthDataAccess;
-import dataAccess.MemoryAuthDAO;
+import data_access.AuthDataAccess;
+import data_access.MemoryAuthDAO;
 import handler.BadRequest;
 import handler.Unauthorized;
 import model.*;
