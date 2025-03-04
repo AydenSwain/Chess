@@ -64,91 +64,98 @@ public class ChessGame {
             return null;
         }
 
-        return calculateValidMoves(ChessPosition startPosition, ChessPiece currentPiece);
-    }
-
-    private ArrayList<ChessMove> calculateValidMoves(ChessPosition startPosition, ChessPiece currentPiece) {
         Collection<ChessMove> collection = currentPiece.pieceMoves(board, startPosition);
         ArrayList<ChessMove> currentPieceMoves = new ArrayList<>(collection);
         TeamColor currentColor = currentPiece.getTeamColor();
 
-        ArrayList<ChessMove> validPieceMoves = new ArrayList<>();
 
+        ArrayList<ChessMove> validPieceMoves = new ArrayList<>();
         // If white
         if (currentColor == TeamColor.WHITE) {
-            // Loop through the moves of the current piece
-            for (ChessMove move : currentPieceMoves) {
-                // Prepare to make the move
-                ChessPosition oldPosition = move.getStartPosition();
-                ChessPosition newPosition = move.getEndPosition();
-                ChessPiece movingPiece = board.getPiece(oldPosition);
-                ChessPiece takenPiece = board.getPiece(newPosition);
-                boolean isKing = movingPiece.getPieceType() == ChessPiece.PieceType.KING;
-
-                // Reassign the old location
-                board.addPiece(oldPosition, null);
-                // Reassign the new location
-                board.addPiece(newPosition, currentPiece);
-
-                // If moving piece is a king update position
-                if (isKing) {
-                    whiteKingPosition = newPosition;
-                }
-
-                // If move doesn't put their own king in check
-                if (!isInCheck(TeamColor.WHITE)) {
-                    validPieceMoves.add(move);
-                }
-
-                // Revert move
-                // Reassign the old location
-                board.addPiece(oldPosition, movingPiece);
-                // Reassign the new location
-                board.addPiece(newPosition, takenPiece);
-
-                // If moving piece is a king, revert position
-                if (isKing) {
-                    whiteKingPosition = oldPosition;
-                }
-            }
+            whiteValidMoves(startPosition, currentPiece, currentPieceMoves, validPieceMoves);
         }
 
         // If black
         else {
-            // Loop through the moves of the current piece
-            for (ChessMove move : currentPieceMoves) {
-                // Prepare to make the move
-                ChessPosition oldPosition = move.getStartPosition();
-                ChessPosition newPosition = move.getEndPosition();
-                ChessPiece movingPiece = board.getPiece(oldPosition);
-                ChessPiece takenPiece = board.getPiece(newPosition);
-                boolean isKing = movingPiece.getPieceType() == ChessPiece.PieceType.KING;
+            blackValidMoves(startPosition, currentPiece, currentPieceMoves, validPieceMoves);
+        }
 
-                // Reassign the old location
-                board.addPiece(oldPosition, null);
-                // Reassign the new location
-                board.addPiece(newPosition, currentPiece);
+        return validPieceMoves;
+    }
 
-                // If moving piece is a king update position
-                if (isKing) {
-                    blackKingPosition = newPosition;
-                }
+    private void whiteValidMoves(ChessPosition startPosition, ChessPiece currentPiece, ArrayList<ChessMove> currentPieceMoves, ArrayList<ChessMove> validPieceMoves) {
 
-                // If move doesn't put their own king in check
-                if (!isInCheck(TeamColor.BLACK)) {
-                    validPieceMoves.add(move);
-                }
+        // Loop through the moves of the current piece
+        for (ChessMove move : currentPieceMoves) {
+            // Prepare to make the move
+            ChessPosition oldPosition = move.getStartPosition();
+            ChessPosition newPosition = move.getEndPosition();
+            ChessPiece movingPiece = board.getPiece(oldPosition);
+            ChessPiece takenPiece = board.getPiece(newPosition);
+            boolean isKing = movingPiece.getPieceType() == ChessPiece.PieceType.KING;
 
-                // Revert move
-                // Reassign the old location
-                board.addPiece(oldPosition, movingPiece);
-                // Reassign the new location
-                board.addPiece(newPosition, takenPiece);
+            // Reassign the old location
+            board.addPiece(oldPosition, null);
+            // Reassign the new location
+            board.addPiece(newPosition, currentPiece);
 
-                // If moving piece is a king, revert position
-                if (isKing) {
-                    blackKingPosition = oldPosition;
-                }
+            // If moving piece is a king update position
+            if (isKing) {
+                whiteKingPosition = newPosition;
+            }
+
+            // If move doesn't put their own king in check
+            if (!isInCheck(TeamColor.WHITE)) {
+                validPieceMoves.add(move);
+            }
+
+            // Revert move
+            // Reassign the old location
+            board.addPiece(oldPosition, movingPiece);
+            // Reassign the new location
+            board.addPiece(newPosition, takenPiece);
+
+            // If moving piece is a king, revert position
+            if (isKing) {
+                whiteKingPosition = oldPosition;
+            }
+        }
+    }
+
+    private void blackValidMoves(ChessPosition startPosition, ChessPiece currentPiece, ArrayList<ChessMove> currentPieceMoves, ArrayList<ChessMove> validPieceMoves) {
+        // Loop through the moves of the current piece
+        for (ChessMove move : currentPieceMoves) {
+            // Prepare to make the move
+            ChessPosition oldPosition = move.getStartPosition();
+            ChessPosition newPosition = move.getEndPosition();
+            ChessPiece movingPiece = board.getPiece(oldPosition);
+            ChessPiece takenPiece = board.getPiece(newPosition);
+            boolean isKing = movingPiece.getPieceType() == ChessPiece.PieceType.KING;
+
+            // Reassign the old location
+            board.addPiece(oldPosition, null);
+            // Reassign the new location
+            board.addPiece(newPosition, currentPiece);
+
+            // If moving piece is a king update position
+            if (isKing) {
+                blackKingPosition = newPosition;
+            }
+
+            // If move doesn't put their own king in check
+            if (!isInCheck(TeamColor.BLACK)) {
+                validPieceMoves.add(move);
+            }
+
+            // Revert move
+            // Reassign the old location
+            board.addPiece(oldPosition, movingPiece);
+            // Reassign the new location
+            board.addPiece(newPosition, takenPiece);
+
+            // If moving piece is a king, revert position
+            if (isKing) {
+                blackKingPosition = oldPosition;
             }
         }
     }
