@@ -1,8 +1,8 @@
 package service;
 
 import chess.ChessGame;
-import data.access.GameDataAccess;
-import data.access.MemoryGameDAO;
+import dataaccess.GameDataAccess;
+import dataaccess.MemoryGameDAO;
 import handler.BadRequest;
 import model.*;
 

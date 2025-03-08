@@ -1,4 +1,4 @@
-package data.access;
+package dataaccess;
 
 //public class SQLUserDAO implements UserDataAccess{
 //}

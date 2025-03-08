@@ -1,7 +1,7 @@
 package service;
 
-import data.access.MemoryUserDAO;
-import data.access.UserDataAccess;
+import dataaccess.MemoryUserDAO;
+import dataaccess.UserDataAccess;
 import handler.Unauthorized;
 import model.*;
 

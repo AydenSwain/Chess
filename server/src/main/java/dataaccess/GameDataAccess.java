@@ -1,4 +1,4 @@
-package data.access;
+package dataaccess;
 
 import model.GameData;
 import java.util.Collection;

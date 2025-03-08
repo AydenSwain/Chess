@@ -1,6 +1,6 @@
 package service;
 
-import data.access.*;
+import dataaccess.*;
 import model.AuthData;
 
 import model.GameData;
