@@ -5,7 +5,7 @@ import dataaccess.*;
 public class ClearService extends Service{
     public void clearDB() {
         UserDataAccess userDAO = new SQLUserDAO();
-        AuthDataAccess authDAO = new MemoryAuthDAO();
+        AuthDataAccess authDAO = new SQLAuthDAO();
         GameDataAccess gameDAO = new MemoryGameDAO();
 
         try {

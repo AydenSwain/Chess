@@ -3,7 +3,7 @@ package service;
 import java.util.UUID;
 
 import dataaccess.AuthDataAccess;
-import dataaccess.MemoryAuthDAO;
+import dataaccess.SQLAuthDAO;
 import handler.BadRequest;
 import handler.Unauthorized;
 import model.*;
@@ -16,7 +16,7 @@ public class Service {
 
     protected AuthData addNewAuthToDB(UserData userData) {
         AuthData authData = generateAuthData(userData.username());
-        MemoryAuthDAO authDAO = new MemoryAuthDAO();
+        AuthDataAccess authDAO = new SQLAuthDAO();
         authDAO.addAuth(authData);
         return authData;
     }
@@ -30,7 +30,7 @@ public class Service {
     }
 
     protected void verifyAuthTokenInDB(String authToken) {
-        AuthDataAccess authDAO = new MemoryAuthDAO();
+        AuthDataAccess authDAO = new SQLAuthDAO();
         if (authDAO.getAuth(authToken) == null) {
             throw new Unauthorized("Invalid auth data");
         }

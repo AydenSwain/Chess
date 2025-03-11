@@ -2,7 +2,7 @@ package service;
 
 import dataaccess.AuthDataAccess;
 import dataaccess.GameDataAccess;
-import dataaccess.MemoryAuthDAO;
+import dataaccess.SQLAuthDAO;
 import dataaccess.MemoryGameDAO;
 import handler.AlreadyTaken;
 import handler.BadRequest;
@@ -45,7 +45,7 @@ public class JoinGameService extends Service {
     }
 
     private String getUsernameByToken(String authToken) {
-        AuthDataAccess authDAO = new MemoryAuthDAO();
+        AuthDataAccess authDAO = new SQLAuthDAO();
         AuthData authData = authDAO.getAuth(authToken);
 
         return authData.username();

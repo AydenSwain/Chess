@@ -12,10 +12,11 @@ public class SQLUserDAO implements UserDataAccess {
     public SQLUserDAO() {
         String createStatement = """
                 CREATE TABLE IF NOT EXISTS  users (
-                  `username` TEXT NOT NULL PRIMARY KEY,
-                  `userJson` TEXT NOT NULL
+                  `username` VARCHAR(100) NOT NULL PRIMARY KEY,
+                  `userJson` VARCHAR(500) NOT NULL
                 )
                 """;
+
         configureDatabase(createStatement);
     }
 
@@ -49,28 +50,29 @@ public class SQLUserDAO implements UserDataAccess {
     }
 
     @Override
-    public void addUser(UserData user) {
+    public void addUser(UserData userData) {
         try (Connection conn = DatabaseManager.getConnection()) {
             String statement = "INSERT INTO users (username, userJson) VALUES (?, ?)";
 
             try (PreparedStatement ps = conn.prepareStatement(statement)){
-                ps.setString(1, user.username());
+                ps.setString(1, userData.username());
 
-                String json = toJson(user);
+                String json = toJson(userData);
                 ps.setString(2, json);
 
                 ps.executeUpdate();
             }
 
         } catch (SQLException ex) {
+            System.out.println("ERROR WITH ADD USER");
             throw new DataAccessException("Unable to add user data: " + ex.getMessage());
         }
     }
 
-    private String toJson(UserData user) {
+    private String toJson(UserData userData) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        return gson.toJson(user);
+        return gson.toJson(userData);
     }
 
     @Override
