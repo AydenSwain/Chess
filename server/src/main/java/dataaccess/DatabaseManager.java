@@ -72,10 +72,8 @@ public class DatabaseManager {
 
     static void configureDatabase(String createStatement) {
         DatabaseManager.createDatabase();
-        System.out.println("Database created");
         try (var conn = DatabaseManager.getConnection()) {
             try (var preparedStatement = conn.prepareStatement(createStatement)) {
-                System.out.println("Statement: \n" + preparedStatement);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException ex) {
