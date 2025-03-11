@@ -1,12 +1,16 @@
 package dataaccess;
 
+import model.UserData;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class SQLUserDAOTests extends DAOTest {
+public class SQLUserDAOTests {
+    private static final UserData validUser = new UserData("username", "password", "email");
+    private static final UserData nullUser = null;
+    private static final UserData unregisteredUser = new UserData("unregisteredUsername", "password", "email");
+
     private static SQLUserDAO userDAO = null;
     private Connection conn = null;
 
@@ -17,14 +21,8 @@ public class SQLUserDAOTests extends DAOTest {
     }
 
     @BeforeEach
-    public void getConnection() throws SQLException {
+    public void getConnection() {
         conn = DatabaseManager.getConnection();
-        conn.setAutoCommit(false);
-
-        String statement = "TRUNCATE TABLE users";
-        try (PreparedStatement ps = conn.prepareStatement(statement)){
-            ps.executeUpdate();
-        }
     }
 
     @AfterEach
@@ -62,9 +60,7 @@ public class SQLUserDAOTests extends DAOTest {
     public void getUnregisteredUser() {
         userDAO.addUser(validUser);
 
-        Assertions.assertThrowsExactly(DataAccessException.class, () -> {
-            userDAO.getUser(unregisteredUser.username());
-        });
+        Assertions.assertNull(userDAO.getUser(unregisteredUser.username()));
     }
 
     @Test
