@@ -1,6 +1,6 @@
 package service;
 
-import dataaccess.MemoryUserDAO;
+import dataaccess.SQLUserDAO;
 import dataaccess.UserDataAccess;
 import handler.Unauthorized;
 import model.*;
@@ -17,8 +17,13 @@ public class LoginService extends Service{
     }
 
     private void verifyUser(UserData userData) {
-        UserDataAccess userDAO = new MemoryUserDAO();
-        UserData dbUserData = userDAO.getUser(userData.username());
+        UserDataAccess userDAO = new SQLUserDAO();
+        UserData dbUserData = null;
+        try {
+            dbUserData = userDAO.getUser(userData.username());
+        } catch (dataaccess.DataAccessException e) {
+            throw new RuntimeException(e);
+        }
 
         if (dbUserData == null) {
             throw new Unauthorized("User not registered");

@@ -26,7 +26,11 @@ public class ClearServiceTests extends ServiceTests{
         AuthDataAccess authDao = new MemoryAuthDAO();
         GameDataAccess gameDao = new MemoryGameDAO();
 
-        Assertions.assertNull(userDao.getUser(authData.username()));
+        try {
+            Assertions.assertNull(userDao.getUser(authData.username()));
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
         Assertions.assertNull(authDao.getAuth(authData.authToken()));
         Assertions.assertNull(gameDao.getGame(gameData.gameID()));
     }

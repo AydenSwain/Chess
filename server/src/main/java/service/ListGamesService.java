@@ -10,7 +10,7 @@ public class ListGamesService extends Service{
     public Collection<GameData> listGames(String authToken) {
         verifyAuthTokenInDB(authToken);
 
-        GameDataAccess gameDao = new MemoryGameDAO();
-        return gameDao.listGames();
+        GameDataAccess gameDAO = new MemoryGameDAO();
+        return gameDAO.listGames();
     }
 }

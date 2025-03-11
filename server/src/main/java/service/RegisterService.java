@@ -1,6 +1,6 @@
 package service;
 
-import dataaccess.MemoryUserDAO;
+import dataaccess.SQLUserDAO;
 import dataaccess.UserDataAccess;
 import model.*;
 import handler.AlreadyTaken;
@@ -9,13 +9,21 @@ public class RegisterService extends Service{
     public AuthData register(UserData userData) {
         validateUserDataFormat(userData);
 
-        UserDataAccess userDAO = new MemoryUserDAO();
+        UserDataAccess userDAO = new SQLUserDAO();
 
-        if (userDAO.getUser(userData.username()) != null) {
-            throw new AlreadyTaken("Username is already taken");
+        try {
+            if (userDAO.getUser(userData.username()) != null) {
+                throw new AlreadyTaken("Username is already taken");
+            }
+        } catch (dataaccess.DataAccessException e) {
+            throw new RuntimeException(e);
         }
 
-        userDAO.addUser(userData);
+        try {
+            userDAO.addUser(userData);
+        } catch (dataaccess.DataAccessException e) {
+            throw new RuntimeException(e);
+        }
 
         return addNewAuthToDB(userData);
     }

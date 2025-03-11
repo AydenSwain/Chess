@@ -4,11 +4,15 @@ import dataaccess.*;
 
 public class ClearService extends Service{
     public void clearDB() {
-        UserDataAccess userDAO = new MemoryUserDAO();
+        UserDataAccess userDAO = new SQLUserDAO();
         AuthDataAccess authDAO = new MemoryAuthDAO();
         GameDataAccess gameDAO = new MemoryGameDAO();
 
-        userDAO.clearUsers();
+        try {
+            userDAO.clearUsers();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
         authDAO.clearAuths();
         gameDAO.clearGames();
     }
