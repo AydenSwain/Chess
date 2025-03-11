@@ -13,6 +13,7 @@ public class SQLUserDAOTests extends DAOTest {
     @BeforeAll
     public static void createDatabase() {
         userDAO = new SQLUserDAO();
+        userDAO.clearUsers();
     }
 
     @BeforeEach
@@ -28,9 +29,10 @@ public class SQLUserDAOTests extends DAOTest {
 
     @AfterEach
     public void closeConnection() throws SQLException {
-        conn.rollback();
         conn.close();
         conn = null;
+
+        userDAO.clearUsers();
     }
 
     @Test
