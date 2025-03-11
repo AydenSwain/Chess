@@ -28,15 +28,18 @@ public class SQLUserDAO implements UserDataAccess {
                 ps.setString(1, username);
 
                 try (ResultSet rs = ps.executeQuery()){
-                    rs.next();
-                    String json = rs.getString("userJson");
+                    if (rs.next()) {
+                        String json = rs.getString("userJson");
+                        return fromJson(json);
 
-                    return fromJson(json);
+                    } else {
+                        return null;
+                    }
                 }
             }
 
         } catch (SQLException ex) {
-            throw new DataAccessException("Unable to add user data: " + ex.getMessage());
+            throw new DataAccessException("Unable to get user data: " + ex.getMessage());
         }
     }
 
