@@ -7,18 +7,15 @@ import handler.BadRequest;
 import model.*;
 
 public class CreateGameService extends Service{
-    public GameData createGame(String authToken, GameData oldGameData) {
-        validateGameDataFormat(oldGameData);
+    public GameData createGame(String authToken, GameData gameData) {
+        validateGameDataFormat(gameData);
 
         verifyAuthTokenInDB(authToken);
 
-        GameData newGameData =
-                new GameData(generateID(), oldGameData.whiteUsername(), oldGameData.blackUsername(), oldGameData.gameName(), new ChessGame());
-
         GameDataAccess gameDAO = new SQLGameDAO();
-        gameDAO.addGame(newGameData);
 
-        return newGameData;
+        gameDAO.getGame(gameData.gameID());
+        return gameDAO.addGame(gameData);
     }
 
     private void validateGameDataFormat(GameData gameData) {
@@ -28,8 +25,5 @@ public class CreateGameService extends Service{
         }
     }
 
-    private static int idCounter = 37828324;
-    protected int generateID() {
-        return idCounter++;
-    }
+
 }

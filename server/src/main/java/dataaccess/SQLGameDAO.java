@@ -3,11 +3,13 @@ package dataaccess;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.GameData;
+import model.GameID;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static dataaccess.DatabaseManager.configureDatabase;
 
 public class SQLGameDAO implements GameDataAccess {
@@ -75,15 +77,50 @@ public class SQLGameDAO implements GameDataAccess {
     }
 
     @Override
-    public void addGame(GameData gameData) {
+    public GameData addGame(GameData gameData) {
         try (Connection conn = DatabaseManager.getConnection()) {
-            String statement = "INSERT INTO games (gameJson) VALUES (?)";
+            if (gameData.gameID() == 0) {
+                String statement = "INSERT INTO games (gameJson) VALUES (?)";
 
-            try (PreparedStatement ps = conn.prepareStatement(statement)){
-                String json = toJson(gameData);
-                ps.setString(1, json);
+                try (PreparedStatement ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
+                    String json = toJson(gameData);
 
-                ps.executeUpdate();
+                    ps.setString(1, json);
+
+                    if (ps.executeUpdate() == 1) {
+                        try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                            generatedKeys.next();
+                            int newID = generatedKeys.getInt(1);
+
+                            return new GameData(newID, gameData.whiteUsername(), gameData.blackUsername(),
+                                    gameData.gameName(), gameData.game());
+                        }
+
+                    } else {
+                        throw new DataAccessException("Unable to add game data: More than one row effected");
+                    }
+                }
+
+            } else {
+
+                String statement = """
+                    INSERT INTO games (id, gameJson)
+                    VALUES (?, ?)
+                    ON CONFLICT (id) DO UPDATE
+                    SET gameJson = ?;
+                    """;
+
+                try (PreparedStatement ps = conn.prepareStatement(statement)){
+                    String json = toJson(gameData);
+
+                    ps.setInt(1, gameData.gameID());
+                    ps.setString(2, json);
+                    ps.setString(3, json);
+
+                    ps.executeUpdate();
+
+                    return gameData;
+                }
             }
 
         } catch (SQLException ex) {
