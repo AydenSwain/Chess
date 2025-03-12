@@ -2,7 +2,7 @@ package service;
 
 import chess.ChessGame;
 import dataaccess.GameDataAccess;
-import dataaccess.MemoryGameDAO;
+import dataaccess.SQLGameDAO;
 import handler.BadRequest;
 import model.*;
 
@@ -15,7 +15,7 @@ public class CreateGameService extends Service{
         GameData newGameData =
                 new GameData(generateID(), oldGameData.whiteUsername(), oldGameData.blackUsername(), oldGameData.gameName(), new ChessGame());
 
-        GameDataAccess gameDAO = new MemoryGameDAO();
+        GameDataAccess gameDAO = new SQLGameDAO();
         gameDAO.addGame(newGameData);
 
         return newGameData;

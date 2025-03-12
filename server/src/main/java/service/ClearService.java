@@ -6,7 +6,7 @@ public class ClearService extends Service{
     public void clearDB() {
         UserDataAccess userDAO = new SQLUserDAO();
         AuthDataAccess authDAO = new SQLAuthDAO();
-        GameDataAccess gameDAO = new MemoryGameDAO();
+        GameDataAccess gameDAO = new SQLGameDAO();
 
         try {
             userDAO.clearUsers();

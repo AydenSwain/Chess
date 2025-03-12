@@ -3,7 +3,7 @@ package service;
 import dataaccess.AuthDataAccess;
 import dataaccess.GameDataAccess;
 import dataaccess.SQLAuthDAO;
-import dataaccess.MemoryGameDAO;
+import dataaccess.SQLGameDAO;
 import handler.AlreadyTaken;
 import handler.BadRequest;
 import model.AuthData;
@@ -17,7 +17,7 @@ public class JoinGameService extends Service {
 
         verifyAuthTokenInDB(authToken);
 
-        GameDataAccess gameDAO = new MemoryGameDAO();
+        GameDataAccess gameDAO = new SQLGameDAO();
         GameData gameData = gameDAO.getGame(playerData.gameID());
 
         if (isPlayerTaken(playerData.playerColor(), gameData)) {

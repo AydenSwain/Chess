@@ -27,7 +27,6 @@ public class SQLAuthDAO implements AuthDataAccess {
 
             try (PreparedStatement ps = conn.prepareStatement(statement)){
                 ps.setString(1, authToken);
-                System.out.println(authToken);
 
                 try (ResultSet rs = ps.executeQuery()){
                     if (rs.next()) {
@@ -57,7 +56,6 @@ public class SQLAuthDAO implements AuthDataAccess {
 
             try (PreparedStatement ps = conn.prepareStatement(statement)){
                 ps.setString(1, authData.authToken());
-                System.out.println(authData.authToken());
 
                 String json = toJson(authData);
                 ps.setString(2, json);
