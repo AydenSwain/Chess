@@ -7,5 +7,6 @@ public interface GameDataAccess {
     public Collection<GameData> listGames();
     public GameData getGame(int gameID);
     public GameData addGame(GameData gameData);
+    public void updateGame(GameData gameData);
     public void clearGames();
 }

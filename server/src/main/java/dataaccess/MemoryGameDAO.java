@@ -20,11 +20,15 @@ public class MemoryGameDAO implements GameDataAccess{
 
     @Override
     public GameData addGame(GameData gameData) {
-        if (gameData.gameID() == 0) {
-            gameData = giveID(gameData);
-        }
+        gameData = giveID(gameData);
+
         GAMES.put(gameData.gameID(), gameData);
         return gameData;
+    }
+
+    @Override
+    public void updateGame(GameData gameData) {
+        GAMES.put(gameData.gameID(), gameData);
     }
 
     private static int idCounter = 1;

@@ -17,7 +17,7 @@ public class SQLGameDAO implements GameDataAccess {
         String createStatement = """
                 CREATE TABLE IF NOT EXISTS  games (
                   `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                  `gameJson` VARCHAR(2000) NOT NULL
+                  `gameJson` VARCHAR(5000) NOT NULL
                 )
                 """;
 
@@ -79,7 +79,7 @@ public class SQLGameDAO implements GameDataAccess {
     @Override
     public GameData addGame(GameData gameData) {
         try (Connection conn = DatabaseManager.getConnection()) {
-            if (gameData.gameID() == 0) {
+                System.out.println("Creating A GAME!!!");
                 String statement = "INSERT INTO games (gameJson) VALUES (?)";
 
                 try (PreparedStatement ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
@@ -91,7 +91,7 @@ public class SQLGameDAO implements GameDataAccess {
                         try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                             generatedKeys.next();
                             int newID = generatedKeys.getInt(1);
-
+                            System.out.println("GAME ID: " + newID);
                             return new GameData(newID, gameData.whiteUsername(), gameData.blackUsername(),
                                     gameData.gameName(), gameData.game());
                         }
@@ -101,26 +101,29 @@ public class SQLGameDAO implements GameDataAccess {
                     }
                 }
 
-            } else {
+        } catch (SQLException ex) {
+            throw new DataAccessException("Unable to add game data: " + ex.getMessage());
+        }
+    }
 
-                String statement = """
-                    INSERT INTO games (id, gameJson)
-                    VALUES (?, ?)
-                    ON CONFLICT (id) DO UPDATE
-                    SET gameJson = ?;
-                    """;
+    @Override
+    public void updateGame(GameData gameData) {
+        try (Connection conn = DatabaseManager.getConnection()) {
+            System.out.println("UPDATING A GAME!!!");
 
-                try (PreparedStatement ps = conn.prepareStatement(statement)){
-                    String json = toJson(gameData);
+            String statement = "UPDATE games SET gameJson = ? WHERE id = ?;";
 
-                    ps.setInt(1, gameData.gameID());
-                    ps.setString(2, json);
-                    ps.setString(3, json);
+            try (PreparedStatement ps = conn.prepareStatement(statement)){
+                String json = toJson(gameData);
 
-                    ps.executeUpdate();
+                System.out.println(json);
 
-                    return gameData;
-                }
+                ps.setString(1, json);
+                ps.setInt(2, gameData.gameID());
+
+                ps.executeUpdate();
+
+                System.out.println("Game username: " + getGame(gameData.gameID()).gameName());
             }
 
         } catch (SQLException ex) {
@@ -144,7 +147,7 @@ public class SQLGameDAO implements GameDataAccess {
             }
 
         } catch (SQLException ex) {
-            throw new DataAccessException("Unable to clear auth data: " + ex.getMessage());
+            throw new DataAccessException("Unable to clear game data: " + ex.getMessage());
         }
     }
 }

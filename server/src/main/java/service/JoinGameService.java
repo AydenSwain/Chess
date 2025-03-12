@@ -28,7 +28,7 @@ public class JoinGameService extends Service {
 
         GameData newGameData = updateGameUsername(username, playerData.playerColor(), gameData);
 
-        gameDAO.addGame(newGameData);
+        gameDAO.updateGame(newGameData);
     }
 
     private void validatePlayerDataFormat(PlayerData playerData) {
