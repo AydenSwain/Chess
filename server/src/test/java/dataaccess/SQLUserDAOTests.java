@@ -41,7 +41,7 @@ public class SQLUserDAOTests {
     }
 
     @Test
-    public void NULL_USER() {
+    public void nullUser() {
         Assertions.assertThrowsExactly(NullPointerException.class, () -> {
             userDAO.addUser(NULL_USER);
         });

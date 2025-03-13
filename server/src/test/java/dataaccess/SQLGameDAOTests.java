@@ -45,7 +45,7 @@ public class SQLGameDAOTests {
     }
 
     @Test
-    public void NULL_GAME() {
+    public void nullGame() {
         Assertions.assertThrowsExactly(NullPointerException.class, () -> {
             gameDAO.addGame(NULL_GAME);
         });
@@ -61,7 +61,7 @@ public class SQLGameDAOTests {
     }
 
     @Test
-    public void INVALID_GAMEID() {
+    public void invalidGameID() {
         gameDAO.addGame(VALID_GAME);
 
         Assertions.assertNull(gameDAO.getGame(INVALID_GAME.gameID()));

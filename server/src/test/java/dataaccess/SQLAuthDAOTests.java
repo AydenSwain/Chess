@@ -41,7 +41,7 @@ public class SQLAuthDAOTests {
     }
 
     @Test
-    public void NULL_AUTH() {
+    public void nullAuth() {
         Assertions.assertThrowsExactly(NullPointerException.class, () -> {
             authDAO.addAuth(NULL_AUTH);
         });
