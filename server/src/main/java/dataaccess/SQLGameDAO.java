@@ -79,7 +79,6 @@ public class SQLGameDAO implements GameDataAccess {
     @Override
     public GameData addGame(GameData gameData) {
         try (Connection conn = DatabaseManager.getConnection()) {
-                System.out.println("Creating A GAME!!!");
                 String statement = "INSERT INTO games (gameJson) VALUES (?)";
 
                 try (PreparedStatement ps = conn.prepareStatement(statement, RETURN_GENERATED_KEYS)) {
@@ -91,9 +90,11 @@ public class SQLGameDAO implements GameDataAccess {
                         try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                             generatedKeys.next();
                             int newID = generatedKeys.getInt(1);
-                            System.out.println("GAME ID: " + newID);
-                            return new GameData(newID, gameData.whiteUsername(), gameData.blackUsername(),
+                            GameData newGameData = new GameData(newID, gameData.whiteUsername(), gameData.blackUsername(),
                                     gameData.gameName(), gameData.game());
+                            updateGame(newGameData);
+
+                            return newGameData;
                         }
 
                     } else {
@@ -109,21 +110,18 @@ public class SQLGameDAO implements GameDataAccess {
     @Override
     public void updateGame(GameData gameData) {
         try (Connection conn = DatabaseManager.getConnection()) {
-            System.out.println("UPDATING A GAME!!!");
 
             String statement = "UPDATE games SET gameJson = ? WHERE id = ?;";
 
             try (PreparedStatement ps = conn.prepareStatement(statement)){
                 String json = toJson(gameData);
 
-                System.out.println(json);
 
                 ps.setString(1, json);
                 ps.setInt(2, gameData.gameID());
 
                 ps.executeUpdate();
 
-                System.out.println("Game username: " + getGame(gameData.gameID()).gameName());
             }
 
         } catch (SQLException ex) {
