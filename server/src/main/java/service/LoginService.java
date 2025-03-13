@@ -4,6 +4,7 @@ import dataaccess.SQLUserDAO;
 import dataaccess.UserDataAccess;
 import handler.Unauthorized;
 import model.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Objects;
 
@@ -29,7 +30,7 @@ public class LoginService extends Service{
             throw new Unauthorized("User not registered");
         }
 
-        if (!(Objects.equals(dbUserData.password(), userData.password()))) {
+        if (!(BCrypt.checkpw(userData.password(), dbUserData.password()))) {
             throw new Unauthorized("Wrong password");
         }
     }

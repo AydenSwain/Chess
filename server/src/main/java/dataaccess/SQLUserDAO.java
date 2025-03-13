@@ -3,6 +3,8 @@ package dataaccess;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.UserData;
+import org.eclipse.jetty.server.Authentication;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
 
@@ -55,9 +57,11 @@ public class SQLUserDAO implements UserDataAccess {
             String statement = "INSERT INTO users (username, userJson) VALUES (?, ?)";
 
             try (PreparedStatement ps = conn.prepareStatement(statement)){
-                ps.setString(1, userData.username());
+                UserData protectedUserData = hashPassword(userData);
 
-                String json = toJson(userData);
+                ps.setString(1, protectedUserData.username());
+
+                String json = toJson(protectedUserData);
                 ps.setString(2, json);
 
                 ps.executeUpdate();
@@ -67,6 +71,12 @@ public class SQLUserDAO implements UserDataAccess {
             System.out.println("ERROR WITH ADD USER");
             throw new DataAccessException("Unable to add user data: " + ex.getMessage());
         }
+    }
+
+    private UserData hashPassword(UserData oldUserData) {
+        String hashedPassword = BCrypt.hashpw(oldUserData.password(), BCrypt.gensalt());
+
+        return new UserData(oldUserData.username(), hashedPassword, oldUserData.email());
     }
 
     private String toJson(UserData userData) {
