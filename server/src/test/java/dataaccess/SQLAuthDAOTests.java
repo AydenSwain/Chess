@@ -7,9 +7,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class SQLAuthDAOTests {
-    private static final AuthData validAuth = new AuthData("username", "authToken");
-    private static final AuthData nullAuth = null;
-    private static final AuthData unauthorizedAuth = new AuthData("username", "unauthorizedToken");
+    private static final AuthData VALID_AUTH = new AuthData("username", "authToken");
+    private static final AuthData NULL_AUTH = null;
+    private static final AuthData UNAUTHORIZED_AUTH = new AuthData("username", "unauthorizedToken");
 
     private static SQLAuthDAO authDAO = null;
     private Connection conn = null;
@@ -36,31 +36,31 @@ public class SQLAuthDAOTests {
     @Test
     public void successAddAuth() {
         Assertions.assertDoesNotThrow(() -> {
-            authDAO.addAuth(validAuth);
+            authDAO.addAuth(VALID_AUTH);
         });
     }
 
     @Test
-    public void nullAuth() {
+    public void NULL_AUTH() {
         Assertions.assertThrowsExactly(NullPointerException.class, () -> {
-            authDAO.addAuth(nullAuth);
+            authDAO.addAuth(NULL_AUTH);
         });
     }
 
     @Test
     public void successGetAuth() {
-        authDAO.addAuth(validAuth);
+        authDAO.addAuth(VALID_AUTH);
 
         Assertions.assertDoesNotThrow(() -> {
-            authDAO.getAuth(validAuth.authToken());
+            authDAO.getAuth(VALID_AUTH.authToken());
         });
     }
 
     @Test
     public void getUnauthorizedAuth() {
-        authDAO.addAuth(validAuth);
+        authDAO.addAuth(VALID_AUTH);
 
-        Assertions.assertNull(authDAO.getAuth(unauthorizedAuth.authToken()));
+        Assertions.assertNull(authDAO.getAuth(UNAUTHORIZED_AUTH.authToken()));
     }
 
     @Test

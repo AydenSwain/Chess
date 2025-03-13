@@ -10,10 +10,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SQLGameDAOTests {
-    private static final GameData validGame = new GameData(123, "whiteUsername", "blackUsername", "gameName", new ChessGame());
-    private static final GameData nullGame = null;
-    private static final GameData invalidGame = new GameData(256195493, "whiteUsername", "blackUsername", "gameName", new ChessGame());
-    private static final GameData changedGame = new GameData(123, "whiteUser", "blackUser", "gameName", new ChessGame());
+    private static final GameData VALID_GAME = new GameData(123, "whiteUsername", "blackUsername", "gameName", new ChessGame());
+    private static final GameData NULL_GAME = null;
+    private static final GameData INVALID_GAME = new GameData(256195493, "whiteUsername", "blackUsername", "gameName", new ChessGame());
+    private static final GameData CHANGED_GAME = new GameData(123, "whiteUser", "blackUser", "gameName", new ChessGame());
 
     private static SQLGameDAO gameDAO = null;
     private Connection conn = null;
@@ -40,36 +40,36 @@ public class SQLGameDAOTests {
     @Test
     public void successAddGame() {
         Assertions.assertDoesNotThrow(() -> {
-            gameDAO.addGame(validGame);
+            gameDAO.addGame(VALID_GAME);
         });
     }
 
     @Test
-    public void nullGame() {
+    public void NULL_GAME() {
         Assertions.assertThrowsExactly(NullPointerException.class, () -> {
-            gameDAO.addGame(nullGame);
+            gameDAO.addGame(NULL_GAME);
         });
     }
 
     @Test
     public void successGetGame() {
-        gameDAO.addGame(validGame);
+        gameDAO.addGame(VALID_GAME);
 
         Assertions.assertDoesNotThrow(() -> {
-            gameDAO.getGame(validGame.gameID());
+            gameDAO.getGame(VALID_GAME.gameID());
         });
     }
 
     @Test
-    public void invalidGameID() {
-        gameDAO.addGame(validGame);
+    public void INVALID_GAMEID() {
+        gameDAO.addGame(VALID_GAME);
 
-        Assertions.assertNull(gameDAO.getGame(invalidGame.gameID()));
+        Assertions.assertNull(gameDAO.getGame(INVALID_GAME.gameID()));
     }
 
     @Test
     public void successListGames() {
-        gameDAO.addGame(validGame);
+        gameDAO.addGame(VALID_GAME);
 
         Assertions.assertDoesNotThrow(() -> {
             gameDAO.listGames();
@@ -83,19 +83,19 @@ public class SQLGameDAOTests {
 
     @Test
     public void successUpdateGame() {
-        gameDAO.addGame(validGame);
+        gameDAO.addGame(VALID_GAME);
 
         Assertions.assertDoesNotThrow(() -> {
-            gameDAO.updateGame(changedGame);
+            gameDAO.updateGame(CHANGED_GAME);
         });
     }
 
     @Test
     public void nullUpdateGame() {
-        gameDAO.addGame(validGame);
+        gameDAO.addGame(VALID_GAME);
 
         Assertions.assertThrowsExactly(NullPointerException.class, () -> {
-            gameDAO.updateGame(nullGame);
+            gameDAO.updateGame(NULL_GAME);
         });
     }
 

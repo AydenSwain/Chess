@@ -7,9 +7,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class SQLUserDAOTests {
-    private static final UserData validUser = new UserData("username", "password", "email");
-    private static final UserData nullUser = null;
-    private static final UserData unregisteredUser = new UserData("unregisteredUsername", "password", "email");
+    private static final UserData VALID_USER = new UserData("username", "password", "email");
+    private static final UserData NULL_USER = null;
+    private static final UserData UNREGISTERED_USER = new UserData("UNREGISTERED_USERname", "password", "email");
 
     private static SQLUserDAO userDAO = null;
     private Connection conn = null;
@@ -36,31 +36,31 @@ public class SQLUserDAOTests {
     @Test
     public void successAddUser() {
         Assertions.assertDoesNotThrow(() -> {
-            userDAO.addUser(validUser);
+            userDAO.addUser(VALID_USER);
         });
     }
 
     @Test
-    public void nullUser() {
+    public void NULL_USER() {
         Assertions.assertThrowsExactly(NullPointerException.class, () -> {
-            userDAO.addUser(nullUser);
+            userDAO.addUser(NULL_USER);
         });
     }
 
     @Test
     public void successGetUser() {
-        userDAO.addUser(validUser);
+        userDAO.addUser(VALID_USER);
 
         Assertions.assertDoesNotThrow(() -> {
-            userDAO.getUser(validUser.username());
+            userDAO.getUser(VALID_USER.username());
         });
     }
 
     @Test
     public void getUnregisteredUser() {
-        userDAO.addUser(validUser);
+        userDAO.addUser(VALID_USER);
 
-        Assertions.assertNull(userDAO.getUser(unregisteredUser.username()));
+        Assertions.assertNull(userDAO.getUser(UNREGISTERED_USER.username()));
     }
 
     @Test
