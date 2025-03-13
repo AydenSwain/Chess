@@ -413,30 +413,34 @@ public class ChessGame {
                 ChessPiece currentPiece;
                 ChessPosition currentPosition = new ChessPosition(r, c);
                 if ((currentPiece = board.getPiece(currentPosition)) != null) {
-                    recordPieceByColor(currentPiece.getTeamColor(), currentPosition, currentPiece);
+                    recordPieceByColor(currentPosition, currentPiece);
                 }
             }
         }
     }
 
-    private void recordPieceByColor(TeamColor teamColor, ChessPosition position, ChessPiece piece) {
+    private void recordPieceByColor(ChessPosition position, ChessPiece piece) {
         // If piece is white
         ArrayList<ChessPosition> myTeamsPositions;
         ChessPosition myKingPosition;
 
         if (piece.getTeamColor() == TeamColor.WHITE) {
             myTeamsPositions = whitePiecePositions;
-            myKingPosition = whiteKingPosition;
 
         } else {
             myTeamsPositions = blackPiecePositions;
-            myKingPosition = blackKingPosition;
         }
 
         myTeamsPositions.add(position);
         // If piece is also a king
         if (piece.getPieceType() == ChessPiece.PieceType.KING) {
-            myKingPosition = position;
+            // If piece is white
+            if(piece.getTeamColor() == TeamColor.WHITE) {
+                whiteKingPosition = position;
+            }
+            else {
+                blackKingPosition = position;
+            }
         }
     }
 
