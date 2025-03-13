@@ -3,7 +3,6 @@ package dataaccess;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.GameData;
-import model.GameID;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class SQLGameDAO implements GameDataAccess {
         String createStatement = """
                 CREATE TABLE IF NOT EXISTS  games (
                   `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-                  `gameJson` VARCHAR(5000) NOT NULL
+                  `gameJson` TEXT NOT NULL
                 )
                 """;
 

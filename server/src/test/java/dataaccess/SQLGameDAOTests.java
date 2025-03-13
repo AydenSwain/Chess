@@ -7,10 +7,13 @@ import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class SQLGameDAOTests {
     private static final GameData validGame = new GameData(123, "whiteUsername", "blackUsername", "gameName", new ChessGame());
     private static final GameData nullGame = null;
+    private static final GameData invalidGame = new GameData(256195493, "whiteUsername", "blackUsername", "gameName", new ChessGame());
+    private static final GameData changedGame = new GameData(123, "whiteUser", "blackUser", "gameName", new ChessGame());
 
     private static SQLGameDAO gameDAO = null;
     private Connection conn = null;
@@ -57,12 +60,44 @@ public class SQLGameDAOTests {
         });
     }
 
-//    @Test
-//    public void getUnauthorizedGame() {
-//        gameDAO.addGame(validGame);
-//
-//        Assertions.assertNull(gameDAO.getGame(unauthorizedGame.authToken()));
-//    }
+    @Test
+    public void invalidGameID() {
+        gameDAO.addGame(validGame);
+
+        Assertions.assertNull(gameDAO.getGame(invalidGame.gameID()));
+    }
+
+    @Test
+    public void successListGames() {
+        gameDAO.addGame(validGame);
+
+        Assertions.assertDoesNotThrow(() -> {
+            gameDAO.listGames();
+        });
+    }
+
+    @Test
+    public void noGames() {
+        Assertions.assertEquals(gameDAO.listGames(), new ArrayList<>());
+    }
+
+    @Test
+    public void successUpdateGame() {
+        gameDAO.addGame(validGame);
+
+        Assertions.assertDoesNotThrow(() -> {
+            gameDAO.updateGame(changedGame);
+        });
+    }
+
+    @Test
+    public void nullUpdateGame() {
+        gameDAO.addGame(validGame);
+
+        Assertions.assertThrowsExactly(NullPointerException.class, () -> {
+            gameDAO.updateGame(nullGame);
+        });
+    }
 
     @Test
     public void successClearGames() {
