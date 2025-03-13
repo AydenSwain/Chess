@@ -413,26 +413,30 @@ public class ChessGame {
                 ChessPiece currentPiece;
                 ChessPosition currentPosition = new ChessPosition(r, c);
                 if ((currentPiece = board.getPiece(currentPosition)) != null) {
-                    // If piece is white
-                    if (currentPiece.getTeamColor() == TeamColor.WHITE) {
-                        whitePiecePositions.add(currentPosition);
-                        // If piece is also a king
-                        if (currentPiece.getPieceType() == ChessPiece.PieceType.KING) {
-                            whiteKingPosition = currentPosition;
-                        }
-                    }
-
-                    // If piece is black
-                    else {
-                        blackPiecePositions.add(currentPosition);
-                        // If piece is also a king
-                        if (currentPiece.getPieceType() == ChessPiece.PieceType.KING) {
-                            blackKingPosition = currentPosition;
-                        }
-                    }
+                    recordPieceByColor(currentPiece.getTeamColor(), currentPosition, currentPiece);
                 }
-                // If not a piece continue
             }
+        }
+    }
+
+    private void recordPieceByColor(TeamColor teamColor, ChessPosition position, ChessPiece piece) {
+        // If piece is white
+        ArrayList<ChessPosition> myTeamsPositions;
+        ChessPosition myKingPosition;
+
+        if (piece.getTeamColor() == TeamColor.WHITE) {
+            myTeamsPositions = whitePiecePositions;
+            myKingPosition = whiteKingPosition;
+
+        } else {
+            myTeamsPositions = blackPiecePositions;
+            myKingPosition = blackKingPosition;
+        }
+
+        myTeamsPositions.add(position);
+        // If piece is also a king
+        if (piece.getPieceType() == ChessPiece.PieceType.KING) {
+            myKingPosition = position;
         }
     }
 
