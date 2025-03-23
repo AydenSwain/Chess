@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 
 public class MemoryGameDAO implements GameDataAccess{
-    private static final LinkedHashMap <Integer, GameData> GAMES = new LinkedHashMap<>();
+    private static final LinkedHashMap<Integer, GameData> GAMES = new LinkedHashMap<>();
 
     @Override
     public Collection<GameData> listGames() {
