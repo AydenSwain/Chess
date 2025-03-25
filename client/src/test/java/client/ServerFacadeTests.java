@@ -74,7 +74,7 @@ public class ServerFacadeTests {
 
     @Test
     public void failLogout() {
-        Assertions.assertTrue(true);
+        Assertions.assertThrowsExactly(ResponseException.class, () -> facade.logout(validAuth));
     }
 
     @Test
