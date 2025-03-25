@@ -3,6 +3,7 @@ package ServerFacade;
 import com.google.gson.Gson;
 import model.AuthData;
 import model.GameData;
+import model.PlayerData;
 import model.UserData;
 
 import java.io.*;
@@ -40,8 +41,8 @@ public class ServerFacade {
         return this.makeRequest("POST", "/game", authData, gameData, GameData.class);
     }
 
-    public void joinGame(AuthData authData,GameData gameData) {
-        this.makeRequest("PUT", "/game", authData, gameData, null);
+    public void joinGame(AuthData authData, PlayerData playerData) {
+        this.makeRequest("PUT", "/game", authData, playerData, null);
     }
 
     private <T, R> R makeRequest(String method, String path, AuthData authHeader, T bodyObject, Class<R> expectedClass) {

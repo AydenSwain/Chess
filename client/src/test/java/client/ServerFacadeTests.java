@@ -1,9 +1,9 @@
 package client;
 
 import chess.ChessGame;
-import handler.Unauthorized;
 import model.AuthData;
 import model.GameData;
+import model.PlayerData;
 import model.UserData;
 import org.junit.jupiter.api.*;
 import ServerFacade.*;
@@ -27,7 +27,7 @@ public class ServerFacadeTests {
     }
 
     @BeforeEach
-    static void setUp() {
+    void setUp() {
         facade.clearDB();
         validAuth = facade.register(VALID_USER);
     }
@@ -50,6 +50,11 @@ public class ServerFacadeTests {
     private static final GameData NULL_GAME = null;
     private static final GameData INVALID_GAME = new GameData(256195493, "whiteUsername", "blackUsername", "gameName", new ChessGame());
     private static final GameData CHANGED_GAME = new GameData(123, "whiteUser", "blackUser", "gameName", new ChessGame());
+
+    @Test
+    public void successClearDB() {
+        Assertions.assertDoesNotThrow(() -> facade.clearDB());
+    }
 
     @Test
     public void successRegister() {
@@ -103,16 +108,27 @@ public class ServerFacadeTests {
 
     @Test
     public void failCreateGame() {
-        Assertions.assertDoesNotThrow(() -> facade.createGame(UNAUTHORIZED_AUTH, VALID_GAME));
+        Assertions.assertThrowsExactly(ResponseException.class, () -> facade.createGame(UNAUTHORIZED_AUTH, VALID_GAME));
+    }
+
+    private PlayerData gameToPlayer(GameData gameData, ChessGame.TeamColor teamColor) {
+        return new PlayerData(teamColor, gameData.gameID());
     }
 
     @Test
     public void successJoinGame() {
-        Assertions.assertTrue(true);
+        GameData gameData = facade.createGame(validAuth, VALID_GAME);
+        PlayerData playerData = gameToPlayer(gameData, ChessGame.TeamColor.WHITE);
+        Assertions.assertDoesNotThrow(() -> facade.joinGame(validAuth, playerData));
     }
 
     @Test
     public void failJoinGame() {
-        Assertions.assertTrue(true);
+        GameData gameData = facade.createGame(validAuth, VALID_GAME);
+        PlayerData playerData = gameToPlayer(gameData, ChessGame.TeamColor.WHITE);
+
+        // Join twice for the same color
+        facade.joinGame(validAuth, playerData);
+        Assertions.assertThrowsExactly(ResponseException.class, () -> facade.joinGame(validAuth, playerData));
     }
 }
