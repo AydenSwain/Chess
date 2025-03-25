@@ -16,6 +16,10 @@ public class ServerFacade {
         serverUrl = url;
     }
 
+    public void clearDB() {
+        this.makeRequest("DELETE", "/db", null, null, null);
+    }
+
     public AuthData register(UserData userData) {
         return this.makeRequest("POST", "/user", null, userData, AuthData.class);
     }

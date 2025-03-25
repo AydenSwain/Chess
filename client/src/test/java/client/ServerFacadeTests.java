@@ -21,10 +21,14 @@ public class ServerFacadeTests {
         System.out.println("Started test HTTP server on " + port);
         String serverUrl = "http://localhost:" + port;
         facade = new ServerFacade(serverUrl);
+
+        facade.clearDB();
+        validAuth = facade.register(VALID_USER);
     }
 
     @AfterAll
     static void stopServer() {
+        facade.clearDB();
         server.stop();
     }
 
@@ -32,7 +36,7 @@ public class ServerFacadeTests {
     private static final UserData NULL_USER = null;
     private static final UserData UNREGISTERED_USER = new UserData("UNREGISTERED_USERname", "password", "email");
 
-    private static final AuthData VALID_AUTH = new AuthData("username", "authToken");
+    private static AuthData validAuth;
     private static final AuthData NULL_AUTH = null;
     private static final AuthData UNAUTHORIZED_AUTH = new AuthData("username", "unauthorizedToken");
 
@@ -49,22 +53,23 @@ public class ServerFacadeTests {
 
     @Test
     public void failRegister() {
-        Assertions.assertTrue(true);
+        Assertions.assertThrowsExactly(ResponseException.class, () -> facade.register(NULL_USER));
     }
 
     @Test
     public void successLogin() {
-        Assertions.assertTrue(true);
+        AuthData authData = facade.login(VALID_USER);
+        Assertions.assertTrue(authData.authToken().length() > 10);
     }
 
     @Test
     public void failLogin() {
-        Assertions.assertTrue(true);
+        Assertions.assertThrowsExactly(ResponseException.class, () -> facade.login(NULL_USER));
     }
 
     @Test
     public void successLogout() {
-        Assertions.assertTrue(true);
+        Assertions.assertDoesNotThrow(() -> facade.logout(validAuth));
     }
 
     @Test
