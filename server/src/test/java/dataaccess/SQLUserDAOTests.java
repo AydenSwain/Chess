@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class SQLUserDAOTests {
     private static final UserData VALID_USER = new UserData("username", "password", "email");
     private static final UserData NULL_USER = null;
-    private static final UserData UNREGISTERED_USER = new UserData("UNREGISTERED_USERname", "password", "email");
+    private static final UserData UNREGISTERED_USER = new UserData("unregistered username", "password", "email");
 
     private static SQLUserDAO userDAO = null;
     private Connection conn = null;

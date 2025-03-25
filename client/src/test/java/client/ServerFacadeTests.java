@@ -40,16 +40,12 @@ public class ServerFacadeTests {
 
     private static final UserData VALID_USER = new UserData("username", "password", "email");
     private static final UserData NULL_USER = null;
-    private static final UserData UNREGISTERED_USER = new UserData("UNREGISTERED_USERname", "password", "email");
+    private static final UserData UNREGISTERED_USER = new UserData("unregistered username", "password", "email");
 
     private static AuthData validAuth;
-    private static final AuthData NULL_AUTH = null;
     private static final AuthData UNAUTHORIZED_AUTH = new AuthData("username", "unauthorizedToken");
 
     private static final GameData VALID_GAME = new GameData(123, "whiteUsername", "blackUsername", "gameName", new ChessGame());
-    private static final GameData NULL_GAME = null;
-    private static final GameData INVALID_GAME = new GameData(256195493, "whiteUsername", "blackUsername", "gameName", new ChessGame());
-    private static final GameData CHANGED_GAME = new GameData(123, "whiteUser", "blackUser", "gameName", new ChessGame());
 
     @Test
     public void successClearDB() {
@@ -58,7 +54,7 @@ public class ServerFacadeTests {
 
     @Test
     public void successRegister() {
-        AuthData authData = facade.register(VALID_USER);
+        AuthData authData = facade.register(UNREGISTERED_USER);
         Assertions.assertTrue(authData.authToken().length() > 10);
     }
 
