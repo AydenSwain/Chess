@@ -98,12 +98,12 @@ public class ServerFacadeTests {
 
     @Test
     public void successCreateGame() {
-        Assertions.assertTrue(true);
+        Assertions.assertDoesNotThrow(() -> facade.createGame(validAuth, VALID_GAME));
     }
 
     @Test
     public void failCreateGame() {
-        Assertions.assertTrue(true);
+        Assertions.assertDoesNotThrow(() -> facade.createGame(UNAUTHORIZED_AUTH, VALID_GAME));
     }
 
     @Test
