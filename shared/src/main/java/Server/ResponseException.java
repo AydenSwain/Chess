@@ -1,10 +1,32 @@
 package Server;
 
-public class ResponseException extends RuntimeException {
-    private final int responseCode;
+import com.google.gson.Gson;
 
-    public ResponseException(int responseCode, String message) {
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+
+public class ResponseException extends Exception {
+    final private int statusCode;
+
+    public ResponseException(int statusCode, String message) {
         super(message);
-        this.responseCode = responseCode;
+        this.statusCode = statusCode;
+    }
+
+    public String toJson() {
+        return new Gson().toJson(Map.of("message", getMessage(), "status", statusCode));
+    }
+
+    public static ResponseException fromJson(InputStream stream) {
+        var map = new Gson().fromJson(new InputStreamReader(stream), HashMap.class);
+        var status = ((Double)map.get("status")).intValue();
+        String message = map.get("message").toString();
+        return new ResponseException(status, message);
+    }
+
+    public int getStatusCode() {
+        return statusCode;
     }
 }
