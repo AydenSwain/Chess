@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResponseException extends Exception {
+public class ResponseException extends RuntimeException {
     final private int statusCode;
 
     public ResponseException(int statusCode, String message) {

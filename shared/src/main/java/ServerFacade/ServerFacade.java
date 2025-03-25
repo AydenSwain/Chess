@@ -25,7 +25,7 @@ public class ServerFacade {
     }
 
     public void logout(AuthData authData) {
-        return this.makeRequest("DELETE", "/session", authData, null, null);
+        this.makeRequest("DELETE", "/session", authData, null, null);
     }
 
     public Collection listGames(AuthData authData) {
@@ -37,7 +37,7 @@ public class ServerFacade {
     }
 
     public void joinGame(AuthData authData,GameData gameData) {
-        return this.makeRequest("PUT", "/game", authData, gameData, null);
+        this.makeRequest("PUT", "/game", authData, gameData, null);
     }
 
     private <T, R> R makeRequest(String method, String path, AuthData authHeader, T bodyObject, Class<R> expectedClass) {

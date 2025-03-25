@@ -17,9 +17,10 @@ public class ServerFacadeTests {
     @BeforeAll
     public static void init() {
         server = new Server();
-        var port = server.run(0);
+        int port = server.run(0);
         System.out.println("Started test HTTP server on " + port);
-        facade = new ServerFacade(port);
+        String serverUrl = "http://localhost:" + port;
+        facade = new ServerFacade(serverUrl);
     }
 
     @AfterAll
@@ -42,8 +43,8 @@ public class ServerFacadeTests {
 
     @Test
     public void successRegister() {
-        var authData = facade.register("player1", "password", "p1@email.com");
-        assertTrue(authData.authToken().length() > 10);
+        AuthData authData = facade.register(VALID_USER);
+        Assertions.assertTrue(authData.authToken().length() > 10);
     }
 
     @Test
