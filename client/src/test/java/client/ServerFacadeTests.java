@@ -45,7 +45,7 @@ public class ServerFacadeTests {
     private static AuthData validAuth;
     private static final AuthData UNAUTHORIZED_AUTH = new AuthData("username", "unauthorizedToken");
 
-    private static final GameData VALID_GAME = new GameData(123, "whiteUsername", "blackUsername", "gameName", new ChessGame());
+    private static final GameData VALID_GAME = new GameData(123, null, null, "gameName", new ChessGame());
 
     @Test
     public void successClearDB() {

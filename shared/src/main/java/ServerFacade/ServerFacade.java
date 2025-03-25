@@ -1,10 +1,7 @@
 package ServerFacade;
 
 import com.google.gson.Gson;
-import model.AuthData;
-import model.GameData;
-import model.PlayerData;
-import model.UserData;
+import model.*;
 
 import java.io.*;
 import java.net.*;
@@ -34,7 +31,8 @@ public class ServerFacade {
     }
 
     public Collection<GameData> listGames(AuthData authData) {
-        return this.makeRequest("GET", "/game", authData, null, Collection.class);
+        GameList gameList = this.makeRequest("GET", "/game", authData, null, GameList.class);
+        return gameList.games();
     }
 
     public GameData createGame(AuthData authData,GameData gameData) {
@@ -96,7 +94,10 @@ public class ServerFacade {
         if (!isSuccessful(responseCode)) {
             try (InputStream respErr = http.getErrorStream()) {
                 if (respErr != null) {
-                    throw ResponseException.fromJson(respErr);
+                    InputStreamReader reader = new InputStreamReader(respErr);
+                    ResponseExceptionData responseExceptionData =  new Gson().fromJson(reader, ResponseExceptionData.class);
+
+                    throw new ResponseException(responseCode, responseExceptionData.message());
                 }
             }
 
