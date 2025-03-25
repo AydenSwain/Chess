@@ -98,8 +98,8 @@ public class BoardPrinter {
     }
 
     private ChessPiece getChessPiece(int row, int col) {
-        changeCordsByColor(row, col);
-        return pieces[row][col];
+        ArrayList<Integer> newCords = changeCordsByColor(row, col);
+        return pieces[newCords.get(0)][newCords.get(1)];
     }
 
     private ChessGame.TeamColor getTeamColor(ChessPiece chessPiece) {
@@ -144,7 +144,17 @@ public class BoardPrinter {
         return null;
     }
 
-    private void changeCordsByColor(int row, int col) {
+    private ArrayList<Integer> changeCordsByColor(int row, int col) {
+        ArrayList<Integer> out = new ArrayList<>();
+
+        if (teamColor == ChessGame.TeamColor.BLACK) {
+            row = 7 - row;
+            col = 7 - col;
+        }
+
+        out.add(row);
+        out.add(col);
+        return out;
     }
 
     private void printSquare(int row, int col, String text, ChessGame.TeamColor pieceTeamColor) {
