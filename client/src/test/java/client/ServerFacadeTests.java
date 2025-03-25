@@ -1,12 +1,15 @@
 package client;
 
 import chess.ChessGame;
+import handler.Unauthorized;
 import model.AuthData;
 import model.GameData;
 import model.UserData;
 import org.junit.jupiter.api.*;
 import ServerFacade.*;
 import server.Server;
+
+import java.util.Collection;
 
 
 public class ServerFacadeTests {
@@ -21,7 +24,10 @@ public class ServerFacadeTests {
         System.out.println("Started test HTTP server on " + port);
         String serverUrl = "http://localhost:" + port;
         facade = new ServerFacade(serverUrl);
+    }
 
+    @BeforeEach
+    static void setUp() {
         facade.clearDB();
         validAuth = facade.register(VALID_USER);
     }
@@ -74,17 +80,20 @@ public class ServerFacadeTests {
 
     @Test
     public void failLogout() {
-        Assertions.assertThrowsExactly(ResponseException.class, () -> facade.logout(validAuth));
+        Assertions.assertThrowsExactly(ResponseException.class, () -> facade.logout(UNAUTHORIZED_AUTH));
     }
 
     @Test
     public void successListGames() {
-        Assertions.assertTrue(true);
+        facade.createGame(validAuth, VALID_GAME);
+        Collection<GameData> games = facade.listGames(validAuth);
+        Assertions.assertEquals(1, games.size());
     }
 
     @Test
     public void failListGames() {
-        Assertions.assertTrue(true);
+        facade.createGame(validAuth, VALID_GAME);
+        Assertions.assertThrowsExactly(ResponseException.class, () -> facade.listGames(UNAUTHORIZED_AUTH));
     }
 
     @Test

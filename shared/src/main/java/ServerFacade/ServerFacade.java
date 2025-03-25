@@ -32,7 +32,7 @@ public class ServerFacade {
         this.makeRequest("DELETE", "/session", authData, null, null);
     }
 
-    public Collection listGames(AuthData authData) {
+    public Collection<GameData> listGames(AuthData authData) {
         return this.makeRequest("GET", "/game", authData, null, Collection.class);
     }
 
