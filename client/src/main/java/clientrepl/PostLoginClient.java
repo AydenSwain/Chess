@@ -34,8 +34,10 @@ public class PostLoginClient implements Client{
                 case "quit" -> "quit";
                 default -> help();
             };
-        } catch (ResponseException ex) {
-            return ex.getMessage();
+        } catch (NumberFormatException e) {
+            return "Invalid number format:\n" + e.getMessage();
+        } catch (ResponseException e) {
+            return e.getMessage();
         }
     }
 
@@ -87,6 +89,9 @@ public class PostLoginClient implements Client{
     }
 
     public String playGame(String[] params) {
+        Collection<GameData> games = facade.listGames(Repl.clientAuthData);
+        updateGames(games);
+
         if (params.length == 2 && isValidGameNumber(params[0]) && isValidColor(params[1])) {
             int gameNumber = Integer.parseInt(params[0]);
             int gameIndex = gameNumber - INDEX_MODIFIER;
@@ -101,6 +106,7 @@ public class PostLoginClient implements Client{
             doublePrintBoard();
             return "Joined game number: \"" + gameNumber + "\"";
         }
+
         throw new ResponseException(400, "Expected: <game_number> <white/black>");
     }
 
@@ -123,6 +129,9 @@ public class PostLoginClient implements Client{
     }
 
     public String observeGame(String[] params) {
+        Collection<GameData> games = facade.listGames(Repl.clientAuthData);
+        updateGames(games);
+
         if (params.length == 1 && isValidGameNumber(params[0])) {
             int gameNumber = Integer.parseInt(params[0]);
 

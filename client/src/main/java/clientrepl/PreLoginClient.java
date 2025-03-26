@@ -23,6 +23,9 @@ public class PreLoginClient implements Client{
                 case "quit" -> "quit";
                 default -> help();
             };
+        } catch (NumberFormatException ex) {
+            return "Invalid game number format: " + ex.getMessage();
+
         } catch (ResponseException ex) {
             return ex.getMessage();
         }
