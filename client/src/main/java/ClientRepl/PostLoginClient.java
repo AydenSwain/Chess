@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import ClientToServer.ResponseException;
 import ClientToServer.ServerFacade;
+import chess.ChessBoard;
 import chess.ChessGame;
 import model.GameData;
 import model.PlayerData;
@@ -45,7 +46,7 @@ public class PostLoginClient implements Client{
         Repl.client = new PreLoginClient(facade);
 
         String username = Repl.clientAuthData.username();
-        return "Logged out as \"" + username + "\"";
+        return "Logged out from \"" + username + "\"";
     }
 
     public String createGame(String[] params) {
@@ -54,8 +55,6 @@ public class PostLoginClient implements Client{
 
             GameData gameData = new GameData(0, null, null, gameName, null);
             GameData newGameData = facade.createGame(Repl.clientAuthData, gameData);
-
-            Repl.games.add(newGameData);
 
             return "Created game: \"" + gameName + "\"";
         }
@@ -67,9 +66,9 @@ public class PostLoginClient implements Client{
 
         updateGames(games);
 
-        String out = "Current games:" + "\n";
+        String out = "Current games:";
         for (int i = 0; i < Repl.games.size(); i++) {
-            out += gameString(i, Repl.games.get(i));
+            out += "\n" + gameString(i, Repl.games.get(i));
         }
 
         return out;
@@ -84,14 +83,14 @@ public class PostLoginClient implements Client{
         String whiteUsername = (gameData.whiteUsername() == null) ? "<none>" : gameData.whiteUsername();
         String blackUsername = (gameData.blackUsername() == null) ? "<none>" : gameData.blackUsername();
 
-        return String.format("Game number: \"%d\" Game name: \"%s\", White username:\"%s\", Black username:\"%s\"", i + INDEX_MODIFIER, gameData.gameName(), whiteUsername, blackUsername);
+        return String.format("Game number:\"%d\" Game name:\"%s\", White username:\"%s\", Black username:\"%s\"", i + INDEX_MODIFIER, gameData.gameName(), whiteUsername, blackUsername);
     }
 
     public String playGame(String[] params) {
         if (params.length == 2 && isValidGameNumber(params[0]) && isValidColor(params[1])) {
             int gameNumber = Integer.parseInt(params[0]);
             int gameIndex = gameNumber - INDEX_MODIFIER;
-            ChessGame.TeamColor color = (params[1] == "white") ? ChessGame.TeamColor.WHITE : ChessGame.TeamColor.BLACK;
+            ChessGame.TeamColor color = (params[1].equals("white")) ? ChessGame.TeamColor.WHITE : ChessGame.TeamColor.BLACK;
 
             GameData gameData = Repl.games.get(gameIndex);
 
@@ -99,14 +98,17 @@ public class PostLoginClient implements Client{
 
             facade.joinGame(Repl.clientAuthData, playerData);
 
-            doublePrintBoard(gameData);
+            doublePrintBoard();
             return "Joined game number: \"" + gameNumber + "\"";
         }
         throw new ResponseException(400, "Expected: <game_number> <white/black>");
     }
 
-    private void doublePrintBoard(GameData gameData) {
-        BoardPrinter bp = new BoardPrinter(gameData.game().getBoard());
+    private void doublePrintBoard() {
+        ChessBoard board = new ChessBoard();
+        board.resetBoard();
+
+        BoardPrinter bp = new BoardPrinter(board);
         bp.print(ChessGame.TeamColor.WHITE);
         bp.print(ChessGame.TeamColor.BLACK);
     }
@@ -123,11 +125,8 @@ public class PostLoginClient implements Client{
     public String observeGame(String[] params) {
         if (params.length == 1 && isValidGameNumber(params[0])) {
             int gameNumber = Integer.parseInt(params[0]);
-            int gameIndex = gameNumber - INDEX_MODIFIER;
 
-            GameData gameData = Repl.games.get(gameIndex);
-
-            doublePrintBoard(gameData);
+            doublePrintBoard();
             return "Joined game number: \"" + gameNumber + "\"";
         }
         throw new ResponseException(400, "Expected: <game_number>");
@@ -138,8 +137,8 @@ public class PostLoginClient implements Client{
             "logout" <- To logout
             "create_game <game_name>" <- To create a game
             "list_games" <- To list games
-            "play_game" <- To join a game
-            "observe_game" <- To observe a game
+            "play_game <game_number> <white/black>" <- To join a game
+            "observe_game <game_number>" <- To observe a game
             "quit" <- To quit""";
     }
 }

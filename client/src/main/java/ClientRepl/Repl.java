@@ -25,8 +25,10 @@ public class Repl {
     }
 
     public void run() {
+        System.out.print(SET_TEXT_COLOR_MAGENTA);
         System.out.println("Welcome to Chess!!!");
-        System.out.println("Type \"help\" for help, or \"quit\" to exit the program.");
+        System.out.println("Type \"help\" for help!");
+        System.out.print(RESET_TEXT_COLOR);
 
         String result = "";
         while (!result.equals("quit")) {
