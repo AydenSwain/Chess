@@ -37,6 +37,7 @@ public class PreLoginClient implements Client{
             UserData userData = new UserData(username, password, email);
             facade.login(userData);
 
+            Repl.client = new PostLoginClient(facade);
             return "Logged in as \"" + username + "\"";
         }
         throw new ResponseException(400, "Expected: <username> <password> <email>");
@@ -51,7 +52,8 @@ public class PreLoginClient implements Client{
             UserData userData = new UserData(username, password, email);
             facade.register(userData);
 
-            return "Logged in as \"" + username + "\"";
+            Repl.client = new PostLoginClient(facade);
+            return "Registered and logged in as \"" + username + "\"";
         }
         throw new ResponseException(400, "Expected: <username> <password> <email>");
     }

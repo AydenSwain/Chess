@@ -7,8 +7,9 @@ import java.util.Scanner;
 import static ui.EscapeSequences.*;
 
 public class Repl {
+    public static Client client;
+
     private ServerFacade facade;
-    private Client client;
     private Scanner scanner = new Scanner(System.in);
 
     public Repl(String serverUrl) {
@@ -42,5 +43,4 @@ public class Repl {
         System.out.print(RESET_TEXT_COLOR);
         return response;
     }
-
 }
