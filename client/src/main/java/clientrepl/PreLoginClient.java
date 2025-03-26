@@ -18,10 +18,11 @@ public class PreLoginClient implements Client{
             String command = (tokens.length > 0) ? tokens[0] : "help";
             String[] params = Arrays.copyOfRange(tokens, 1, tokens.length);
             return switch (command) {
+                case "help" -> help();
                 case "login" -> login(params);
                 case "register" -> register(params);
-                case "quit" -> "quit";
-                default -> help();
+                case "quit" -> "";
+                default -> "Type \"help\" for help!";
             };
         } catch (NumberFormatException ex) {
             return "Invalid game number format: " + ex.getMessage();

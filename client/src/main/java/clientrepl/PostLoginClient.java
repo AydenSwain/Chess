@@ -26,13 +26,14 @@ public class PostLoginClient implements Client{
             String command = (tokens.length > 0) ? tokens[0] : "help";
             String[] params = Arrays.copyOfRange(tokens, 1, tokens.length);
             return switch (command) {
+                case "help" -> help();
                 case "logout" -> logout();
                 case "create_game" -> createGame(params);
                 case "list_games" -> listGames();
                 case "play_game" -> playGame(params);
                 case "observe_game" -> observeGame(params);
-                case "quit" -> "quit";
-                default -> help();
+                case "quit" -> "";
+                default -> "Type \"help\" for help!";
             };
         } catch (NumberFormatException e) {
             return "Invalid number format:\n" + e.getMessage();

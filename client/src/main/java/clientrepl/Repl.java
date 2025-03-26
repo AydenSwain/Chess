@@ -28,8 +28,8 @@ public class Repl {
         System.out.println("Type \"help\" for help!");
         System.out.print(RESET_TEXT_COLOR);
 
-        String result = "";
-        while (!result.equals("quit")) {
+        String result = "result";
+        while (!result.equals("")) {
             String response = getResponse();
 
             try {
