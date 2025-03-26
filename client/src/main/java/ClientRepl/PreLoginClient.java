@@ -35,7 +35,7 @@ public class PreLoginClient implements Client{
             String email = params[2];
 
             UserData userData = new UserData(username, password, email);
-            facade.login(userData);
+            Repl.clientAuthData = facade.login(userData);
 
             Repl.client = new PostLoginClient(facade);
             return "Logged in as \"" + username + "\"";
@@ -50,7 +50,7 @@ public class PreLoginClient implements Client{
             String email = params[2];
 
             UserData userData = new UserData(username, password, email);
-            facade.register(userData);
+            Repl.clientAuthData = facade.register(userData);
 
             Repl.client = new PostLoginClient(facade);
             return "Registered and logged in as \"" + username + "\"";

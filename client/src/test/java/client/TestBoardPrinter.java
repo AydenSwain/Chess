@@ -11,5 +11,6 @@ public class TestBoardPrinter {
         ChessBoard board = new ChessBoard();
         board.resetBoard();
         new BoardPrinter(board).print(ChessGame.TeamColor.WHITE);
+        new BoardPrinter(board).print(ChessGame.TeamColor.BLACK);
     }
 }

@@ -1,13 +1,20 @@
 package ClientRepl;
 
 import ClientToServer.ServerFacade;
+import model.AuthData;
+import model.GameData;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
 
 public class Repl {
     public static Client client;
+    public static AuthData clientAuthData;
+//    public static HashMap<String, int> games;
+    public static ArrayList<GameData> games;
 
     private ServerFacade facade;
     private Scanner scanner = new Scanner(System.in);
@@ -31,7 +38,7 @@ public class Repl {
 
             } catch (Throwable e) {
                 String message = e.toString();
-                System.out.println(SET_TEXT_COLOR_RED + message);
+                System.out.println(SET_TEXT_COLOR_RED + message + RESET_TEXT_COLOR);
             }
         }
         System.out.println();
