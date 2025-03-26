@@ -1,11 +1,10 @@
-package ClientRepl;
+package clientrepl;
 
-import ClientToServer.ServerFacade;
+import clienttoserver.ServerFacade;
 import model.AuthData;
 import model.GameData;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
@@ -13,7 +12,6 @@ import static ui.EscapeSequences.*;
 public class Repl {
     public static Client client;
     public static AuthData clientAuthData;
-//    public static HashMap<String, int> games;
     public static ArrayList<GameData> games;
 
     private ServerFacade facade;
@@ -43,7 +41,10 @@ public class Repl {
                 System.out.println(SET_TEXT_COLOR_RED + message + RESET_TEXT_COLOR);
             }
         }
-        System.out.println();
+
+        System.out.print(SET_TEXT_COLOR_MAGENTA);
+        System.out.println("Bye!");
+        System.out.print(RESET_TEXT_COLOR);
     }
 
     private String getResponse() {

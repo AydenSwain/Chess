@@ -1,8 +1,8 @@
-package ClientRepl;
+package clientrepl;
 
 import java.util.Arrays;
-import ClientToServer.ResponseException;
-import ClientToServer.ServerFacade;
+import clienttoserver.ResponseException;
+import clienttoserver.ServerFacade;
 import model.UserData;
 
 public class PreLoginClient implements Client{

@@ -1,4 +1,4 @@
-package ClientRepl;
+package clientrepl;
 
 public class InGameClient {
 }
