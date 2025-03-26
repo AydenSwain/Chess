@@ -1,27 +1,22 @@
 package ClientRepl;
 
+import java.util.Arrays;
+import ClientToServer.ResponseException;
 import ClientToServer.ServerFacade;
 
 public class PreLoginClient implements Client{
-    private String visitorName = null;
-    private final ServerFacade server;
-    private final String serverUrl;
-    private final NotificationHandler notificationHandler;
-    private WebSocketFacade ws;
-    private State state = State.SIGNEDOUT;
+    private ServerFacade facade;
 
-    public PetClient(String serverUrl, NotificationHandler notificationHandler) {
-        server = new ServerFacade(serverUrl);
-        this.serverUrl = serverUrl;
-        this.notificationHandler = notificationHandler;
+    public PreLoginClient(ServerFacade facade) {
+        this.facade = facade;
     }
 
     public String eval(String input) {
         try {
             var tokens = input.toLowerCase().split(" ");
-            var cmd = (tokens.length > 0) ? tokens[0] : "help";
+            String comand = (tokens.length > 0) ? tokens[0] : "help";
             var params = Arrays.copyOfRange(tokens, 1, tokens.length);
-            return switch (cmd) {
+            return switch (comand) {
                 case "signin" -> signIn(params);
                 case "rescue" -> rescuePet(params);
                 case "list" -> listPets();
