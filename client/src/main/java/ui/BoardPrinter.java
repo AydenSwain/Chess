@@ -22,7 +22,6 @@ public class BoardPrinter {
     private static final String SET_DARK_SQUARE_BG_COLOR = SET_BG_COLOR_DARK_GREEN;
 
     private static final String PADDING = " ";
-//    private static final String EMPTY = " ";
 
     private ChessPiece[][] pieces;
     private ChessGame.TeamColor teamColor;
