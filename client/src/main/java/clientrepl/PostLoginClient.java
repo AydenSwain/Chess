@@ -1,16 +1,15 @@
-package ClientRepl;
+package clientrepl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import ClientToServer.ResponseException;
-import ClientToServer.ServerFacade;
+import clienttoserver.ResponseException;
+import clienttoserver.ServerFacade;
 import chess.ChessBoard;
 import chess.ChessGame;
 import model.GameData;
 import model.PlayerData;
-import model.UserData;
 import ui.BoardPrinter;
 
 public class PostLoginClient implements Client{
@@ -83,7 +82,8 @@ public class PostLoginClient implements Client{
         String whiteUsername = (gameData.whiteUsername() == null) ? "<none>" : gameData.whiteUsername();
         String blackUsername = (gameData.blackUsername() == null) ? "<none>" : gameData.blackUsername();
 
-        return String.format("Game number:\"%d\" Game name:\"%s\", White username:\"%s\", Black username:\"%s\"", i + INDEX_MODIFIER, gameData.gameName(), whiteUsername, blackUsername);
+        return String.format("Game number:\"%d\" Game name:\"%s\", White username:\"%s\", Black username:\"%s\"",
+                             i + INDEX_MODIFIER, gameData.gameName(), whiteUsername, blackUsername);
     }
 
     public String playGame(String[] params) {

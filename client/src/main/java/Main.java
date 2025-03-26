@@ -1,5 +1,5 @@
 import chess.*;
-import ClientRepl.Repl;
+import clientrepl.Repl;
 
 public class Main {
     public static void main(String[] args) {

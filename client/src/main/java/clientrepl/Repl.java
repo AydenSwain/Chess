@@ -1,11 +1,10 @@
-package ClientRepl;
+package clientrepl;
 
-import ClientToServer.ServerFacade;
+import clienttoserver.ServerFacade;
 import model.AuthData;
 import model.GameData;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import static ui.EscapeSequences.*;
