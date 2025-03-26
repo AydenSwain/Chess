@@ -26,18 +26,18 @@ public class Repl {
 
             try {
                 result = client.eval(response);
-                System.out.print(SET_TEXT_COLOR_BLUE + result + RESET_TEXT_COLOR);
+                System.out.println(SET_TEXT_COLOR_BLUE + result + RESET_TEXT_COLOR);
 
             } catch (Throwable e) {
                 String message = e.toString();
-                System.out.print(SET_TEXT_COLOR_RED + message);
+                System.out.println(SET_TEXT_COLOR_RED + message);
             }
         }
         System.out.println();
     }
 
     private String getResponse() {
-        System.out.print("\n" + ">>> " + SET_TEXT_COLOR_GREEN);
+        System.out.print(">>> " + SET_TEXT_COLOR_GREEN);
         String response = scanner.nextLine();
         System.out.print(RESET_TEXT_COLOR);
         return response;
