@@ -128,17 +128,16 @@ public class WebSocketHandler {
 
         ChessGame.TeamColor color = gameData.game().getTeamTurn();
         System.out.println(color);
-        if (chessGame.isInCheck(color)) {
-            String otherPlayerName = getOtherPlayerName(gameData);
-            message = otherPlayerName + " is in check!";
-            connections.notification(message, null);
-        }
+
         if (chessGame.isInCheckmate(color)) {
             String otherPlayerName = getOtherPlayerName(gameData);
             message = otherPlayerName + " is in checkmate. Great job!";
             connections.notification(message, null);
-        }
-        if (chessGame.isInStalemate(color)) {
+        } else if (chessGame.isInCheck(color)) {
+            String otherPlayerName = getOtherPlayerName(gameData);
+            message = otherPlayerName + " is in check!";
+            connections.notification(message, null);
+        } else if (chessGame.isInStalemate(color)) {
             String otherPlayerName = getOtherPlayerName(gameData);
             message = otherPlayerName + " is in check!";
             connections.notification(message, null);
