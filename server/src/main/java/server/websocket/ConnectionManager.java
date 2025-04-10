@@ -38,6 +38,10 @@ public class ConnectionManager {
         send(new ServerMessage(ERROR, null, message), connections.get(username));
     }
 
+    public void notification(String message, String excludeUsername) {
+        broadcast(excludeUsername, new ServerMessage(NOTIFICATION, null, message));
+    }
+
     public void broadcast(String excludeUsername, ServerMessage serverMessage) {
         var removeList = new ArrayList<Connection>();
         for (Connection c : connections.values()) {
