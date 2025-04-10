@@ -14,7 +14,7 @@ public class ServerMessage {
     private final ServerMessageType serverMessageType;
     private ChessGame game;
     private String message;
-    private boolean isGameOver;
+    private Boolean isGameOver;
 
     public enum ServerMessageType {
         LOAD_GAME,
