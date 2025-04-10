@@ -79,6 +79,8 @@ public class WebSocketHandler {
     }
 
     private void connect(UserGameCommand userGameCommand, Session session) {
+        checkAuthorised(userGameCommand);
+
         String authToken = userGameCommand.getAuthToken();
 
         connections.add(authToken, session);
