@@ -1,5 +1,7 @@
 package server.websocket;
 
+import chess.ChessMove;
+import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import dataaccess.SQLGameDAO;
 import dataaccess.GameDataAccess;
@@ -17,7 +19,10 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import websocket.commands.UserGameCommand;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Objects;
+
+import static chess.ChessGame.TeamColor.*;
 
 @WebSocket
 public class WebSocketHandler {
@@ -68,7 +73,51 @@ public class WebSocketHandler {
     }
 
     private void makeMove(UserGameCommand userGameCommand) {
+        checkAuthorised(userGameCommand);
 
+        ChessMove move = userGameCommand.getMove();
+
+        GameData gameData = getGameData(userGameCommand);
+        ChessGame chessGame = gameData.game();
+        Collection<ChessMove> validMoves = chessGame.validMoves(move.getStartPosition());
+        if (!validMoves.contains(move)) {
+            throw new RuntimeException("Invalid move");
+        }
+
+        try {
+            chessGame.makeMove(move);
+        } catch (InvalidMoveException e) {
+            throw new RuntimeException("Invalid move");
+        }
+        gameDAO.updateGame(gameData);
+
+        connections.loadGame(chessGame, null);
+        String message = userGameCommand.getUsername() + " made move: " + move.toString();
+        connections.notification(message, null);
+
+        ChessGame.TeamColor otherPlayerColor = (gameData.game().getTeamTurn() == WHITE) ? BLACK : WHITE;
+        if (chessGame.isInCheck(otherPlayerColor)) {
+            String otherPlayerName = getOtherPlayerName(gameData);
+            String message = otherPlayerName + " is in check!";
+            connections.notification(message, null);
+        }
+        if (chessGame.isInCheckmate(otherPlayerColor)) {
+            String otherPlayerName = getOtherPlayerName(gameData);
+            String message = otherPlayerName + " is in checkmate. Great job!";
+            connections.notification(message, null);
+        }
+        if (chessGame.isInStalemate(otherPlayerColor)) {
+            String otherPlayerName = getOtherPlayerName(gameData);
+            String message = otherPlayerName + " is in check!";
+            connections.notification(message, null);
+        }
+    }
+
+    private String getOtherPlayerName(GameData gameData) {
+        if (gameData.game().getTeamTurn() == WHITE) {
+            return gameData.blackUsername();
+        }
+        return gameData.whiteUsername();
     }
 
     private void leave(UserGameCommand userGameCommand) {
