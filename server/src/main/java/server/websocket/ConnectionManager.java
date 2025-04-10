@@ -19,34 +19,34 @@ public class ConnectionManager {
         connections.put(authToken, connection);
     }
 
-    public void remove(String username) {
-        connections.remove(username);
+    public void remove(String authToken) {
+        connections.remove(authToken);
     }
 
-    public void loadGame(ChessGame game, String onlyUsername) {
+    public void loadGame(ChessGame game, String onlyAuthToken) {
         ServerMessage serverMessage = new ServerMessage(LOAD_GAME, game, null);
 
-        if (onlyUsername != null) {
-            send(serverMessage, connections.get(onlyUsername));
+        if (onlyAuthToken != null) {
+            send(serverMessage, connections.get(onlyAuthToken));
         } else {
             broadcast(null, serverMessage);
         }
     }
 
-    public void error(String message, String username) {
+    public void error(String message, String authToken) {
         message = "Error: " + message;
-        send(new ServerMessage(ERROR, null, message), connections.get(username));
+        send(new ServerMessage(ERROR, null, message), connections.get(authToken));
     }
 
-    public void notification(String message, String excludeUsername) {
-        broadcast(excludeUsername, new ServerMessage(NOTIFICATION, null, message));
+    public void notification(String message, String excludeAuthToken) {
+        broadcast(excludeAuthToken, new ServerMessage(NOTIFICATION, null, message));
     }
 
-    private void broadcast(String excludeUsername, ServerMessage serverMessage) {
+    private void broadcast(String excludeAuthToken, ServerMessage serverMessage) {
         var removeList = new ArrayList<Connection>();
         for (Connection c : connections.values()) {
             if (c.session().isOpen()) {
-                if (!c.username().equals(excludeUsername)) {
+                if (!c.authToken().equals(excludeAuthToken)) {
                     send(serverMessage, c);
                 }
             } else {
@@ -56,7 +56,7 @@ public class ConnectionManager {
 
         // Clean up any connections that were left open
         for (Connection c : removeList) {
-            connections.remove(c.username());
+            connections.remove(c.authToken());
         }
     }
 
