@@ -25,7 +25,7 @@ public class InGameClient implements Client {
 
     public InGameClient(ServerFacade facade, int gameID, ChessGame.TeamColor color) {
         this.facade = facade;
-        this.handler = new WebSocketHandler(game);
+        this.handler = new WebSocketHandler(game, color);
         String url = facade.getServerUrl();
         webSocketFacade = new WebSocketFacade(url, handler);
 
@@ -66,13 +66,15 @@ public class InGameClient implements Client {
     private String redraw() {
         printBoard(color);
 
-        return "Board redrawn!";
+        return "Board was redrawn";
     }
 
     private String leave() {
         webSocketFacade.leave(authToken, gameID);
 
         Repl.client = new PostLoginClient(facade);
+
+        return "You have left the game";
     }
 
     private String makeMove(String[] params) {
@@ -96,16 +98,18 @@ public class InGameClient implements Client {
             case "g" -> 7;
             case "h" -> 8;
             default -> 0;
-        }
+        };
     }
 
     private String resign() {
         webSocketFacade.resign(authToken, gameID);
+
+        return "You have resigned";
     }
 
     private String highlightMoves(String[] params) {
         if (params.length == 3) {
-            ChessPosition position = new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1]);
+            ChessPosition position = new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1]));
 
             // ---------------------- Add here
             printBoard(color);
