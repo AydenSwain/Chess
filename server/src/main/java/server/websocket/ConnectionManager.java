@@ -23,11 +23,11 @@ public class ConnectionManager {
         connections.remove(username);
     }
 
-    public void loadGame(ChessGame game, String username) {
+    public void loadGame(ChessGame game, String onlyUsername) {
         ServerMessage serverMessage = new ServerMessage(LOAD_GAME, game, null);
 
-        if (username != null) {
-            send(serverMessage, connections.get(username));
+        if (onlyUsername != null) {
+            send(serverMessage, connections.get(onlyUsername));
         } else {
             broadcast(null, serverMessage);
         }
