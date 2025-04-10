@@ -12,10 +12,10 @@ import java.util.Objects;
  */
 public class UserGameCommand {
     private final CommandType commandType;
-    private final String username;
     private final String authToken;
     private final Integer gameID;
-    private final ChessMove move;
+    private  String username;
+    private  ChessMove move;
 
     public UserGameCommand(CommandType commandType, String authToken, Integer gameID, ChessMove move) {
         this.commandType = commandType;
