@@ -2,24 +2,38 @@ package clientrepl;
 
 import HTTPFacade.ResponseException;
 import HTTPFacade.ServerFacade;
+import chess.ChessGame;
+import chess.ChessMove;
+import chess.ChessPosition;
+import ui.BoardPrinter;
 import websocket.*;
 
 import java.util.Arrays;
 
+import static chess.ChessGame.TeamColor.*;
+
 public class InGameClient implements Client {
     private final ServerFacade facade;
+    private final WebSocketHandler handler;
+    private final WebSocketFacade webSocketFacade;
 
-    private WebSocketFacade loadGameFacade = new WebSocketFacade(new LoadGameHandler());
-    private WebSocketFacade notificationFacade = new WebSocketFacade(new NotificationHandler());
-    private WebSocketFacade errorFacade = new WebSocketFacade(new ErrorHandler());
+    private final String authToken;
+    private final int gameID;
+    private final ChessGame.TeamColor color;
 
-    public InGameClient(ServerFacade facade) {
+    public ChessGame game;
+
+    public InGameClient(ServerFacade facade, int gameID, ChessGame.TeamColor color) {
         this.facade = facade;
+        this.handler = new WebSocketHandler(game);
         String url = facade.getServerUrl();
+        webSocketFacade = new WebSocketFacade(url, handler);
 
-        loadGameFacade = new WebSocketFacade(url, new LoadGameHandler());
-        notificationFacade = new WebSocketFacade(url, new NotificationHandler());
-        errorFacade = new WebSocketFacade(url, new ErrorHandler());
+        this.authToken = Repl.clientAuthData.authToken();
+        this.gameID = gameID;
+        this.color = color;
+
+        webSocketFacade.connect(authToken, gameID);
     }
 
     @Override
@@ -45,19 +59,58 @@ public class InGameClient implements Client {
         }
     }
 
+    private void printBoard(ChessGame.TeamColor color) {
+        new BoardPrinter(game.getBoard()).print(color);
+    }
+
     private String redraw() {
+        printBoard(color);
+
+        return "Board redrawn!";
     }
 
     private String leave() {
+        webSocketFacade.leave(authToken, gameID);
+
+        Repl.client = new PostLoginClient(facade);
     }
 
     private String makeMove(String[] params) {
+        if (params.length == 6) {
+            ChessMove move = new ChessMove(new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1])),
+                                           new ChessPosition(Integer.parseInt(params[3]), getColNum(params[4])));
+
+            webSocketFacade.makeMove(authToken, gameID, move);
+        }
+        throw new ResponseException(400, "Expected: <row_number> <col_letter> -> <row_number> <col_letter>");
+    }
+
+    private int getColNum(String letter) {
+        return switch (letter) {
+            case "a" -> 1;
+            case "b" -> 2;
+            case "c" -> 3;
+            case "d" -> 4;
+            case "e" -> 5;
+            case "f" -> 6;
+            case "g" -> 7;
+            case "h" -> 8;
+            default -> 0;
+        }
     }
 
     private String resign() {
+        webSocketFacade.resign(authToken, gameID);
     }
 
     private String highlightMoves(String[] params) {
+        if (params.length == 3) {
+            ChessPosition position = new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1]);
+
+            // ---------------------- Add here
+            printBoard(color);
+        }
+        throw new ResponseException(400, "Expected: <row_number> <col_letter>");
     }
 
     private String help() {

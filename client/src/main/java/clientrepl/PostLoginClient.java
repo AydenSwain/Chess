@@ -6,15 +6,9 @@ import java.util.Collection;
 
 import HTTPFacade.ResponseException;
 import HTTPFacade.ServerFacade;
-import chess.ChessBoard;
 import chess.ChessGame;
 import model.GameData;
 import model.PlayerData;
-import ui.BoardPrinter;
-import websocket.ErrorHandler;
-import websocket.LoadGameHandler;
-import websocket.NotificationHandler;
-import websocket.WebSocketFacade;
 
 public class PostLoginClient implements Client{
     private final ServerFacade facade;
@@ -46,7 +40,7 @@ public class PostLoginClient implements Client{
         }
     }
 
-    public String logout() {
+    private String logout() {
         facade.logout(Repl.clientAuthData);
 
         Repl.client = new PreLoginClient(facade);
@@ -55,7 +49,7 @@ public class PostLoginClient implements Client{
         return "Logged out from \"" + username + "\"";
     }
 
-    public String createGame(String[] params) {
+    private String createGame(String[] params) {
         if (params.length == 1) {
             String gameName = params[0];
 
@@ -67,7 +61,7 @@ public class PostLoginClient implements Client{
         throw new ResponseException(400, "Expected: <game_name>");
     }
 
-    public String listGames() {
+    private String listGames() {
         Collection<GameData> games = facade.listGames(Repl.clientAuthData);
 
         updateGames(games);
@@ -93,7 +87,7 @@ public class PostLoginClient implements Client{
                              i + INDEX_MODIFIER, gameData.gameName(), whiteUsername, blackUsername);
     }
 
-    public String playGame(String[] params) {
+    private String playGame(String[] params) {
         Collection<GameData> games = facade.listGames(Repl.clientAuthData);
         updateGames(games);
 
@@ -108,7 +102,7 @@ public class PostLoginClient implements Client{
 
             facade.joinGame(Repl.clientAuthData, playerData);
 
-            Repl.client = new InGameClient();
+            Repl.client = new InGameClient(facade, gameData.gameID(), color);
             return "Joined game number: \"" + gameNumber + "\"";
         }
 
@@ -124,20 +118,23 @@ public class PostLoginClient implements Client{
         return 0 < number && number < Repl.games.size() + INDEX_MODIFIER;
     }
 
-    public String observeGame(String[] params) {
+    private String observeGame(String[] params) {
         Collection<GameData> games = facade.listGames(Repl.clientAuthData);
         updateGames(games);
 
         if (params.length == 1 && isValidGameNumber(params[0])) {
             int gameNumber = Integer.parseInt(params[0]);
+            int gameIndex = gameNumber - INDEX_MODIFIER;
 
-            Repl.client = new InGameClient();
+            GameData gameData = Repl.games.get(gameIndex);
+
+            Repl.client = new InGameClient(facade, gameData.gameID(), null);
             return "Observing game number: \"" + gameNumber + "\"";
         }
         throw new ResponseException(400, "Expected: <game_number>");
     }
 
-    public String help() {
+    private String help() {
         return """
             "logout" <- To logout
             "create_game <game_name>" <- To create a game
