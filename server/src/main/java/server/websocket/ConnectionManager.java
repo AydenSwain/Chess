@@ -35,7 +35,20 @@ public class ConnectionManager {
 
     public void error(String message, String authToken) {
         message = "Error: " + message;
-        send(new ServerMessage(ERROR, null, message), connections.get(authToken));
+        ServerMessage sm = new ServerMessage(ERROR, null, message);
+        sm.convertToError();
+
+        send(sm, connections.get(authToken));
+    }
+
+    public void error(String message, Session session) {
+        Connection connection = new Connection(null, session);
+
+        message = "Error: " + message;
+        ServerMessage sm = new ServerMessage(ERROR, null, message);
+        sm.convertToError();
+
+        send(sm, connection);
     }
 
     public void notification(String message, String excludeAuthToken) {
@@ -68,6 +81,7 @@ public class ConnectionManager {
         try {
             String json = new Gson().toJson(serverMessage);
             connection.session().getRemote().sendString(json);
+            System.out.println("Sent message: " + json);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

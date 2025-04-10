@@ -14,6 +14,7 @@ import handler.Unauthorized;
 import model.AuthData;
 import model.GameData;
 import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 import websocket.commands.UserGameCommand;
@@ -47,6 +48,11 @@ public class WebSocketHandler {
         } catch (Exception e) {
             connections.error(e.getMessage(), userGameCommand.getAuthToken());
         }
+    }
+
+    @OnWebSocketError
+    public void webSocketError(Session session, Throwable throwable) {
+        connections.error(throwable.getMessage(), session);
     }
 
     private void checkAuthorised(UserGameCommand userGameCommand) {
