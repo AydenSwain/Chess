@@ -16,6 +16,7 @@ public class ChessGame {
     private ChessPosition whiteKingPosition;
     private ArrayList<ChessPosition> blackPiecePositions = new ArrayList<>();
     private ChessPosition blackKingPosition;
+    private boolean isInPlay = true;
 
     public ChessGame() {
         this.teamTurn = TeamColor.WHITE;
@@ -38,6 +39,14 @@ public class ChessGame {
      */
     public void setTeamTurn(TeamColor team) {
         teamTurn = team;
+    }
+
+    public boolean isInPlay() {
+        return isInPlay;
+    }
+
+    public void gameOver() {
+        isInPlay = false;
     }
 
     /**

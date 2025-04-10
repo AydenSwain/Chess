@@ -42,7 +42,7 @@ public class ConnectionManager {
         broadcast(excludeUsername, new ServerMessage(NOTIFICATION, null, message));
     }
 
-    public void broadcast(String excludeUsername, ServerMessage serverMessage) {
+    private void broadcast(String excludeUsername, ServerMessage serverMessage) {
         var removeList = new ArrayList<Connection>();
         for (Connection c : connections.values()) {
             if (c.session().isOpen()) {
