@@ -162,14 +162,15 @@ public class WebSocketHandler {
 
     private void leave(UserGameCommand userGameCommand) {
         String authToken = userGameCommand.getAuthToken();
+        String username = getUsername(authToken);
 
         connections.remove(authToken);
 
         GameData gameData = getGameData(userGameCommand);
-        if (Objects.equals(gameData.whiteUsername(), authToken)) {
+        if (Objects.equals(gameData.whiteUsername(), username)) {
             gameData = new GameData(gameData.gameID(), null, gameData.blackUsername(), gameData.gameName(), gameData.game());
             gameDAO.updateGame(gameData);
-        } else if (Objects.equals(gameData.blackUsername(), authToken)) {
+        } else if (Objects.equals(gameData.blackUsername(), username)) {
             gameData = new GameData(gameData.gameID(), gameData.whiteUsername(), null, gameData.gameName(), gameData.game());
             gameDAO.updateGame(gameData);
         }
