@@ -181,6 +181,15 @@ public class WebSocketHandler {
     private void resign(UserGameCommand userGameCommand) {
         GameData gameData = getGameData(userGameCommand);
         ChessGame chessGame = gameData.game();
+        String username = getUsername(userGameCommand.getAuthToken());
+
+        if (!Objects.equals(gameData.whiteUsername(), username) && !Objects.equals(gameData.blackUsername(), username)) {
+            throw new RuntimeException("Cannot resign as an observer");
+        }
+        if (!chessGame.isInPlay()) {
+            throw new RuntimeException("Cannot resign after game is over");
+        }
+
         chessGame.gameOver();
         gameDAO.updateGame(gameData);
 
