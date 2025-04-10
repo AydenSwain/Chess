@@ -2,12 +2,17 @@ package server;
 
 import spark.*;
 import handler.*;
+import server.websocket.WebSocketHandler;
 
 public class Server {
+    private final WebSocketHandler webSocketHandler = new WebSocketHandler();
+
     public int run(int desiredPort) {
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("web");
+
+        Spark.webSocket("/ws", webSocketHandler);
 
         createRoutes();
 
