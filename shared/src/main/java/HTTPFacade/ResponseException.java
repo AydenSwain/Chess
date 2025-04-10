@@ -1,4 +1,4 @@
-package clienttoserver;
+package HTTPFacade;
 
 import com.google.gson.Gson;
 
