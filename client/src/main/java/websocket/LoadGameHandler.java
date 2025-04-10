@@ -1,4 +1,4 @@
 package websocket;
 
-public class LoadGameHandler implements Handler{
+public class LoadGameHandler implements Handler {
 }

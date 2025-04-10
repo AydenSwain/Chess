@@ -7,8 +7,8 @@ import javax.websocket.*;
 import java.net.URI;
 
 public class WebSocketFacade extends Endpoint {
-    Session session;
-    Handler handler;
+    private Session session;
+    private final Handler handler;
 
     public WebSocketFacade(String url, Handler handler) {
         try {
@@ -31,5 +31,15 @@ public class WebSocketFacade extends Endpoint {
 
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {
+    }
+
+    public void close() {
+        try {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

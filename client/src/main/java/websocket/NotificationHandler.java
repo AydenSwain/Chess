@@ -1,4 +1,4 @@
 package websocket;
 
-public class NotificationHandler implements Handler{
+public class NotificationHandler implements Handler {
 }

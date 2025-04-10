@@ -11,6 +11,10 @@ import chess.ChessGame;
 import model.GameData;
 import model.PlayerData;
 import ui.BoardPrinter;
+import websocket.ErrorHandler;
+import websocket.LoadGameHandler;
+import websocket.NotificationHandler;
+import websocket.WebSocketFacade;
 
 public class PostLoginClient implements Client{
     private final ServerFacade facade;
@@ -104,20 +108,11 @@ public class PostLoginClient implements Client{
 
             facade.joinGame(Repl.clientAuthData, playerData);
 
-            doublePrintBoard();
+            Repl.client = new InGameClient();
             return "Joined game number: \"" + gameNumber + "\"";
         }
 
         throw new ResponseException(400, "Expected: <game_number> <white/black>");
-    }
-
-    private void doublePrintBoard() {
-        ChessBoard board = new ChessBoard();
-        board.resetBoard();
-
-        BoardPrinter bp = new BoardPrinter(board);
-        bp.print(ChessGame.TeamColor.WHITE);
-        bp.print(ChessGame.TeamColor.BLACK);
     }
 
     private boolean isValidColor(String color) {
@@ -136,7 +131,7 @@ public class PostLoginClient implements Client{
         if (params.length == 1 && isValidGameNumber(params[0])) {
             int gameNumber = Integer.parseInt(params[0]);
 
-            doublePrintBoard();
+            Repl.client = new InGameClient();
             return "Observing game number: \"" + gameNumber + "\"";
         }
         throw new ResponseException(400, "Expected: <game_number>");

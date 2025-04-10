@@ -1,4 +1,4 @@
 package websocket;
 
-public class ErrorHandler implements Handler{
+public class ErrorHandler implements Handler {
 }
