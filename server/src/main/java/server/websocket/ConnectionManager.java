@@ -42,6 +42,10 @@ public class ConnectionManager {
         broadcast(excludeAuthToken, new ServerMessage(NOTIFICATION, null, message));
     }
 
+    public void notification(String message, String excludeAuthToken, boolean isGameOver) {
+        broadcast(excludeAuthToken, new ServerMessage(NOTIFICATION, null, message, isGameOver));
+    }
+
     private void broadcast(String excludeAuthToken, ServerMessage serverMessage) {
         var removeList = new ArrayList<Connection>();
         for (Connection c : connections.values()) {

@@ -45,7 +45,7 @@ public class WebSocketHandler {
             }
 
         } catch (Exception e) {
-            connections.error(e.getMessage(), userGameCommand.getUsername());
+            connections.error(e.getMessage(), userGameCommand.getAuthToken());
         }
     }
 
@@ -64,13 +64,18 @@ public class WebSocketHandler {
     }
 
     private String getUsername(String authToken) {
-        return null;
+        AuthData authData = authDAO.getAuth(authToken);
+        if (authData == null) {
+            throw new RuntimeException("Auth not found");
+        }
+
+        return authData.username();
     }
 
     private void connect(UserGameCommand userGameCommand, Session session) {
-//        checkAuthorised(userGameCommand);
+        String authToken = userGameCommand.getAuthToken();
 
-        connections.add(userGameCommand.getAuthToken(), session);
+        connections.add(authToken, session);
 
         GameData gameData = getGameData(userGameCommand);
         ChessGame chessGame = gameData.game();
@@ -79,13 +84,15 @@ public class WebSocketHandler {
             chessGame.startGame();
             gameData = new GameData(gameData.gameID(), gameData.whiteUsername(), gameData.blackUsername(), gameData.gameName(), chessGame);
         }
-        connections.loadGame(gameData.game(), userGameCommand.getUsername());
+
+        connections.loadGame(gameData.game(), authToken);
+        String message = getUsername(authToken) + " connected";
+        connections.notification(message, authToken);
     }
 
     private void makeMove(UserGameCommand userGameCommand) {
-        checkAuthorised(userGameCommand);
-
         ChessMove move = userGameCommand.getMove();
+        String authToken = userGameCommand.getAuthToken();
 
         GameData gameData = getGameData(userGameCommand);
         ChessGame chessGame = gameData.game();
@@ -102,7 +109,7 @@ public class WebSocketHandler {
         gameDAO.updateGame(gameData);
 
         connections.loadGame(chessGame, null);
-        String message = userGameCommand.getUsername() + " made move: " + move.toString();
+        String message = getUsername(authToken) + " made move: " + move.toString();
         connections.notification(message, null);
 
         ChessGame.TeamColor otherPlayerColor = (gameData.game().getTeamTurn() == WHITE) ? BLACK : WHITE;
@@ -131,34 +138,30 @@ public class WebSocketHandler {
     }
 
     private void leave(UserGameCommand userGameCommand) {
-        checkAuthorised(userGameCommand);
+        String authToken = userGameCommand.getAuthToken();
 
-        resign(userGameCommand);
-
-        connections.remove(userGameCommand.getUsername());
+        connections.remove(authToken);
 
         GameData gameData = getGameData(userGameCommand);
-        if (Objects.equals(gameData.whiteUsername(), userGameCommand.getUsername())) {
+        if (Objects.equals(gameData.whiteUsername(), authToken)) {
             gameData = new GameData(gameData.gameID(), null, gameData.blackUsername(), gameData.gameName(), gameData.game());
             gameDAO.updateGame(gameData);
-        } else if (Objects.equals(gameData.blackUsername(), userGameCommand.getUsername())) {
+        } else if (Objects.equals(gameData.blackUsername(), authToken)) {
             gameData = new GameData(gameData.gameID(), gameData.whiteUsername(), null, gameData.gameName(), gameData.game());
             gameDAO.updateGame(gameData);
         }
 
-        String message = userGameCommand.getUsername() + " left the game";
-        connections.notification(message, userGameCommand.getUsername());
+        String message = getUsername(authToken) + " left the game";
+        connections.notification(message, authToken);
     }
 
     private void resign(UserGameCommand userGameCommand) {
-        checkAuthorised(userGameCommand);
-
         GameData gameData = getGameData(userGameCommand);
         ChessGame chessGame = gameData.game();
         chessGame.gameOver();
         gameDAO.updateGame(gameData);
 
-        String message = userGameCommand.getUsername() + " resigned";
-        connections.notification(message, null);
+        String message = userGameCommand.getAuthToken() + " resigned";
+        connections.notification(message, null, true);
     }
 }
