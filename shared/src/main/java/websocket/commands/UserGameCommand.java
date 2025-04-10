@@ -14,18 +14,16 @@ public class UserGameCommand {
     private final CommandType commandType;
     private final String authToken;
     private final Integer gameID;
-    private String username;
     private ChessMove move;
 
-    public UserGameCommand(CommandType commandType, String authToken, Integer gameID, ChessMove move) {
+    public UserGameCommand(CommandType commandType, String authToken, Integer gameID) {
         this.commandType = commandType;
         this.authToken = authToken;
         this.gameID = gameID;
     }
 
-    public UserGameCommand(CommandType commandType, String username, String authToken, Integer gameID, ChessMove move) {
+    public UserGameCommand(CommandType commandType, String authToken, Integer gameID, ChessMove move) {
         this.commandType = commandType;
-        this.username = username;
         this.authToken = authToken;
         this.gameID = gameID;
         this.move = move;
@@ -40,10 +38,6 @@ public class UserGameCommand {
 
     public CommandType getCommandType() {
         return commandType;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public String getAuthToken() {
@@ -64,22 +58,11 @@ public class UserGameCommand {
             return false;
         }
         UserGameCommand that = (UserGameCommand) o;
-        return commandType == that.commandType && Objects.equals(username, that.username) && Objects.equals(authToken, that.authToken) && Objects.equals(gameID, that.gameID) && Objects.equals(move, that.move);
+        return commandType == that.commandType && Objects.equals(authToken, that.authToken) && Objects.equals(gameID, that.gameID) && Objects.equals(move, that.move);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(commandType, username, authToken, gameID, move);
-    }
-
-    @Override
-    public String toString() {
-        return "UserGameCommand{" +
-                "commandType=" + commandType +
-                ", authToken='" + authToken + '\'' +
-                ", gameID=" + gameID +
-                ", username='" + username + '\'' +
-                ", move=" + move +
-                '}';
+        return Objects.hash(commandType, authToken, gameID, move);
     }
 }
