@@ -91,6 +91,7 @@ public class WebSocketHandler {
             chessGame = new ChessGame();
             chessGame.startGame();
             gameData = new GameData(gameData.gameID(), gameData.whiteUsername(), gameData.blackUsername(), gameData.gameName(), chessGame);
+            gameDAO.updateGame(gameData);
         }
 
         connections.loadGame(gameData.game(), authToken);
@@ -104,6 +105,11 @@ public class WebSocketHandler {
 
         GameData gameData = getGameData(userGameCommand);
         ChessGame chessGame = gameData.game();
+
+        if (!chessGame.isInPlay()) {
+            throw new RuntimeException("Cannot move after game is over");
+        }
+
         Collection<ChessMove> validMoves = chessGame.validMoves(move.getStartPosition());
         if (!validMoves.contains(move)) {
             throw new RuntimeException("Invalid move");
@@ -118,20 +124,21 @@ public class WebSocketHandler {
 
         connections.loadGame(chessGame, null);
         String message = getUsername(authToken) + " made move: " + move.toString();
-        connections.notification(message, null);
+        connections.notification(message, authToken);
 
-        ChessGame.TeamColor otherPlayerColor = (gameData.game().getTeamTurn() == WHITE) ? BLACK : WHITE;
-        if (chessGame.isInCheck(otherPlayerColor)) {
+        ChessGame.TeamColor color = gameData.game().getTeamTurn();
+        System.out.println(color);
+        if (chessGame.isInCheck(color)) {
             String otherPlayerName = getOtherPlayerName(gameData);
             message = otherPlayerName + " is in check!";
             connections.notification(message, null);
         }
-        if (chessGame.isInCheckmate(otherPlayerColor)) {
+        if (chessGame.isInCheckmate(color)) {
             String otherPlayerName = getOtherPlayerName(gameData);
             message = otherPlayerName + " is in checkmate. Great job!";
             connections.notification(message, null);
         }
-        if (chessGame.isInStalemate(otherPlayerColor)) {
+        if (chessGame.isInStalemate(color)) {
             String otherPlayerName = getOtherPlayerName(gameData);
             message = otherPlayerName + " is in check!";
             connections.notification(message, null);
