@@ -1,6 +1,7 @@
 package server.websocket;
 
 import chess.ChessMove;
+import chess.ChessPiece;
 import chess.InvalidMoveException;
 import com.google.gson.Gson;
 import dataaccess.SQLGameDAO;
@@ -106,8 +107,17 @@ public class WebSocketHandler {
         GameData gameData = getGameData(userGameCommand);
         ChessGame chessGame = gameData.game();
 
+        ChessGame.TeamColor color = (gameData.whiteUsername().equals(getUsername(authToken))) ? WHITE : BLACK;
+
         if (!chessGame.isInPlay()) {
             throw new RuntimeException("Cannot move after game is over");
+        }
+        if (chessGame.getTeamTurn() != color) {
+            throw new RuntimeException("Cannot move during opponent's turn");
+        }
+        ChessPiece piece = chessGame.getBoard().getPiece(move.getStartPosition());
+        if (piece == null || chessGame.getTeamTurn() != piece.getTeamColor()) {
+            throw new RuntimeException("Cannot move opponent's piece");
         }
 
         Collection<ChessMove> validMoves = chessGame.validMoves(move.getStartPosition());
@@ -126,7 +136,6 @@ public class WebSocketHandler {
         String message = getUsername(authToken) + " made move: " + move.toString();
         connections.notification(message, authToken);
 
-        ChessGame.TeamColor color = gameData.game().getTeamTurn();
         System.out.println(color);
 
         if (chessGame.isInCheckmate(color)) {
