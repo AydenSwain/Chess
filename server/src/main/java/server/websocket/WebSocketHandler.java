@@ -63,12 +63,22 @@ public class WebSocketHandler {
         return gameData;
     }
 
-    private void connect(UserGameCommand userGameCommand, Session session) {
-        checkAuthorised(userGameCommand);
+    private String getUsername(String authToken) {
+        return null;
+    }
 
-        connections.add(userGameCommand.getUsername(), session);
+    private void connect(UserGameCommand userGameCommand, Session session) {
+//        checkAuthorised(userGameCommand);
+
+        connections.add(userGameCommand.getAuthToken(), session);
 
         GameData gameData = getGameData(userGameCommand);
+        ChessGame chessGame = gameData.game();
+        if (chessGame == null) {
+            chessGame = new ChessGame();
+            chessGame.startGame();
+            gameData = new GameData(gameData.gameID(), gameData.whiteUsername(), gameData.blackUsername(), gameData.gameName(), chessGame);
+        }
         connections.loadGame(gameData.game(), userGameCommand.getUsername());
     }
 

@@ -14,9 +14,9 @@ import static websocket.messages.ServerMessage.ServerMessageType.*;
 public class ConnectionManager {
     public final ConcurrentHashMap<String, Connection> connections = new ConcurrentHashMap<>();
 
-    public void add(String username, Session session) {
-        Connection connection = new Connection(username, session);
-        connections.put(username, connection);
+    public void add(String authToken, Session session) {
+        Connection connection = new Connection(authToken, session);
+        connections.put(authToken, connection);
     }
 
     public void remove(String username) {
@@ -62,7 +62,8 @@ public class ConnectionManager {
 
     private void send(ServerMessage serverMessage, Connection connection) {
         try {
-            connection.session().getRemote().sendString(new Gson().toJson(serverMessage));
+            String json = new Gson().toJson(serverMessage);
+            connection.session().getRemote().sendString(json);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

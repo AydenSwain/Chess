@@ -45,6 +45,10 @@ public class ChessGame {
         return isInPlay;
     }
 
+    public void startGame() {
+        board.resetBoard();
+    }
+
     public void gameOver() {
         isInPlay = false;
     }
