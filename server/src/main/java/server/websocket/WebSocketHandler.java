@@ -25,6 +25,7 @@ public class WebSocketHandler {
     }
 
     private void connect(UserGameCommand userGameCommand, Session session) {
+        connections.add(userGameCommand.getUsername(), session);
 
     }
 
