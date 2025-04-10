@@ -33,6 +33,11 @@ public class ConnectionManager {
         }
     }
 
+    public void error(String message, String username) {
+        message = "Error: " + message;
+        send(new ServerMessage(ERROR, null, message), connections.get(username));
+    }
+
     public void broadcast(String excludeUsername, ServerMessage serverMessage) {
         var removeList = new ArrayList<Connection>();
         for (Connection c : connections.values()) {
