@@ -22,21 +22,28 @@ import websocket.commands.UserGameCommand;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static chess.ChessGame.TeamColor.*;
 
 @WebSocket
 public class WebSocketHandler {
-
-    private final ConnectionManager connections = new ConnectionManager();
+    private final HashMap<Integer, ConnectionManager> gameConnections = new HashMap<>();
     private final UserDataAccess userDAO = new SQLUserDAO();
     private final AuthDataAccess authDAO = new SQLAuthDAO();
     private final GameDataAccess gameDAO = new SQLGameDAO();
 
+    private ConnectionManager connections = new ConnectionManager();
+
     @OnWebSocketMessage
     public void onMessage(Session session, String message) throws IOException {
         UserGameCommand userGameCommand = new Gson().fromJson(message, UserGameCommand.class);
+
+        if (!gameConnections.containsKey(userGameCommand.getGameID())) {
+            gameConnections.put(userGameCommand.getGameID(), new ConnectionManager());
+        }
+        connections = gameConnections.get(userGameCommand.getGameID());
 
         try {
             switch (userGameCommand.getCommandType()) {
@@ -135,8 +142,6 @@ public class WebSocketHandler {
         connections.loadGame(chessGame, null);
         String message = getUsername(authToken) + " made move: " + move.toString();
         connections.notification(message, authToken);
-
-        System.out.println(color);
 
         if (chessGame.isInCheckmate(color)) {
             String otherPlayerName = getOtherPlayerName(gameData);

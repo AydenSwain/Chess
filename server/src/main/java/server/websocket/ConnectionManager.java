@@ -81,7 +81,6 @@ public class ConnectionManager {
         try {
             String json = new Gson().toJson(serverMessage);
             connection.session().getRemote().sendString(json);
-            System.out.println("Sent message: " + json);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
