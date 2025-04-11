@@ -163,7 +163,7 @@ public class BoardPrinter {
     private void printSquare(int row, int col, String text, ChessGame.TeamColor pieceTeamColor) {
         String setBackgroundColor;
         String setTextColor;
-        ChessPosition position = new ChessPosition(row, col);
+        ChessPosition position = new ChessPosition(8 - row, col + 1);
 
         if (isLightSquare(row, col)) {
             setBackgroundColor = SET_LIGHT_SQUARE_BG_COLOR;

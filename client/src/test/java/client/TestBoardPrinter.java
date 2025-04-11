@@ -25,12 +25,7 @@ public class TestBoardPrinter {
         Collection<ChessMove> moves = game.validMoves(position);
 
         HashSet<ChessPosition> positions = new HashSet<>();
-        boolean isFirstIteration = true;
         for (ChessMove move : moves) {
-            if (isFirstIteration) {
-                positions.add(move.getStartPosition());
-                isFirstIteration = false;
-            }
             positions.add(move.getEndPosition());
         }
 
