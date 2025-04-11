@@ -42,6 +42,6 @@ public class WebSocketHandler {
     }
 
     private void error() {
-        System.out.println(serverMessage.getErrorMessage());
+        System.out.println(SET_TEXT_COLOR_RED + serverMessage.getErrorMessage() + SET_TEXT_COLOR_BLUE);
     }
 }

@@ -1,5 +1,6 @@
 package clientrepl;
 
+import chess.ChessPiece;
 import httpfacade.ResponseException;
 import httpfacade.ServerFacade;
 import chess.ChessGame;
@@ -11,6 +12,8 @@ import websocket.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+
+import static chess.ChessPiece.PieceType.*;
 
 public class InGameClient implements Client {
     private final ServerFacade facade;
@@ -62,11 +65,11 @@ public class InGameClient implements Client {
                 case "resign" -> resign();
                 case "highlight_moves" -> highlightMoves(params);
                 case "quit" -> "";
-                default -> "Type \"help\" for help!";
+                default -> Repl.HELP_MESSAGE;
             };
         } catch (NumberFormatException e) {
             return "Error: Invalid number format:\n" + e.getMessage();
-        } catch (WebSocketException e) {
+        } catch (ResponseException | WebSocketException e) {
             return e.getMessage();
         }
     }
@@ -93,8 +96,27 @@ public class InGameClient implements Client {
             webSocketFacade.makeMove(authToken, gameID, move);
 
             return "Making move: " + move.toString() + " ...";
+
+        } else if (params.length == 6) {
+            ChessMove move = new ChessMove(new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1])),
+                                           new ChessPosition(Integer.parseInt(params[3]), getColNum(params[4])),
+                                           getPromotionPiece(params[5]));
+
+            webSocketFacade.makeMove(authToken, gameID, move);
+
+            return "Making move: " + move.toString() + " ...";
         }
-        throw new ResponseException(400, "Expected: <row_number> <col_letter> -> <row_number> <col_letter>");
+        throw new ResponseException(400, "Expected: <row_number> <col_letter> -> <row_number> <col_letter> <promotion_piece_if_needed>");
+    }
+
+    private ChessPiece.PieceType getPromotionPiece(String promotion) {
+        return switch (promotion) {
+            case "queen" -> QUEEN;
+            case "rook" -> ROOK;
+            case "knight" -> KNIGHT;
+            case "bishop" -> BISHOP;
+            default -> throw new ResponseException(400, String.format("Expected: <queen>, <knight>, <bishop>, or <knight> but got \"%s\"", promotion));
+        };
     }
 
     private int getColNum(String letter) {

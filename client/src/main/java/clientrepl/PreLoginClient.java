@@ -22,7 +22,7 @@ public class PreLoginClient implements Client{
                 case "login" -> login(params);
                 case "register" -> register(params);
                 case "quit" -> "";
-                default -> "Type \"help\" for help!";
+                default -> Repl.HELP_MESSAGE;
             };
         } catch (NumberFormatException ex) {
             return "Invalid game number format: " + ex.getMessage();

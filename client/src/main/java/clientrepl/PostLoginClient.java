@@ -31,7 +31,7 @@ public class PostLoginClient implements Client{
                 case "play_game" -> playGame(params);
                 case "observe_game" -> observeGame(params);
                 case "quit" -> "";
-                default -> "Type \"help\" for help!";
+                default -> Repl.HELP_MESSAGE;
             };
         } catch (NumberFormatException e) {
             return "Invalid number format:\n" + e.getMessage();
