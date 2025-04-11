@@ -198,7 +198,7 @@ public class BoardPrinter {
         if (teamColor == ChessGame.TeamColor.WHITE) {
             return new ChessPosition(8 - row, col + 1);
         } else {
-            return new ChessPosition(row + 1, col + 1);
+            return new ChessPosition(row + 1, 8 - col);
         }
     }
 

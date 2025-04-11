@@ -115,9 +115,9 @@ public class WebSocketHandler {
         ChessGame chessGame = gameData.game();
 
         ChessGame.TeamColor color = null;
-        if (gameData.whiteUsername() != null && gameData.whiteUsername().equals(getUsername(authToken))) {
+        if (gameData.whiteUsername() != null && gameData.whiteUsername().equals(getUsername(authToken).toLowerCase())) {
             color = WHITE;
-        } else if (gameData.blackUsername() != null && gameData.blackUsername().equals(getUsername(authToken))) {
+        } else if (gameData.blackUsername() != null && gameData.blackUsername().equals(getUsername(authToken).toLowerCase())) {
             color = BLACK;
         }
 
@@ -133,6 +133,9 @@ public class WebSocketHandler {
         }
         ChessPiece piece = chessGame.getBoard().getPiece(move.getStartPosition());
         if (piece == null || chessGame.getTeamTurn() != piece.getTeamColor()) {
+            if (piece == null) {
+                throw new RuntimeException("There is no piece there");
+            }
             throw new RuntimeException("Cannot move opponent's piece");
         }
 
@@ -149,29 +152,32 @@ public class WebSocketHandler {
         gameDAO.updateGame(gameData);
 
         connections.loadGame(chessGame, null);
-        String message = String.format("\"%s\" made move: %s", getUsername(authToken), move.toString());
+        String username = getUsername(authToken);
+        String message = String.format("\"%s\" made move: %s", username, move.toString());
         connections.notification(message, authToken);
 
-        if (chessGame.isInCheckmate(color)) {
-            String otherPlayerName = getOtherPlayerName(gameData);
-            message = String.format("\"%s\" is in checkmate. Great job!", otherPlayerName);
-            connections.notification(message, null);
-        } else if (chessGame.isInCheck(color)) {
-            String otherPlayerName = getOtherPlayerName(gameData);
-            message = String.format("\"%s\" is in check!", otherPlayerName);
-            connections.notification(message, null);
-        } else if (chessGame.isInStalemate(color)) {
-            String otherPlayerName = getOtherPlayerName(gameData);
-            message = String.format("\"%s\" is in stalemate!", otherPlayerName);
-            connections.notification(message, null);
-        }
-    }
+        if (color != null) {
+            ChessGame.TeamColor otherColor = (color == WHITE) ? BLACK : WHITE;
+            String otherUsername = (gameData.whiteUsername() == null || gameData.whiteUsername().equals(username) ? gameData.blackUsername() : gameData.whiteUsername());
 
-    private String getOtherPlayerName(GameData gameData) {
-        if (gameData.game().getTeamTurn() == WHITE) {
-            return gameData.blackUsername();
+            if (chessGame.isInCheckmate(otherColor)) {
+                message = String.format("\"%s\" is in checkmate. \"%s\" won the game. Great job!", otherUsername, username);
+                connections.notification(message, null);
+
+                chessGame.gameOver();
+                gameDAO.updateGame(gameData);
+
+            } else if (chessGame.isInCheck(otherColor)) {
+                message = String.format("\"%s\" is in check!", otherUsername);
+                connections.notification(message, null);
+            } else if (chessGame.isInStalemate(otherColor)) {
+                message = "There is a stalemate. The game is over. Great Job!";
+                connections.notification(message, null);
+
+                chessGame.gameOver();
+                gameDAO.updateGame(gameData);
+            }
         }
-        return gameData.whiteUsername();
     }
 
     private void leave(UserGameCommand userGameCommand) {
