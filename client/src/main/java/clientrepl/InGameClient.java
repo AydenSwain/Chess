@@ -65,8 +65,8 @@ public class InGameClient implements Client {
                 default -> "Type \"help\" for help!";
             };
         } catch (NumberFormatException e) {
-            return "Invalid number format:\n" + e.getMessage();
-        } catch (ResponseException e) {
+            return "Error: Invalid number format:\n" + e.getMessage();
+        } catch (WebSocketException e) {
             return e.getMessage();
         }
     }

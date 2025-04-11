@@ -32,7 +32,7 @@ public class WebSocketFacade extends Endpoint {
             });
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new WebSocketException("Error: " + e.getMessage());
         }
     }
 
@@ -45,7 +45,7 @@ public class WebSocketFacade extends Endpoint {
             UserGameCommand userGameCommand = new UserGameCommand(CONNECT, authToken, gameID);
             this.session.getBasicRemote().sendText(new Gson().toJson(userGameCommand));
         } catch (Exception e) {
-            throw new RuntimeException("Error: Could not connect");
+            throw new WebSocketException("Error: Could not connect");
         }
     }
 
@@ -54,7 +54,7 @@ public class WebSocketFacade extends Endpoint {
             UserGameCommand userGameCommand = new UserGameCommand(MAKE_MOVE, authToken, gameID, move);
             this.session.getBasicRemote().sendText(new Gson().toJson(userGameCommand));
         } catch (Exception e) {
-            throw new RuntimeException("Error: Could not make move");
+            throw new WebSocketException("Error: Could not make move");
         }
     }
 
@@ -64,7 +64,7 @@ public class WebSocketFacade extends Endpoint {
             this.session.getBasicRemote().sendText(new Gson().toJson(userGameCommand));
             this.session.close();
         } catch (Exception e) {
-            throw new RuntimeException("Error: Could not leave");
+            throw new WebSocketException("Error: Could not leave");
         }
     }
 
@@ -73,7 +73,7 @@ public class WebSocketFacade extends Endpoint {
             UserGameCommand userGameCommand = new UserGameCommand(RESIGN, authToken, gameID);
             this.session.getBasicRemote().sendText(new Gson().toJson(userGameCommand));
         } catch (Exception e) {
-            throw new RuntimeException("Error: Could not resign");
+            throw new WebSocketException("Error: Could not resign");
         }
     }
 }

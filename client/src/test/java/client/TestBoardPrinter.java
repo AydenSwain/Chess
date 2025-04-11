@@ -29,6 +29,6 @@ public class TestBoardPrinter {
             positions.add(move.getEndPosition());
         }
 
-        new BoardPrinter(board).print(ChessGame.TeamColor.WHITE, positions);
+        new BoardPrinter(board).print(ChessGame.TeamColor.BLACK, positions);
     }
 }

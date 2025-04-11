@@ -163,7 +163,7 @@ public class BoardPrinter {
     private void printSquare(int row, int col, String text, ChessGame.TeamColor pieceTeamColor) {
         String setBackgroundColor;
         String setTextColor;
-        ChessPosition position = new ChessPosition(8 - row, col + 1);
+        ChessPosition position = getChessPosition(row, col);
 
         if (isLightSquare(row, col)) {
             setBackgroundColor = SET_LIGHT_SQUARE_BG_COLOR;
@@ -192,6 +192,14 @@ public class BoardPrinter {
         out.print(PADDING);
         out.print(text);
         out.print(PADDING);
+    }
+
+    private ChessPosition getChessPosition(int row, int col) {
+        if (teamColor == ChessGame.TeamColor.WHITE) {
+            return new ChessPosition(8 - row, col + 1);
+        } else {
+            return new ChessPosition(row + 1, col + 1);
+        }
     }
 
     private boolean isLightSquare(int row, int col) {

@@ -34,17 +34,26 @@ public class Repl {
 
             try {
                 result = client.eval(response);
-                System.out.println(SET_TEXT_COLOR_BLUE + result + RESET_TEXT_COLOR);
+
+                if (result.startsWith("Error: ")) {
+                    printError(result);
+                } else {
+                    System.out.println(SET_TEXT_COLOR_BLUE + result + RESET_TEXT_COLOR);
+                }
 
             } catch (Throwable e) {
                 String message = e.toString();
-                System.out.println(SET_TEXT_COLOR_RED + message + RESET_TEXT_COLOR);
+                printError("UNEXPECTED ERROR:\n" + message);
             }
         }
 
         System.out.print(SET_TEXT_COLOR_MAGENTA);
         System.out.println("Bye!");
         System.out.print(RESET_TEXT_COLOR);
+    }
+
+    private void printError(String response) {
+        System.out.println(SET_TEXT_COLOR_RED + response + RESET_TEXT_COLOR);
     }
 
     private String getResponse() {
