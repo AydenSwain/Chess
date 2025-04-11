@@ -158,7 +158,7 @@ public class WebSocketHandler {
 
         connections.loadGame(chessGame, null);
         String username = getUsername(authToken);
-        String message = String.format("\"%s\" made move: %s", username, move.toString());
+        String message = String.format("\"%s\" made move: \"%s\"", username, move.toString());
         connections.notification(message, authToken);
 
         if (color != null) {

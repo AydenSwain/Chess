@@ -95,7 +95,7 @@ public class InGameClient implements Client {
 
             webSocketFacade.makeMove(authToken, gameID, move);
 
-            return "Making move: " + move.toString() + " ...";
+            return String.format("Making move: \"%s\" ...", move.toString());
 
         } else if (params.length == 6) {
             ChessMove move = new ChessMove(new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1])),
