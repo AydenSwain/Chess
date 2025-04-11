@@ -114,12 +114,21 @@ public class WebSocketHandler {
         GameData gameData = getGameData(userGameCommand);
         ChessGame chessGame = gameData.game();
 
-        ChessGame.TeamColor color = (gameData.whiteUsername().equals(getUsername(authToken))) ? WHITE : BLACK;
+        ChessGame.TeamColor color;
+        if (gameData.whiteUsername() == null) {
+            color = null;
+        } else {
+            color = (gameData.whiteUsername().equals(getUsername(authToken))) ? WHITE : BLACK;
+        }
 
         if (!chessGame.isInPlay()) {
             throw new RuntimeException("Cannot move after game is over");
         }
         if (chessGame.getTeamTurn() != color) {
+            if (color == null) {
+                throw new RuntimeException("Cannot move as an observer");
+            }
+
             throw new RuntimeException("Cannot move during opponent's turn");
         }
         ChessPiece piece = chessGame.getBoard().getPiece(move.getStartPosition());
