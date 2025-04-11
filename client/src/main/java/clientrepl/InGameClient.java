@@ -92,7 +92,7 @@ public class InGameClient implements Client {
 
             webSocketFacade.makeMove(authToken, gameID, move);
 
-            return "Made move " + move.toString();
+            return "Making move: " + move.toString() + " ...";
         }
         throw new ResponseException(400, "Expected: <row_number> <col_letter> -> <row_number> <col_letter>");
     }
@@ -114,7 +114,7 @@ public class InGameClient implements Client {
     private String resign() {
         webSocketFacade.resign(authToken, gameID);
 
-        return "You have resigned";
+        return "Resigning ...";
     }
 
     private String highlightMoves(String[] params) {

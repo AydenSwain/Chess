@@ -140,7 +140,7 @@ public class WebSocketHandler {
         gameDAO.updateGame(gameData);
 
         connections.loadGame(chessGame, null);
-        String message = getUsername(authToken) + " made move: " + move.toString();
+        String message = String.format("\"%s\" made move: %s", getUsername(authToken), move.toString());
         connections.notification(message, authToken);
 
         if (chessGame.isInCheckmate(color)) {
