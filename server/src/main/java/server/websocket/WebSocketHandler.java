@@ -115,14 +115,10 @@ public class WebSocketHandler {
         ChessGame chessGame = gameData.game();
 
         ChessGame.TeamColor color = null;
-        if (gameData.whiteUsername() != null) {
-            if (gameData.whiteUsername().equals(getUsername(authToken))) {
-                color = WHITE;
-            }
-        } else if (gameData.blackUsername() != null) {
-            if (gameData.blackUsername().equals(getUsername(authToken))) {
-                color = BLACK;
-            }
+        if (gameData.whiteUsername() != null && gameData.whiteUsername().equals(getUsername(authToken))) {
+            color = WHITE;
+        } else if (gameData.blackUsername() != null && gameData.blackUsername().equals(getUsername(authToken))) {
+            color = BLACK;
         }
 
         if (!chessGame.isInPlay()) {
