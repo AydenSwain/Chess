@@ -6,7 +6,7 @@ import model.GameData;
 import model.PlayerData;
 import model.UserData;
 import org.junit.jupiter.api.*;
-import HTTPFacade.*;
+import httpfacade.*;
 import server.Server;
 
 import java.util.Collection;

@@ -1,7 +1,7 @@
 package clientrepl;
 
-import HTTPFacade.ResponseException;
-import HTTPFacade.ServerFacade;
+import httpfacade.ResponseException;
+import httpfacade.ServerFacade;
 import chess.ChessGame;
 import chess.ChessMove;
 import chess.ChessPosition;
@@ -9,8 +9,6 @@ import ui.BoardPrinter;
 import websocket.*;
 
 import java.util.Arrays;
-
-import static chess.ChessGame.TeamColor.*;
 
 public class InGameClient implements Client {
     private final ServerFacade facade;

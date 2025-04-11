@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import HTTPFacade.ResponseException;
-import HTTPFacade.ServerFacade;
+import httpfacade.ResponseException;
+import httpfacade.ServerFacade;
 import chess.ChessGame;
 import model.GameData;
 import model.PlayerData;

@@ -1,4 +1,4 @@
-package HTTPFacade;
+package httpfacade;
 
 import com.google.gson.Gson;
 

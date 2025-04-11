@@ -71,7 +71,8 @@ public class ServerMessage {
             return false;
         }
         ServerMessage that = (ServerMessage) o;
-        return serverMessageType == that.serverMessageType && Objects.equals(game, that.game) && Objects.equals(message, that.message) && Objects.equals(errorMessage, that.errorMessage) && Objects.equals(isGameOver, that.isGameOver);
+        return serverMessageType == that.serverMessageType && Objects.equals(game, that.game) && Objects.equals(message, that.message) &&
+                                    Objects.equals(errorMessage, that.errorMessage) && Objects.equals(isGameOver, that.isGameOver);
     }
 
     @Override

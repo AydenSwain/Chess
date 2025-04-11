@@ -1,6 +1,6 @@
 package clientrepl;
 
-import HTTPFacade.ServerFacade;
+import httpfacade.ServerFacade;
 import model.AuthData;
 import model.GameData;
 
