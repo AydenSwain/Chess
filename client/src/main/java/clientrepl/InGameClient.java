@@ -115,7 +115,7 @@ public class InGameClient implements Client {
             case "rook" -> ROOK;
             case "knight" -> KNIGHT;
             case "bishop" -> BISHOP;
-            default -> throw new ResponseException(400, String.format("Expected: <queen>, <knight>, <bishop>, or <knight> but got \"%s\"", promotion));
+            default -> throw new ResponseException(400, String.format("Expected: \"queen\", \"knight\", \"bishop\", or \"knight\" but got \"%s\"", promotion));
         };
     }
 

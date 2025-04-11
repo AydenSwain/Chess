@@ -139,6 +139,9 @@ public class WebSocketHandler {
             throw new RuntimeException("Cannot move opponent's piece");
         }
 
+        if (move.getStartPosition().isOutOfBounds()) {
+            throw new RuntimeException("Move is out of bounds");
+        }
         Collection<ChessMove> validMoves = chessGame.validMoves(move.getStartPosition());
         if (!validMoves.contains(move)) {
             throw new RuntimeException("Invalid move");
