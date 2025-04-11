@@ -23,9 +23,17 @@ public class WebSocketFacade extends Endpoint {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             this.session = container.connectToServer(this, socketURI);
 
-            this.session.addMessageHandler((MessageHandler.Whole<String>) message -> {
-                ServerMessage serverMessage = new Gson().fromJson(message, ServerMessage.class);
-                this.handler.handleMessage(serverMessage);
+//            this.session.addMessageHandler((MessageHandler.Whole<String>) message -> {
+//                ServerMessage serverMessage = new Gson().fromJson(message, ServerMessage.class);
+//                this.handler.handleMessage(serverMessage);
+//            });
+
+            this.session.addMessageHandler(new MessageHandler.Whole<String>() {
+                @Override
+                public void onMessage(String message) {
+                    ServerMessage serverMessage = new Gson().fromJson(message, ServerMessage.class);
+                    handler.handleMessage(serverMessage);
+                }
             });
 
         } catch (Exception e) {
@@ -35,12 +43,14 @@ public class WebSocketFacade extends Endpoint {
 
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {
+        System.out.println("onOpen");
     }
 
     public void connect(String authToken, int gameID) {
         try {
             UserGameCommand userGameCommand = new UserGameCommand(CONNECT, authToken, gameID);
             this.session.getBasicRemote().sendText(new Gson().toJson(userGameCommand));
+            System.out.println(session.isOpen());
         } catch (Exception e) {
             throw new RuntimeException("Error: Could not connect");
         }

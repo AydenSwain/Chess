@@ -25,7 +25,7 @@ public class InGameClient implements Client {
 
     public InGameClient(ServerFacade facade, int gameID, ChessGame.TeamColor color) {
         this.facade = facade;
-        this.handler = new WebSocketHandler(game, color);
+        this.handler = new WebSocketHandler(this);
         String url = facade.getServerUrl();
         webSocketFacade = new WebSocketFacade(url, handler);
 
@@ -34,6 +34,18 @@ public class InGameClient implements Client {
         this.color = color;
 
         webSocketFacade.connect(authToken, gameID);
+    }
+
+    public ChessGame.TeamColor getColor() {
+        return color;
+    }
+
+    public ChessGame getGame() {
+        return game;
+    }
+
+    public void setGame(ChessGame game) {
+        this.game = game;
     }
 
     @Override

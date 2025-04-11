@@ -1,19 +1,19 @@
 package websocket;
 
 import chess.ChessGame;
+import clientrepl.InGameClient;
 import ui.BoardPrinter;
 import websocket.messages.ServerMessage;
 
 import static websocket.messages.ServerMessage.*;
 
 public class WebSocketHandler {
-    private final ChessGame.TeamColor color;
+    private final InGameClient gameClient;
     private ChessGame chessGame;
     private ServerMessage serverMessage;
 
-    public WebSocketHandler(ChessGame game, ChessGame.TeamColor color) {
-        this.chessGame = game;
-        this.color = color;
+    public WebSocketHandler(InGameClient gameClient) {
+        this.gameClient = gameClient;
     }
 
     public void handleMessage(ServerMessage serverMessage) {
@@ -27,9 +27,10 @@ public class WebSocketHandler {
     }
 
     private void loadGame() {
-        chessGame = serverMessage.getGame();
+        ChessGame game = serverMessage.getGame();
+        gameClient.setGame(game);
 
-        new BoardPrinter(chessGame.getBoard()).print(color);
+        new BoardPrinter(game.getBoard()).print(gameClient.getColor());
     }
 
     private void notification() {
