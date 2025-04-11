@@ -131,6 +131,11 @@ public class WebSocketHandler {
 
             throw new RuntimeException("Cannot move during opponent's turn");
         }
+
+        if (move.getStartPosition().isOutOfBounds()) {
+            throw new RuntimeException("Move is out of bounds");
+        }
+
         ChessPiece piece = chessGame.getBoard().getPiece(move.getStartPosition());
         if (piece == null || chessGame.getTeamTurn() != piece.getTeamColor()) {
             if (piece == null) {
@@ -139,9 +144,6 @@ public class WebSocketHandler {
             throw new RuntimeException("Cannot move opponent's piece");
         }
 
-        if (move.getStartPosition().isOutOfBounds()) {
-            throw new RuntimeException("Move is out of bounds");
-        }
         Collection<ChessMove> validMoves = chessGame.validMoves(move.getStartPosition());
         if (!validMoves.contains(move)) {
             throw new RuntimeException("Invalid move");
