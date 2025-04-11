@@ -9,6 +9,8 @@ import ui.BoardPrinter;
 import websocket.*;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 
 public class InGameClient implements Client {
     private final ServerFacade facade;
@@ -69,12 +71,8 @@ public class InGameClient implements Client {
         }
     }
 
-    private void printBoard(ChessGame.TeamColor color) {
-        new BoardPrinter(game.getBoard()).print(color);
-    }
-
     private String redraw() {
-        printBoard(color);
+        new BoardPrinter(game.getBoard()).print(color, null);
 
         return "Board was redrawn";
     }
@@ -121,8 +119,19 @@ public class InGameClient implements Client {
         if (params.length == 3) {
             ChessPosition position = new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1]));
 
-            // ---------------------- Add here
-            printBoard(color);
+            Collection<ChessMove> moves = game.validMoves(position);
+            HashSet<ChessPosition> positions = new HashSet<>();
+
+            boolean isFirstIteration = true;
+            for (ChessMove move : moves) {
+                if (isFirstIteration) {
+                    positions.add(move.getStartPosition());
+                    isFirstIteration = false;
+                }
+                positions.add(move.getEndPosition());
+            }
+
+            new BoardPrinter(game.getBoard()).print(color, positions);
         }
         throw new ResponseException(400, "Expected: <row_number> <col_letter>");
     }

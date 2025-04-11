@@ -3,13 +3,11 @@ package ui;
 import chess.ChessBoard;
 import chess.ChessGame;
 import chess.ChessPiece;
+import chess.ChessPosition;
 
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static ui.ChessPieceText.*;
 import static ui.EscapeSequences.*;
@@ -21,10 +19,14 @@ public class BoardPrinter {
     private static final String SET_LIGHT_SQUARE_BG_COLOR = SET_BG_COLOR_GREEN;
     private static final String SET_DARK_SQUARE_BG_COLOR = SET_BG_COLOR_DARK_GREEN;
 
+    private static final String SET_LIGHT_HIGHLIGHT_BG_COLOR = SET_BG_COLOR_LIGHT_GREY;
+    private static final String SET_DARK_HIGHLIGHT_BG_COLOR = SET_BG_COLOR_DARK_GREY;
+
     private static final String PADDING = " ";
 
     private ChessPiece[][] pieces;
     private ChessGame.TeamColor teamColor;
+    private Collection<ChessPosition> positions;
 
     private PrintStream out;
 
@@ -32,8 +34,10 @@ public class BoardPrinter {
         this.pieces = board.getSquares();
     }
 
-    public void print(ChessGame.TeamColor teamColor) {
+    public void print(ChessGame.TeamColor teamColor, Collection<ChessPosition> positions) {
         this.teamColor = teamColor;
+        this.positions = positions;
+
         out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
         List<String> rowLabels = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8"));;
@@ -159,11 +163,21 @@ public class BoardPrinter {
     private void printSquare(int row, int col, String text, ChessGame.TeamColor pieceTeamColor) {
         String setBackgroundColor;
         String setTextColor;
+        ChessPosition position = new ChessPosition(row, col);
 
         if (isLightSquare(row, col)) {
             setBackgroundColor = SET_LIGHT_SQUARE_BG_COLOR;
+
+            if (positions != null && positions.contains(position)) {
+                setBackgroundColor = SET_LIGHT_HIGHLIGHT_BG_COLOR;
+            }
+
         } else {
             setBackgroundColor = SET_DARK_SQUARE_BG_COLOR;
+
+            if (positions != null && positions.contains(position)) {
+                setBackgroundColor = SET_DARK_HIGHLIGHT_BG_COLOR;
+            }
         }
 
         if (pieceTeamColor == ChessGame.TeamColor.WHITE) {

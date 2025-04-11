@@ -30,7 +30,7 @@ public class WebSocketHandler {
         ChessGame game = serverMessage.getGame();
         gameClient.setGame(game);
 
-        new BoardPrinter(game.getBoard()).print(gameClient.getColor());
+        new BoardPrinter(game.getBoard()).print(gameClient.getColor(), null);
     }
 
     private void notification() {
