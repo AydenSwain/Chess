@@ -86,11 +86,13 @@ public class InGameClient implements Client {
     }
 
     private String makeMove(String[] params) {
-        if (params.length == 6) {
+        if (params.length == 5) {
             ChessMove move = new ChessMove(new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1])),
                                            new ChessPosition(Integer.parseInt(params[3]), getColNum(params[4])));
 
             webSocketFacade.makeMove(authToken, gameID, move);
+
+            return "Made move " + move.toString();
         }
         throw new ResponseException(400, "Expected: <row_number> <col_letter> -> <row_number> <col_letter>");
     }
@@ -116,7 +118,7 @@ public class InGameClient implements Client {
     }
 
     private String highlightMoves(String[] params) {
-        if (params.length == 3) {
+        if (params.length == 2) {
             ChessPosition position = new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1]));
 
             Collection<ChessMove> moves = game.validMoves(position);
@@ -132,6 +134,8 @@ public class InGameClient implements Client {
             }
 
             new BoardPrinter(game.getBoard()).print(color, positions);
+
+            return "Moves for " + position.toString() + " highlighted";
         }
         throw new ResponseException(400, "Expected: <row_number> <col_letter>");
     }

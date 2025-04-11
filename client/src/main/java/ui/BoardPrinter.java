@@ -16,11 +16,11 @@ public class BoardPrinter {
     private static final String SET_BOARDER_BG_COLOR = SET_BG_COLOR_BLUE;
     private static final String SET_BOARDER_TEXT_COLOR = SET_TEXT_COLOR_BLACK;
 
-    private static final String SET_LIGHT_SQUARE_BG_COLOR = SET_BG_COLOR_GREEN;
-    private static final String SET_DARK_SQUARE_BG_COLOR = SET_BG_COLOR_DARK_GREEN;
+    private static final String SET_LIGHT_SQUARE_BG_COLOR = SET_BG_COLOR_LIGHT_GREY;
+    private static final String SET_DARK_SQUARE_BG_COLOR = SET_BG_COLOR_DARK_GREY;
 
-    private static final String SET_LIGHT_HIGHLIGHT_BG_COLOR = SET_BG_COLOR_LIGHT_GREY;
-    private static final String SET_DARK_HIGHLIGHT_BG_COLOR = SET_BG_COLOR_DARK_GREY;
+    private static final String SET_LIGHT_HIGHLIGHT_BG_COLOR = SET_BG_COLOR_GREEN;
+    private static final String SET_DARK_HIGHLIGHT_BG_COLOR = SET_BG_COLOR_DARK_GREEN;
 
     private static final String PADDING = " ";
 

@@ -5,7 +5,7 @@ import clientrepl.InGameClient;
 import ui.BoardPrinter;
 import websocket.messages.ServerMessage;
 
-import static websocket.messages.ServerMessage.*;
+import static ui.EscapeSequences.*;
 
 public class WebSocketHandler {
     private final InGameClient gameClient;
@@ -19,11 +19,15 @@ public class WebSocketHandler {
     public void handleMessage(ServerMessage serverMessage) {
         this.serverMessage = serverMessage;
 
+        System.out.print("\b\b\b\b" + SET_TEXT_COLOR_BLUE);
+
         switch (serverMessage.getServerMessageType()) {
             case LOAD_GAME -> loadGame();
             case NOTIFICATION -> notification();
             case ERROR -> error();
         }
+
+        System.out.print(RESET_TEXT_COLOR + ">>> " + SET_TEXT_COLOR_GREEN);
     }
 
     private void loadGame() {

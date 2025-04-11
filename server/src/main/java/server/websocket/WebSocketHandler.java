@@ -103,7 +103,7 @@ public class WebSocketHandler {
         }
 
         connections.loadGame(gameData.game(), authToken);
-        String message = getUsername(authToken) + " connected";
+        String message = String.format("\"%s\" connected", getUsername(authToken));
         connections.notification(message, authToken);
     }
 
@@ -145,15 +145,15 @@ public class WebSocketHandler {
 
         if (chessGame.isInCheckmate(color)) {
             String otherPlayerName = getOtherPlayerName(gameData);
-            message = otherPlayerName + " is in checkmate. Great job!";
+            message = String.format("\"%s\" is in checkmate. Great job!", otherPlayerName);
             connections.notification(message, null);
         } else if (chessGame.isInCheck(color)) {
             String otherPlayerName = getOtherPlayerName(gameData);
-            message = otherPlayerName + " is in check!";
+            message = String.format("\"%s\" is in check!", otherPlayerName);
             connections.notification(message, null);
         } else if (chessGame.isInStalemate(color)) {
             String otherPlayerName = getOtherPlayerName(gameData);
-            message = otherPlayerName + " is in check!";
+            message = String.format("\"%s\" is in stalemate!", otherPlayerName);
             connections.notification(message, null);
         }
     }
@@ -180,7 +180,7 @@ public class WebSocketHandler {
             gameDAO.updateGame(gameData);
         }
 
-        String message = getUsername(authToken) + " left the game";
+        String message = String.format("\"%s\" left the game", getUsername(authToken));
         connections.notification(message, authToken);
     }
 
@@ -199,7 +199,7 @@ public class WebSocketHandler {
         chessGame.gameOver();
         gameDAO.updateGame(gameData);
 
-        String message = userGameCommand.getAuthToken() + " resigned";
+        String message = String.format("\"%s\" resigned", getUsername(userGameCommand.getAuthToken()));
         connections.notification(message, null, true);
     }
 }
