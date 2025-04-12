@@ -163,7 +163,7 @@ public class WebSocketHandler {
 
         if (color != null) {
             ChessGame.TeamColor otherColor = (color == WHITE) ? BLACK : WHITE;
-            String otherUsername = (gameData.whiteUsername() == null || gameData.whiteUsername().equals(username) ? gameData.blackUsername() : gameData.whiteUsername());
+            String otherUsername = getOtherUsername(gameData, username);
 
             if (chessGame.isInCheckmate(otherColor)) {
                 message = String.format("\"%s\" is in checkmate. \"%s\" won the game. Great job!", otherUsername, username);
@@ -183,6 +183,24 @@ public class WebSocketHandler {
                 gameDAO.updateGame(gameData);
             }
         }
+    }
+
+    private String getOtherUsername(GameData gameData, String username) {
+        String otherUsername;
+        if (gameData.whiteUsername() == null || gameData.whiteUsername().equals(username)) {
+            if (gameData.blackUsername() != null) {
+                otherUsername = gameData.blackUsername();
+            } else {
+                otherUsername = "<black>";
+            }
+        } else {
+            if (gameData.whiteUsername() != null) {
+                otherUsername = gameData.whiteUsername();
+            } else {
+                otherUsername = "<white>";
+            }
+        }
+        return otherUsername;
     }
 
     private void leave(UserGameCommand userGameCommand) {
