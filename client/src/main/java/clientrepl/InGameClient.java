@@ -132,6 +132,11 @@ public class InGameClient implements Client {
     }
 
     private String resign() {
+        Repl.printClientMessage("Are you sure you want to resign? Type \"yes\" or \"no\"");
+        if (!Repl.getResponse().equals("yes")) {
+            return "Failed to resign";
+        }
+
         webSocketFacade.resign(authToken, gameID);
 
         return "Resigning ...";

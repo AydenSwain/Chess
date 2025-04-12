@@ -18,7 +18,6 @@ public class Repl {
     public static final String HELP_MESSAGE = CLIENT_COLOR + "Type \"help\" for help!" + RESET_TEXT_COLOR;
 
     private ServerFacade facade;
-    private Scanner scanner = new Scanner(System.in);
 
     public Repl(String serverUrl) {
         facade = new ServerFacade(serverUrl);
@@ -42,10 +41,10 @@ public class Repl {
                     printError(result);
 
                 } else if (result.startsWith("Expected: ")) {
-                    System.out.println(CLIENT_COLOR + result + RESET_TEXT_COLOR);
+                    printClientMessage(result);
 
                 } else {
-                    System.out.println(SET_TEXT_COLOR_BLUE + result + RESET_TEXT_COLOR);
+                    printResponse(result);
                 }
 
             } catch (Throwable e) {
@@ -63,9 +62,17 @@ public class Repl {
         System.out.println(SET_TEXT_COLOR_RED + response + RESET_TEXT_COLOR);
     }
 
-    private String getResponse() {
+    public static void printClientMessage(String response) {
+        System.out.println(CLIENT_COLOR + response + RESET_TEXT_COLOR);
+    }
+
+    private void printResponse(String response) {
+        System.out.println(SET_TEXT_COLOR_BLUE + response + RESET_TEXT_COLOR);
+    }
+
+    public static String getResponse() {
         System.out.print(">>> " + SET_TEXT_COLOR_GREEN);
-        String response = scanner.nextLine();
+        String response = new Scanner(System.in).nextLine();
         System.out.print(RESET_TEXT_COLOR);
         return response;
     }
