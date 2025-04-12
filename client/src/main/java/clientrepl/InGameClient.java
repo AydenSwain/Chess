@@ -89,24 +89,22 @@ public class InGameClient implements Client {
     }
 
     private String makeMove(String[] params) {
+        ChessMove move;
+
         if (params.length == 5) {
-            ChessMove move = new ChessMove(new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1])),
+            move = new ChessMove(new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1])),
                                            new ChessPosition(Integer.parseInt(params[3]), getColNum(params[4])));
 
-            webSocketFacade.makeMove(authToken, gameID, move);
-
-            return String.format("Making move: \"%s\" ...", move.toString());
-
         } else if (params.length == 6) {
-            ChessMove move = new ChessMove(new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1])),
+            move = new ChessMove(new ChessPosition(Integer.parseInt(params[0]), getColNum(params[1])),
                                            new ChessPosition(Integer.parseInt(params[3]), getColNum(params[4])),
                                            getPromotionPiece(params[5]));
-
-            webSocketFacade.makeMove(authToken, gameID, move);
-
-            return "Making move: " + move.toString() + " ...";
+        } else {
+            throw new ResponseException(400, "Expected: <row_number> <col_letter> -> <row_number> <col_letter> <promotion_piece_if_needed>");
         }
-        throw new ResponseException(400, "Expected: <row_number> <col_letter> -> <row_number> <col_letter> <promotion_piece_if_needed>");
+        webSocketFacade.makeMove(authToken, gameID, move);
+
+        return String.format("Making move: \"%s\" ...", move.toString());
     }
 
     private ChessPiece.PieceType getPromotionPiece(String promotion) {
